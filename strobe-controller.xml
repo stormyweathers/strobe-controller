@@ -1,0 +1,1037 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<export version="E">
+  <design>
+    <source>/home/user/repos/strobe-controller/strobe-controller.kicad_sch</source>
+    <date>Thu 07 Sep 2023 03:22:47 PM PDT</date>
+    <tool>Eeschema 7.0.7-7.0.7~ubuntu20.04.1</tool>
+    <sheet number="1" name="/" tstamps="/">
+      <title_block>
+        <title/>
+        <company/>
+        <rev/>
+        <date/>
+        <source>strobe-controller.kicad_sch</source>
+        <comment number="1" value=""/>
+        <comment number="2" value=""/>
+        <comment number="3" value=""/>
+        <comment number="4" value=""/>
+        <comment number="5" value=""/>
+        <comment number="6" value=""/>
+        <comment number="7" value=""/>
+        <comment number="8" value=""/>
+        <comment number="9" value=""/>
+      </title_block>
+    </sheet>
+    <sheet number="2" name="/Single_LED_channel/" tstamps="/67cbe2ad-f362-4fbd-ac05-510e26482f3f/">
+      <title_block>
+        <title/>
+        <company/>
+        <rev/>
+        <date/>
+        <source>Single_LED_channel.kicad_sch</source>
+        <comment number="1" value=""/>
+        <comment number="2" value=""/>
+        <comment number="3" value=""/>
+        <comment number="4" value=""/>
+        <comment number="5" value=""/>
+        <comment number="6" value=""/>
+        <comment number="7" value=""/>
+        <comment number="8" value=""/>
+        <comment number="9" value=""/>
+      </title_block>
+    </sheet>
+    <sheet number="3" name="/Single_LED_channel1/" tstamps="/ff972039-7a08-4770-8bc6-9ac9cae08229/">
+      <title_block>
+        <title/>
+        <company/>
+        <rev/>
+        <date/>
+        <source>Single_LED_channel.kicad_sch</source>
+        <comment number="1" value=""/>
+        <comment number="2" value=""/>
+        <comment number="3" value=""/>
+        <comment number="4" value=""/>
+        <comment number="5" value=""/>
+        <comment number="6" value=""/>
+        <comment number="7" value=""/>
+        <comment number="8" value=""/>
+        <comment number="9" value=""/>
+      </title_block>
+    </sheet>
+    <sheet number="4" name="/Single_LED_channel2/" tstamps="/ff7bd14e-4d0d-4504-8bfb-005d5706ec34/">
+      <title_block>
+        <title/>
+        <company/>
+        <rev/>
+        <date/>
+        <source>Single_LED_channel.kicad_sch</source>
+        <comment number="1" value=""/>
+        <comment number="2" value=""/>
+        <comment number="3" value=""/>
+        <comment number="4" value=""/>
+        <comment number="5" value=""/>
+        <comment number="6" value=""/>
+        <comment number="7" value=""/>
+        <comment number="8" value=""/>
+        <comment number="9" value=""/>
+      </title_block>
+    </sheet>
+    <sheet number="5" name="/Single_LED_channel3/" tstamps="/cf9fbb55-8bfc-4303-b46a-0e973c4b87fc/">
+      <title_block>
+        <title/>
+        <company/>
+        <rev/>
+        <date/>
+        <source>Single_LED_channel.kicad_sch</source>
+        <comment number="1" value=""/>
+        <comment number="2" value=""/>
+        <comment number="3" value=""/>
+        <comment number="4" value=""/>
+        <comment number="5" value=""/>
+        <comment number="6" value=""/>
+        <comment number="7" value=""/>
+        <comment number="8" value=""/>
+        <comment number="9" value=""/>
+      </title_block>
+    </sheet>
+  </design>
+  <components>
+    <comp ref="CO101">
+      <value>RJ45</value>
+      <footprint>matterwave:RJ45</footprint>
+      <libsource lib="matterwave" part="RJ45" description=""/>
+      <property name="Sheetname" value=""/>
+      <property name="Sheetfile" value="strobe-controller.kicad_sch"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>47ad59bc-2c6e-4363-8846-0c541bf1559a e24b81ac-44c0-42c2-9e6e-df6cd2fb8620 06dbe526-6d64-4137-8e7c-459f068f0eda 028aa496-5eb6-4d7a-b4c7-935c93d80d3f</tstamps>
+    </comp>
+    <comp ref="D101">
+      <value>LED_RGBW</value>
+      <footprint>Connector_JST:JST_XH_B5B-XH-AM_1x05_P2.50mm_Vertical</footprint>
+      <libsource lib="knob-fondler" part="LED_STRIP_RGBW" description="RGB LED, red/green/blue/anode"/>
+      <property name="Sheetname" value=""/>
+      <property name="Sheetfile" value="strobe-controller.kicad_sch"/>
+      <property name="ki_description" value="RGB LED, red/green/blue/anode"/>
+      <property name="ki_keywords" value="LED RGB diode"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>36f5a576-451f-44fe-b6b3-5f132347149c</tstamps>
+    </comp>
+    <comp ref="D103">
+      <value>D_Schottky_AKA</value>
+      <footprint>Package_TO_SOT_THT:TO-220-3_Vertical</footprint>
+      <libsource lib="Device" part="D_Schottky_AKA" description="Schottky diode, anode on pins 1 and 3"/>
+      <property name="Sheetname" value=""/>
+      <property name="Sheetfile" value="strobe-controller.kicad_sch"/>
+      <property name="ki_description" value="Schottky diode, anode on pins 1 and 3"/>
+      <property name="ki_keywords" value="diode Schottky SCHDPAK"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>8391d62f-6bce-426e-a838-31c617e69b4e</tstamps>
+    </comp>
+    <comp ref="H101">
+      <value>MountingHole</value>
+      <footprint>MountingEquipment:DINRailAdapter_3xM3_PhoenixContact_1201578</footprint>
+      <libsource lib="Mechanical" part="DIN_Rail_Adapter" description="DIN Rail adapter universal, mounting holes without connection"/>
+      <property name="Sheetname" value=""/>
+      <property name="Sheetfile" value="strobe-controller.kicad_sch"/>
+      <property name="ki_description" value="DIN Rail adapter universal, mounting holes without connection"/>
+      <property name="ki_keywords" value="Mounting holes, DIN rail adapter"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>481f15eb-a75b-4ac3-866e-ccc093f45c75</tstamps>
+    </comp>
+    <comp ref="H102">
+      <value>MountingHole</value>
+      <footprint>MountingEquipment:DINRailAdapter_3xM3_PhoenixContact_1201578</footprint>
+      <libsource lib="Mechanical" part="DIN_Rail_Adapter" description="DIN Rail adapter universal, mounting holes without connection"/>
+      <property name="Sheetname" value=""/>
+      <property name="Sheetfile" value="strobe-controller.kicad_sch"/>
+      <property name="ki_description" value="DIN Rail adapter universal, mounting holes without connection"/>
+      <property name="ki_keywords" value="Mounting holes, DIN rail adapter"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>83f55f4f-1507-4fda-8a31-34fffdcd4730</tstamps>
+    </comp>
+    <comp ref="H103">
+      <value>MountingHole</value>
+      <footprint>MountingHole:MountingHole_3.2mm_M3_DIN965</footprint>
+      <libsource lib="Mechanical" part="MountingHole" description="Mounting Hole without connection"/>
+      <property name="Sheetname" value=""/>
+      <property name="Sheetfile" value="strobe-controller.kicad_sch"/>
+      <property name="ki_description" value="Mounting Hole without connection"/>
+      <property name="ki_keywords" value="mounting hole"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>0b00e16e-9a4a-43de-a6d9-2f5f2698b25b</tstamps>
+    </comp>
+    <comp ref="H104">
+      <value>MountingHole</value>
+      <footprint>MountingHole:MountingHole_3.2mm_M3_DIN965</footprint>
+      <libsource lib="Mechanical" part="MountingHole" description="Mounting Hole without connection"/>
+      <property name="Sheetname" value=""/>
+      <property name="Sheetfile" value="strobe-controller.kicad_sch"/>
+      <property name="ki_description" value="Mounting Hole without connection"/>
+      <property name="ki_keywords" value="mounting hole"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>50e9b599-c5ae-463e-aee6-610a5b654ccb</tstamps>
+    </comp>
+    <comp ref="H105">
+      <value>MountingHole</value>
+      <footprint>MountingHole:MountingHole_3.2mm_M3_DIN965</footprint>
+      <libsource lib="Mechanical" part="MountingHole" description="Mounting Hole without connection"/>
+      <property name="Sheetname" value=""/>
+      <property name="Sheetfile" value="strobe-controller.kicad_sch"/>
+      <property name="ki_description" value="Mounting Hole without connection"/>
+      <property name="ki_keywords" value="mounting hole"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>8062e040-14d4-4a8a-b300-3b764e4972fe</tstamps>
+    </comp>
+    <comp ref="H106">
+      <value>MountingHole</value>
+      <footprint>MountingHole:MountingHole_3.2mm_M3_DIN965</footprint>
+      <libsource lib="Mechanical" part="MountingHole" description="Mounting Hole without connection"/>
+      <property name="Sheetname" value=""/>
+      <property name="Sheetfile" value="strobe-controller.kicad_sch"/>
+      <property name="ki_description" value="Mounting Hole without connection"/>
+      <property name="ki_keywords" value="mounting hole"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>18dd0fe2-ac91-4f68-b696-8f52d9e831f3</tstamps>
+    </comp>
+    <comp ref="J101">
+      <value>Power_in</value>
+      <footprint>matterwave:CONN_1330710000</footprint>
+      <fields>
+        <field name="digikey">281-4008-ND</field>
+      </fields>
+      <libsource lib="Connector" part="Screw_Terminal_01x02" description="Generic screw terminal, single row, 01x02, script generated (kicad-library-utils/schlib/autogen/connector/)"/>
+      <property name="digikey" value="281-4008-ND"/>
+      <property name="Sheetname" value=""/>
+      <property name="Sheetfile" value="strobe-controller.kicad_sch"/>
+      <property name="ki_description" value="Generic screw terminal, single row, 01x02, script generated (kicad-library-utils/schlib/autogen/connector/)"/>
+      <property name="ki_keywords" value="screw terminal"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>e2a864a4-7b77-4b0d-bb66-670cb0e731f2</tstamps>
+    </comp>
+    <comp ref="J102">
+      <value>LED_B</value>
+      <footprint>matterwave:CONN_1330710000</footprint>
+      <fields>
+        <field name="digikey">281-4008-ND</field>
+      </fields>
+      <libsource lib="Connector" part="Screw_Terminal_01x02" description="Generic screw terminal, single row, 01x02, script generated (kicad-library-utils/schlib/autogen/connector/)"/>
+      <property name="digikey" value="281-4008-ND"/>
+      <property name="Sheetname" value=""/>
+      <property name="Sheetfile" value="strobe-controller.kicad_sch"/>
+      <property name="ki_description" value="Generic screw terminal, single row, 01x02, script generated (kicad-library-utils/schlib/autogen/connector/)"/>
+      <property name="ki_keywords" value="screw terminal"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>640ea31b-1c41-4cb0-a95e-e6193413a133</tstamps>
+    </comp>
+    <comp ref="J103">
+      <value>LED_G</value>
+      <footprint>matterwave:CONN_1330710000</footprint>
+      <fields>
+        <field name="digikey">281-4008-ND</field>
+      </fields>
+      <libsource lib="Connector" part="Screw_Terminal_01x02" description="Generic screw terminal, single row, 01x02, script generated (kicad-library-utils/schlib/autogen/connector/)"/>
+      <property name="digikey" value="281-4008-ND"/>
+      <property name="Sheetname" value=""/>
+      <property name="Sheetfile" value="strobe-controller.kicad_sch"/>
+      <property name="ki_description" value="Generic screw terminal, single row, 01x02, script generated (kicad-library-utils/schlib/autogen/connector/)"/>
+      <property name="ki_keywords" value="screw terminal"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>bac1558b-5c86-4a30-b0e7-1d423163e3c7</tstamps>
+    </comp>
+    <comp ref="J104">
+      <value>LED_R</value>
+      <footprint>matterwave:CONN_1330710000</footprint>
+      <fields>
+        <field name="digikey">281-4008-ND</field>
+      </fields>
+      <libsource lib="Connector" part="Screw_Terminal_01x02" description="Generic screw terminal, single row, 01x02, script generated (kicad-library-utils/schlib/autogen/connector/)"/>
+      <property name="digikey" value="281-4008-ND"/>
+      <property name="Sheetname" value=""/>
+      <property name="Sheetfile" value="strobe-controller.kicad_sch"/>
+      <property name="ki_description" value="Generic screw terminal, single row, 01x02, script generated (kicad-library-utils/schlib/autogen/connector/)"/>
+      <property name="ki_keywords" value="screw terminal"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>e7e5a9cb-67d9-4772-b670-722006f43f82</tstamps>
+    </comp>
+    <comp ref="J105">
+      <value>LED_G</value>
+      <footprint>matterwave:CONN_1330710000</footprint>
+      <fields>
+        <field name="digikey">281-4008-ND</field>
+      </fields>
+      <libsource lib="Connector" part="Screw_Terminal_01x02" description="Generic screw terminal, single row, 01x02, script generated (kicad-library-utils/schlib/autogen/connector/)"/>
+      <property name="digikey" value="281-4008-ND"/>
+      <property name="Sheetname" value=""/>
+      <property name="Sheetfile" value="strobe-controller.kicad_sch"/>
+      <property name="ki_description" value="Generic screw terminal, single row, 01x02, script generated (kicad-library-utils/schlib/autogen/connector/)"/>
+      <property name="ki_keywords" value="screw terminal"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>7a2662be-24b7-42dd-9e53-7bedd2b4b933</tstamps>
+    </comp>
+    <comp ref="Q105">
+      <value>BSP149</value>
+      <footprint>Package_TO_SOT_SMD:SOT-223-3_TabPin2</footprint>
+      <datasheet>https://www.infineon.com/dgdl/Infineon-BSP129-DS-v01_42-en.pdf?fileId=db3a30433c1a8752013c1fc296d2395f</datasheet>
+      <fields>
+        <field name="digikey">BSP149H6327XTSA1TR-ND</field>
+        <field name="jlcpcb">C534558</field>
+      </fields>
+      <libsource lib="Transistor_FET" part="BSP129" description="0.35A Id, 240V Vds, N-Channel MOSFET, SOT-223"/>
+      <property name="digikey" value="BSP149H6327XTSA1TR-ND"/>
+      <property name="jlcpcb" value="C534558"/>
+      <property name="Sheetname" value=""/>
+      <property name="Sheetfile" value="strobe-controller.kicad_sch"/>
+      <property name="ki_description" value="0.35A Id, 240V Vds, N-Channel MOSFET, SOT-223"/>
+      <property name="ki_keywords" value="N-Channel MOSFET"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>0f91ecfa-2cb2-45b0-99af-0b49a29b45f9</tstamps>
+    </comp>
+    <comp ref="R109">
+      <value>1k</value>
+      <footprint>Resistor_THT:R_Axial_Power_L48.0mm_W12.5mm_P55.88mm</footprint>
+      <fields>
+        <field name="digikey">13-SQP10AJB-1K-ND</field>
+      </fields>
+      <libsource lib="Device" part="R_Small" description="Resistor, small symbol"/>
+      <property name="digikey" value="13-SQP10AJB-1K-ND"/>
+      <property name="Sheetname" value=""/>
+      <property name="Sheetfile" value="strobe-controller.kicad_sch"/>
+      <property name="ki_description" value="Resistor, small symbol"/>
+      <property name="ki_keywords" value="R resistor"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>a6b6768f-9952-432c-b44a-f3f9049b1d57</tstamps>
+    </comp>
+    <comp ref="R110">
+      <value>1k</value>
+      <footprint>Resistor_THT:R_Axial_Power_L48.0mm_W12.5mm_P55.88mm</footprint>
+      <fields>
+        <field name="digikey">13-SQP10AJB-1K-ND</field>
+      </fields>
+      <libsource lib="Device" part="R_Small" description="Resistor, small symbol"/>
+      <property name="digikey" value="13-SQP10AJB-1K-ND"/>
+      <property name="Sheetname" value=""/>
+      <property name="Sheetfile" value="strobe-controller.kicad_sch"/>
+      <property name="ki_description" value="Resistor, small symbol"/>
+      <property name="ki_keywords" value="R resistor"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>def34bba-089a-4b5d-8876-a0ac6a3bf13a</tstamps>
+    </comp>
+    <comp ref="C201">
+      <value>2.2m</value>
+      <footprint>Capacitor_THT:CP_Radial_D25.0mm_P10.00mm_SnapIn</footprint>
+      <fields>
+        <field name="digikey">  493-1154-ND</field>
+      </fields>
+      <libsource lib="Device" part="C_Polarized_Small" description="Polarized capacitor, small symbol"/>
+      <property name="digikey" value="  493-1154-ND"/>
+      <property name="Sheetname" value="Single_LED_channel"/>
+      <property name="Sheetfile" value="Single_LED_channel.kicad_sch"/>
+      <property name="ki_description" value="Polarized capacitor, small symbol"/>
+      <property name="ki_keywords" value="cap capacitor"/>
+      <sheetpath names="/Single_LED_channel/" tstamps="/67cbe2ad-f362-4fbd-ac05-510e26482f3f/"/>
+      <tstamps>a76c254a-b294-45d0-9264-4f845b4cc694</tstamps>
+    </comp>
+    <comp ref="J202">
+      <value>mono-jack</value>
+      <footprint>AudioJacks:Jack_3.5mm_QingPu_WQP-PJ301M-12_Vertical</footprint>
+      <fields>
+        <field name="Link">https://www.thonk.co.uk/shop/thonkiconn/</field>
+        <field name="PN">PJ398SM</field>
+        <field name="Vendor">Thonk</field>
+      </fields>
+      <libsource lib="knob-fondler" part="mono-jack" description=""/>
+      <property name="Vendor" value="Thonk"/>
+      <property name="PN" value="PJ398SM"/>
+      <property name="Link" value="https://www.thonk.co.uk/shop/thonkiconn/"/>
+      <property name="Sheetname" value="Single_LED_channel"/>
+      <property name="Sheetfile" value="Single_LED_channel.kicad_sch"/>
+      <sheetpath names="/Single_LED_channel/" tstamps="/67cbe2ad-f362-4fbd-ac05-510e26482f3f/"/>
+      <tstamps>b0e81dad-48e1-400a-86d8-451dc9734add</tstamps>
+    </comp>
+    <comp ref="Q201">
+      <value>FQP30N06L</value>
+      <footprint>Package_TO_SOT_THT:TO-220-3_Vertical</footprint>
+      <datasheet>https://www.onsemi.com/pub/Collateral/FQP30N06L-D.pdf</datasheet>
+      <fields>
+        <field name="Category">Discrete Semiconductor Products</field>
+        <field name="DK_Datasheet_Link">https://www.onsemi.com/pub/Collateral/FQP30N06L-D.pdf</field>
+        <field name="DK_Detail_Page">/product-detail/en/on-semiconductor/FQP30N06L/FQP30N06L-ND/1055122</field>
+        <field name="Description">MOSFET N-CH 60V 32A TO-220</field>
+        <field name="Digi-Key_PN">FQP30N06L-ND</field>
+        <field name="Family">Transistors - FETs, MOSFETs - Single</field>
+        <field name="MPN">FQP30N06L</field>
+        <field name="Manufacturer">ON Semiconductor</field>
+        <field name="Status">Active</field>
+      </fields>
+      <libsource lib="matterwave" part="FQP30N06L" description="MOSFET N-CH 60V 32A TO-220"/>
+      <property name="Digi-Key_PN" value="FQP30N06L-ND"/>
+      <property name="MPN" value="FQP30N06L"/>
+      <property name="Category" value="Discrete Semiconductor Products"/>
+      <property name="Family" value="Transistors - FETs, MOSFETs - Single"/>
+      <property name="DK_Datasheet_Link" value="https://www.onsemi.com/pub/Collateral/FQP30N06L-D.pdf"/>
+      <property name="DK_Detail_Page" value="/product-detail/en/on-semiconductor/FQP30N06L/FQP30N06L-ND/1055122"/>
+      <property name="Description" value="MOSFET N-CH 60V 32A TO-220"/>
+      <property name="Manufacturer" value="ON Semiconductor"/>
+      <property name="Status" value="Active"/>
+      <property name="Sheetname" value="Single_LED_channel"/>
+      <property name="Sheetfile" value="Single_LED_channel.kicad_sch"/>
+      <property name="ki_description" value="MOSFET N-CH 60V 32A TO-220"/>
+      <sheetpath names="/Single_LED_channel/" tstamps="/67cbe2ad-f362-4fbd-ac05-510e26482f3f/"/>
+      <tstamps>19ae43fd-f437-4406-9fdd-297a59ca0226</tstamps>
+    </comp>
+    <comp ref="R201">
+      <value>100R</value>
+      <footprint>Resistor_SMD:R_0603_1608Metric</footprint>
+      <fields>
+        <field name="jlcpcb">C22775</field>
+      </fields>
+      <libsource lib="Device" part="R_Small" description="Resistor, small symbol"/>
+      <property name="jlcpcb" value="C22775"/>
+      <property name="Sheetname" value="Single_LED_channel"/>
+      <property name="Sheetfile" value="Single_LED_channel.kicad_sch"/>
+      <property name="ki_description" value="Resistor, small symbol"/>
+      <property name="ki_keywords" value="R resistor"/>
+      <sheetpath names="/Single_LED_channel/" tstamps="/67cbe2ad-f362-4fbd-ac05-510e26482f3f/"/>
+      <tstamps>1b96d59e-195d-4c4d-9d97-999ab357d0b6</tstamps>
+    </comp>
+    <comp ref="R202">
+      <value>470k</value>
+      <footprint>Resistor_SMD:R_0603_1608Metric</footprint>
+      <fields>
+        <field name="jlcpcb">C23178</field>
+      </fields>
+      <libsource lib="Device" part="R_Small" description="Resistor, small symbol"/>
+      <property name="jlcpcb" value="C23178"/>
+      <property name="Sheetname" value="Single_LED_channel"/>
+      <property name="Sheetfile" value="Single_LED_channel.kicad_sch"/>
+      <property name="ki_description" value="Resistor, small symbol"/>
+      <property name="ki_keywords" value="R resistor"/>
+      <sheetpath names="/Single_LED_channel/" tstamps="/67cbe2ad-f362-4fbd-ac05-510e26482f3f/"/>
+      <tstamps>bd5f9432-e431-462b-b1c1-46cf69d18375</tstamps>
+    </comp>
+    <comp ref="C301">
+      <value>2.2m</value>
+      <footprint>Capacitor_THT:CP_Radial_D25.0mm_P10.00mm_SnapIn</footprint>
+      <fields>
+        <field name="digikey">  493-1154-ND</field>
+      </fields>
+      <libsource lib="Device" part="C_Polarized_Small" description="Polarized capacitor, small symbol"/>
+      <property name="digikey" value="  493-1154-ND"/>
+      <property name="Sheetname" value="Single_LED_channel1"/>
+      <property name="Sheetfile" value="Single_LED_channel.kicad_sch"/>
+      <property name="ki_description" value="Polarized capacitor, small symbol"/>
+      <property name="ki_keywords" value="cap capacitor"/>
+      <sheetpath names="/Single_LED_channel1/" tstamps="/ff972039-7a08-4770-8bc6-9ac9cae08229/"/>
+      <tstamps>a76c254a-b294-45d0-9264-4f845b4cc694</tstamps>
+    </comp>
+    <comp ref="J302">
+      <value>mono-jack</value>
+      <footprint>AudioJacks:Jack_3.5mm_QingPu_WQP-PJ301M-12_Vertical</footprint>
+      <fields>
+        <field name="Link">https://www.thonk.co.uk/shop/thonkiconn/</field>
+        <field name="PN">PJ398SM</field>
+        <field name="Vendor">Thonk</field>
+      </fields>
+      <libsource lib="knob-fondler" part="mono-jack" description=""/>
+      <property name="Vendor" value="Thonk"/>
+      <property name="PN" value="PJ398SM"/>
+      <property name="Link" value="https://www.thonk.co.uk/shop/thonkiconn/"/>
+      <property name="Sheetname" value="Single_LED_channel1"/>
+      <property name="Sheetfile" value="Single_LED_channel.kicad_sch"/>
+      <sheetpath names="/Single_LED_channel1/" tstamps="/ff972039-7a08-4770-8bc6-9ac9cae08229/"/>
+      <tstamps>b0e81dad-48e1-400a-86d8-451dc9734add</tstamps>
+    </comp>
+    <comp ref="Q301">
+      <value>FQP30N06L</value>
+      <footprint>Package_TO_SOT_THT:TO-220-3_Vertical</footprint>
+      <datasheet>https://www.onsemi.com/pub/Collateral/FQP30N06L-D.pdf</datasheet>
+      <fields>
+        <field name="Category">Discrete Semiconductor Products</field>
+        <field name="DK_Datasheet_Link">https://www.onsemi.com/pub/Collateral/FQP30N06L-D.pdf</field>
+        <field name="DK_Detail_Page">/product-detail/en/on-semiconductor/FQP30N06L/FQP30N06L-ND/1055122</field>
+        <field name="Description">MOSFET N-CH 60V 32A TO-220</field>
+        <field name="Digi-Key_PN">FQP30N06L-ND</field>
+        <field name="Family">Transistors - FETs, MOSFETs - Single</field>
+        <field name="MPN">FQP30N06L</field>
+        <field name="Manufacturer">ON Semiconductor</field>
+        <field name="Status">Active</field>
+      </fields>
+      <libsource lib="matterwave" part="FQP30N06L" description="MOSFET N-CH 60V 32A TO-220"/>
+      <property name="Digi-Key_PN" value="FQP30N06L-ND"/>
+      <property name="MPN" value="FQP30N06L"/>
+      <property name="Category" value="Discrete Semiconductor Products"/>
+      <property name="Family" value="Transistors - FETs, MOSFETs - Single"/>
+      <property name="DK_Datasheet_Link" value="https://www.onsemi.com/pub/Collateral/FQP30N06L-D.pdf"/>
+      <property name="DK_Detail_Page" value="/product-detail/en/on-semiconductor/FQP30N06L/FQP30N06L-ND/1055122"/>
+      <property name="Description" value="MOSFET N-CH 60V 32A TO-220"/>
+      <property name="Manufacturer" value="ON Semiconductor"/>
+      <property name="Status" value="Active"/>
+      <property name="Sheetname" value="Single_LED_channel1"/>
+      <property name="Sheetfile" value="Single_LED_channel.kicad_sch"/>
+      <property name="ki_description" value="MOSFET N-CH 60V 32A TO-220"/>
+      <sheetpath names="/Single_LED_channel1/" tstamps="/ff972039-7a08-4770-8bc6-9ac9cae08229/"/>
+      <tstamps>19ae43fd-f437-4406-9fdd-297a59ca0226</tstamps>
+    </comp>
+    <comp ref="R301">
+      <value>100R</value>
+      <footprint>Resistor_SMD:R_0603_1608Metric</footprint>
+      <fields>
+        <field name="jlcpcb">C22775</field>
+      </fields>
+      <libsource lib="Device" part="R_Small" description="Resistor, small symbol"/>
+      <property name="jlcpcb" value="C22775"/>
+      <property name="Sheetname" value="Single_LED_channel1"/>
+      <property name="Sheetfile" value="Single_LED_channel.kicad_sch"/>
+      <property name="ki_description" value="Resistor, small symbol"/>
+      <property name="ki_keywords" value="R resistor"/>
+      <sheetpath names="/Single_LED_channel1/" tstamps="/ff972039-7a08-4770-8bc6-9ac9cae08229/"/>
+      <tstamps>1b96d59e-195d-4c4d-9d97-999ab357d0b6</tstamps>
+    </comp>
+    <comp ref="R302">
+      <value>470k</value>
+      <footprint>Resistor_SMD:R_0603_1608Metric</footprint>
+      <fields>
+        <field name="jlcpcb">C23178</field>
+      </fields>
+      <libsource lib="Device" part="R_Small" description="Resistor, small symbol"/>
+      <property name="jlcpcb" value="C23178"/>
+      <property name="Sheetname" value="Single_LED_channel1"/>
+      <property name="Sheetfile" value="Single_LED_channel.kicad_sch"/>
+      <property name="ki_description" value="Resistor, small symbol"/>
+      <property name="ki_keywords" value="R resistor"/>
+      <sheetpath names="/Single_LED_channel1/" tstamps="/ff972039-7a08-4770-8bc6-9ac9cae08229/"/>
+      <tstamps>bd5f9432-e431-462b-b1c1-46cf69d18375</tstamps>
+    </comp>
+    <comp ref="C401">
+      <value>2.2m</value>
+      <footprint>Capacitor_THT:CP_Radial_D25.0mm_P10.00mm_SnapIn</footprint>
+      <fields>
+        <field name="digikey">  493-1154-ND</field>
+      </fields>
+      <libsource lib="Device" part="C_Polarized_Small" description="Polarized capacitor, small symbol"/>
+      <property name="digikey" value="  493-1154-ND"/>
+      <property name="Sheetname" value="Single_LED_channel2"/>
+      <property name="Sheetfile" value="Single_LED_channel.kicad_sch"/>
+      <property name="ki_description" value="Polarized capacitor, small symbol"/>
+      <property name="ki_keywords" value="cap capacitor"/>
+      <sheetpath names="/Single_LED_channel2/" tstamps="/ff7bd14e-4d0d-4504-8bfb-005d5706ec34/"/>
+      <tstamps>a76c254a-b294-45d0-9264-4f845b4cc694</tstamps>
+    </comp>
+    <comp ref="J402">
+      <value>mono-jack</value>
+      <footprint>AudioJacks:Jack_3.5mm_QingPu_WQP-PJ301M-12_Vertical</footprint>
+      <fields>
+        <field name="Link">https://www.thonk.co.uk/shop/thonkiconn/</field>
+        <field name="PN">PJ398SM</field>
+        <field name="Vendor">Thonk</field>
+      </fields>
+      <libsource lib="knob-fondler" part="mono-jack" description=""/>
+      <property name="Vendor" value="Thonk"/>
+      <property name="PN" value="PJ398SM"/>
+      <property name="Link" value="https://www.thonk.co.uk/shop/thonkiconn/"/>
+      <property name="Sheetname" value="Single_LED_channel2"/>
+      <property name="Sheetfile" value="Single_LED_channel.kicad_sch"/>
+      <sheetpath names="/Single_LED_channel2/" tstamps="/ff7bd14e-4d0d-4504-8bfb-005d5706ec34/"/>
+      <tstamps>b0e81dad-48e1-400a-86d8-451dc9734add</tstamps>
+    </comp>
+    <comp ref="Q401">
+      <value>FQP30N06L</value>
+      <footprint>Package_TO_SOT_THT:TO-220-3_Vertical</footprint>
+      <datasheet>https://www.onsemi.com/pub/Collateral/FQP30N06L-D.pdf</datasheet>
+      <fields>
+        <field name="Category">Discrete Semiconductor Products</field>
+        <field name="DK_Datasheet_Link">https://www.onsemi.com/pub/Collateral/FQP30N06L-D.pdf</field>
+        <field name="DK_Detail_Page">/product-detail/en/on-semiconductor/FQP30N06L/FQP30N06L-ND/1055122</field>
+        <field name="Description">MOSFET N-CH 60V 32A TO-220</field>
+        <field name="Digi-Key_PN">FQP30N06L-ND</field>
+        <field name="Family">Transistors - FETs, MOSFETs - Single</field>
+        <field name="MPN">FQP30N06L</field>
+        <field name="Manufacturer">ON Semiconductor</field>
+        <field name="Status">Active</field>
+      </fields>
+      <libsource lib="matterwave" part="FQP30N06L" description="MOSFET N-CH 60V 32A TO-220"/>
+      <property name="Digi-Key_PN" value="FQP30N06L-ND"/>
+      <property name="MPN" value="FQP30N06L"/>
+      <property name="Category" value="Discrete Semiconductor Products"/>
+      <property name="Family" value="Transistors - FETs, MOSFETs - Single"/>
+      <property name="DK_Datasheet_Link" value="https://www.onsemi.com/pub/Collateral/FQP30N06L-D.pdf"/>
+      <property name="DK_Detail_Page" value="/product-detail/en/on-semiconductor/FQP30N06L/FQP30N06L-ND/1055122"/>
+      <property name="Description" value="MOSFET N-CH 60V 32A TO-220"/>
+      <property name="Manufacturer" value="ON Semiconductor"/>
+      <property name="Status" value="Active"/>
+      <property name="Sheetname" value="Single_LED_channel2"/>
+      <property name="Sheetfile" value="Single_LED_channel.kicad_sch"/>
+      <property name="ki_description" value="MOSFET N-CH 60V 32A TO-220"/>
+      <sheetpath names="/Single_LED_channel2/" tstamps="/ff7bd14e-4d0d-4504-8bfb-005d5706ec34/"/>
+      <tstamps>19ae43fd-f437-4406-9fdd-297a59ca0226</tstamps>
+    </comp>
+    <comp ref="R401">
+      <value>100R</value>
+      <footprint>Resistor_SMD:R_0603_1608Metric</footprint>
+      <fields>
+        <field name="jlcpcb">C22775</field>
+      </fields>
+      <libsource lib="Device" part="R_Small" description="Resistor, small symbol"/>
+      <property name="jlcpcb" value="C22775"/>
+      <property name="Sheetname" value="Single_LED_channel2"/>
+      <property name="Sheetfile" value="Single_LED_channel.kicad_sch"/>
+      <property name="ki_description" value="Resistor, small symbol"/>
+      <property name="ki_keywords" value="R resistor"/>
+      <sheetpath names="/Single_LED_channel2/" tstamps="/ff7bd14e-4d0d-4504-8bfb-005d5706ec34/"/>
+      <tstamps>1b96d59e-195d-4c4d-9d97-999ab357d0b6</tstamps>
+    </comp>
+    <comp ref="R402">
+      <value>470k</value>
+      <footprint>Resistor_SMD:R_0603_1608Metric</footprint>
+      <fields>
+        <field name="jlcpcb">C23178</field>
+      </fields>
+      <libsource lib="Device" part="R_Small" description="Resistor, small symbol"/>
+      <property name="jlcpcb" value="C23178"/>
+      <property name="Sheetname" value="Single_LED_channel2"/>
+      <property name="Sheetfile" value="Single_LED_channel.kicad_sch"/>
+      <property name="ki_description" value="Resistor, small symbol"/>
+      <property name="ki_keywords" value="R resistor"/>
+      <sheetpath names="/Single_LED_channel2/" tstamps="/ff7bd14e-4d0d-4504-8bfb-005d5706ec34/"/>
+      <tstamps>bd5f9432-e431-462b-b1c1-46cf69d18375</tstamps>
+    </comp>
+    <comp ref="C501">
+      <value>2.2m</value>
+      <footprint>Capacitor_THT:CP_Radial_D25.0mm_P10.00mm_SnapIn</footprint>
+      <fields>
+        <field name="digikey">  493-1154-ND</field>
+      </fields>
+      <libsource lib="Device" part="C_Polarized_Small" description="Polarized capacitor, small symbol"/>
+      <property name="digikey" value="  493-1154-ND"/>
+      <property name="Sheetname" value="Single_LED_channel3"/>
+      <property name="Sheetfile" value="Single_LED_channel.kicad_sch"/>
+      <property name="ki_description" value="Polarized capacitor, small symbol"/>
+      <property name="ki_keywords" value="cap capacitor"/>
+      <sheetpath names="/Single_LED_channel3/" tstamps="/cf9fbb55-8bfc-4303-b46a-0e973c4b87fc/"/>
+      <tstamps>a76c254a-b294-45d0-9264-4f845b4cc694</tstamps>
+    </comp>
+    <comp ref="J502">
+      <value>mono-jack</value>
+      <footprint>AudioJacks:Jack_3.5mm_QingPu_WQP-PJ301M-12_Vertical</footprint>
+      <fields>
+        <field name="Link">https://www.thonk.co.uk/shop/thonkiconn/</field>
+        <field name="PN">PJ398SM</field>
+        <field name="Vendor">Thonk</field>
+      </fields>
+      <libsource lib="knob-fondler" part="mono-jack" description=""/>
+      <property name="Vendor" value="Thonk"/>
+      <property name="PN" value="PJ398SM"/>
+      <property name="Link" value="https://www.thonk.co.uk/shop/thonkiconn/"/>
+      <property name="Sheetname" value="Single_LED_channel3"/>
+      <property name="Sheetfile" value="Single_LED_channel.kicad_sch"/>
+      <sheetpath names="/Single_LED_channel3/" tstamps="/cf9fbb55-8bfc-4303-b46a-0e973c4b87fc/"/>
+      <tstamps>b0e81dad-48e1-400a-86d8-451dc9734add</tstamps>
+    </comp>
+    <comp ref="Q501">
+      <value>FQP30N06L</value>
+      <footprint>Package_TO_SOT_THT:TO-220-3_Vertical</footprint>
+      <datasheet>https://www.onsemi.com/pub/Collateral/FQP30N06L-D.pdf</datasheet>
+      <fields>
+        <field name="Category">Discrete Semiconductor Products</field>
+        <field name="DK_Datasheet_Link">https://www.onsemi.com/pub/Collateral/FQP30N06L-D.pdf</field>
+        <field name="DK_Detail_Page">/product-detail/en/on-semiconductor/FQP30N06L/FQP30N06L-ND/1055122</field>
+        <field name="Description">MOSFET N-CH 60V 32A TO-220</field>
+        <field name="Digi-Key_PN">FQP30N06L-ND</field>
+        <field name="Family">Transistors - FETs, MOSFETs - Single</field>
+        <field name="MPN">FQP30N06L</field>
+        <field name="Manufacturer">ON Semiconductor</field>
+        <field name="Status">Active</field>
+      </fields>
+      <libsource lib="matterwave" part="FQP30N06L" description="MOSFET N-CH 60V 32A TO-220"/>
+      <property name="Digi-Key_PN" value="FQP30N06L-ND"/>
+      <property name="MPN" value="FQP30N06L"/>
+      <property name="Category" value="Discrete Semiconductor Products"/>
+      <property name="Family" value="Transistors - FETs, MOSFETs - Single"/>
+      <property name="DK_Datasheet_Link" value="https://www.onsemi.com/pub/Collateral/FQP30N06L-D.pdf"/>
+      <property name="DK_Detail_Page" value="/product-detail/en/on-semiconductor/FQP30N06L/FQP30N06L-ND/1055122"/>
+      <property name="Description" value="MOSFET N-CH 60V 32A TO-220"/>
+      <property name="Manufacturer" value="ON Semiconductor"/>
+      <property name="Status" value="Active"/>
+      <property name="Sheetname" value="Single_LED_channel3"/>
+      <property name="Sheetfile" value="Single_LED_channel.kicad_sch"/>
+      <property name="ki_description" value="MOSFET N-CH 60V 32A TO-220"/>
+      <sheetpath names="/Single_LED_channel3/" tstamps="/cf9fbb55-8bfc-4303-b46a-0e973c4b87fc/"/>
+      <tstamps>19ae43fd-f437-4406-9fdd-297a59ca0226</tstamps>
+    </comp>
+    <comp ref="R501">
+      <value>100R</value>
+      <footprint>Resistor_SMD:R_0603_1608Metric</footprint>
+      <fields>
+        <field name="jlcpcb">C22775</field>
+      </fields>
+      <libsource lib="Device" part="R_Small" description="Resistor, small symbol"/>
+      <property name="jlcpcb" value="C22775"/>
+      <property name="Sheetname" value="Single_LED_channel3"/>
+      <property name="Sheetfile" value="Single_LED_channel.kicad_sch"/>
+      <property name="ki_description" value="Resistor, small symbol"/>
+      <property name="ki_keywords" value="R resistor"/>
+      <sheetpath names="/Single_LED_channel3/" tstamps="/cf9fbb55-8bfc-4303-b46a-0e973c4b87fc/"/>
+      <tstamps>1b96d59e-195d-4c4d-9d97-999ab357d0b6</tstamps>
+    </comp>
+    <comp ref="R502">
+      <value>470k</value>
+      <footprint>Resistor_SMD:R_0603_1608Metric</footprint>
+      <fields>
+        <field name="jlcpcb">C23178</field>
+      </fields>
+      <libsource lib="Device" part="R_Small" description="Resistor, small symbol"/>
+      <property name="jlcpcb" value="C23178"/>
+      <property name="Sheetname" value="Single_LED_channel3"/>
+      <property name="Sheetfile" value="Single_LED_channel.kicad_sch"/>
+      <property name="ki_description" value="Resistor, small symbol"/>
+      <property name="ki_keywords" value="R resistor"/>
+      <sheetpath names="/Single_LED_channel3/" tstamps="/cf9fbb55-8bfc-4303-b46a-0e973c4b87fc/"/>
+      <tstamps>bd5f9432-e431-462b-b1c1-46cf69d18375</tstamps>
+    </comp>
+  </components>
+  <libparts>
+    <libpart lib="Connector" part="Screw_Terminal_01x02">
+      <description>Generic screw terminal, single row, 01x02, script generated (kicad-library-utils/schlib/autogen/connector/)</description>
+      <docs>~</docs>
+      <footprints>
+        <fp>TerminalBlock*:*</fp>
+      </footprints>
+      <fields>
+        <field name="Reference">J</field>
+        <field name="Value">Screw_Terminal_01x02</field>
+        <field name="Datasheet">~</field>
+      </fields>
+      <pins>
+        <pin num="1" name="Pin_1" type="passive"/>
+        <pin num="2" name="Pin_2" type="passive"/>
+      </pins>
+    </libpart>
+    <libpart lib="Device" part="C_Polarized_Small">
+      <description>Polarized capacitor, small symbol</description>
+      <docs>~</docs>
+      <footprints>
+        <fp>CP_*</fp>
+      </footprints>
+      <fields>
+        <field name="Reference">C</field>
+        <field name="Value">C_Polarized_Small</field>
+        <field name="Datasheet">~</field>
+      </fields>
+      <pins>
+        <pin num="1" name="" type="passive"/>
+        <pin num="2" name="" type="passive"/>
+      </pins>
+    </libpart>
+    <libpart lib="Device" part="D_Schottky_AKA">
+      <description>Schottky diode, anode on pins 1 and 3</description>
+      <docs>~</docs>
+      <footprints>
+        <fp>TO-???*</fp>
+        <fp>*_Diode_*</fp>
+        <fp>*SingleDiode*</fp>
+        <fp>D_*</fp>
+      </footprints>
+      <fields>
+        <field name="Reference">D</field>
+        <field name="Value">D_Schottky_AKA</field>
+        <field name="Datasheet">~</field>
+      </fields>
+      <pins>
+        <pin num="1" name="A" type="input"/>
+        <pin num="2" name="K" type="passive"/>
+        <pin num="3" name="A" type="passive"/>
+      </pins>
+    </libpart>
+    <libpart lib="Device" part="R_Small">
+      <description>Resistor, small symbol</description>
+      <docs>~</docs>
+      <footprints>
+        <fp>R_*</fp>
+      </footprints>
+      <fields>
+        <field name="Reference">R</field>
+        <field name="Value">R_Small</field>
+        <field name="Datasheet">~</field>
+      </fields>
+      <pins>
+        <pin num="1" name="" type="passive"/>
+        <pin num="2" name="" type="passive"/>
+      </pins>
+    </libpart>
+    <libpart lib="Mechanical" part="DIN_Rail_Adapter">
+      <description>DIN Rail adapter universal, mounting holes without connection</description>
+      <docs>~</docs>
+      <footprints>
+        <fp>DINRailAdapter?3xM3*</fp>
+        <fp>DINRailAdapter?2xM3*</fp>
+      </footprints>
+      <fields>
+        <field name="Reference">DRA</field>
+        <field name="Value">DIN_Rail_Adapter</field>
+        <field name="Datasheet">~</field>
+      </fields>
+    </libpart>
+    <libpart lib="Mechanical" part="MountingHole">
+      <description>Mounting Hole without connection</description>
+      <docs>~</docs>
+      <footprints>
+        <fp>MountingHole*</fp>
+      </footprints>
+      <fields>
+        <field name="Reference">H</field>
+        <field name="Value">MountingHole</field>
+        <field name="Datasheet">~</field>
+      </fields>
+    </libpart>
+    <libpart lib="Transistor_FET" part="BSP129">
+      <description>0.35A Id, 240V Vds, N-Channel MOSFET, SOT-223</description>
+      <docs>https://www.infineon.com/dgdl/Infineon-BSP129-DS-v01_42-en.pdf?fileId=db3a30433c1a8752013c1fc296d2395f</docs>
+      <footprints>
+        <fp>SOT?223*</fp>
+      </footprints>
+      <fields>
+        <field name="Reference">Q</field>
+        <field name="Value">BSP129</field>
+        <field name="Footprint">Package_TO_SOT_SMD:SOT-223-3_TabPin2</field>
+        <field name="Datasheet">https://www.infineon.com/dgdl/Infineon-BSP129-DS-v01_42-en.pdf?fileId=db3a30433c1a8752013c1fc296d2395f</field>
+      </fields>
+      <pins>
+        <pin num="1" name="G" type="input"/>
+        <pin num="2" name="D" type="passive"/>
+        <pin num="3" name="S" type="passive"/>
+      </pins>
+    </libpart>
+    <libpart lib="knob-fondler" part="LED_STRIP_RGBW">
+      <description>RGB LED, red/green/blue/anode</description>
+      <docs>~</docs>
+      <footprints>
+        <fp>LED*</fp>
+        <fp>LED_SMD:*</fp>
+        <fp>LED_THT:*</fp>
+      </footprints>
+      <fields>
+        <field name="Reference">D</field>
+        <field name="Value">LED_RGBW</field>
+        <field name="Datasheet">~</field>
+      </fields>
+      <pins>
+        <pin num="1" name="+V" type="passive"/>
+        <pin num="2" name="GK" type="passive"/>
+        <pin num="3" name="RK" type="passive"/>
+        <pin num="4" name="BK" type="passive"/>
+        <pin num="5" name="WK" type="passive"/>
+      </pins>
+    </libpart>
+    <libpart lib="knob-fondler" part="mono-jack">
+      <fields>
+        <field name="Reference">J</field>
+        <field name="Value">mono-jack</field>
+        <field name="Vendor">Thonk</field>
+        <field name="PN">PJ398SM</field>
+        <field name="Link">https://www.thonk.co.uk/shop/thonkiconn/</field>
+      </fields>
+      <pins>
+        <pin num="S" name="" type="passive"/>
+        <pin num="T" name="" type="passive"/>
+        <pin num="TN" name="" type="passive"/>
+      </pins>
+    </libpart>
+    <libpart lib="matterwave" part="FQP30N06L">
+      <description>MOSFET N-CH 60V 32A TO-220</description>
+      <docs>https://www.onsemi.com/pub/Collateral/FQP30N06L-D.pdf</docs>
+      <fields>
+        <field name="Reference">Q</field>
+        <field name="Value">FQP30N06L</field>
+        <field name="Footprint">matterwave:TO-220-3</field>
+        <field name="Datasheet">https://www.onsemi.com/pub/Collateral/FQP30N06L-D.pdf</field>
+        <field name="Digi-Key_PN">FQP30N06L-ND</field>
+        <field name="MPN">FQP30N06L</field>
+        <field name="Category">Discrete Semiconductor Products</field>
+        <field name="Family">Transistors - FETs, MOSFETs - Single</field>
+        <field name="DK_Datasheet_Link">https://www.onsemi.com/pub/Collateral/FQP30N06L-D.pdf</field>
+        <field name="DK_Detail_Page">/product-detail/en/on-semiconductor/FQP30N06L/FQP30N06L-ND/1055122</field>
+        <field name="Description">MOSFET N-CH 60V 32A TO-220</field>
+        <field name="Manufacturer">ON Semiconductor</field>
+        <field name="Status">Active</field>
+      </fields>
+      <pins>
+        <pin num="1" name="G" type="bidirectional"/>
+        <pin num="2" name="D" type="bidirectional"/>
+        <pin num="3" name="S" type="bidirectional"/>
+      </pins>
+    </libpart>
+    <libpart lib="matterwave" part="RJ45">
+      <fields>
+        <field name="Reference">CO</field>
+        <field name="Value">RJ45</field>
+        <field name="Footprint">matterwave:RJ45</field>
+      </fields>
+      <pins>
+        <pin num="Bl" name="" type="input"/>
+        <pin num="Bl*" name="" type="input"/>
+        <pin num="Br" name="" type="input"/>
+        <pin num="Br*" name="" type="input"/>
+        <pin num="Gr" name="" type="input"/>
+        <pin num="Gr*" name="" type="input"/>
+        <pin num="Or" name="" type="input"/>
+        <pin num="Or*" name="" type="input"/>
+        <pin num="S" name="" type="input"/>
+      </pins>
+    </libpart>
+  </libparts>
+  <libraries>
+    <library logical="Connector">
+      <uri>/usr/share/kicad/symbols//Connector.kicad_sym</uri>
+    </library>
+    <library logical="Device">
+      <uri>/usr/share/kicad/symbols//Device.kicad_sym</uri>
+    </library>
+    <library logical="Mechanical">
+      <uri>/usr/share/kicad/symbols//Mechanical.kicad_sym</uri>
+    </library>
+    <library logical="Transistor_FET">
+      <uri>/usr/share/kicad/symbols//Transistor_FET.kicad_sym</uri>
+    </library>
+    <library logical="knob-fondler">
+      <uri>/home/user/repos/synth_libs/synth_components.kicad_sym</uri>
+    </library>
+    <library logical="matterwave">
+      <uri>/home/user/repos/flyg-electronics/flyg-electronics-common/symbols/matterwave.kicad_sym</uri>
+    </library>
+  </libraries>
+  <nets>
+    <net code="1" name="Drain_shunt">
+      <node ref="Q105" pin="2" pinfunction="D" pintype="passive"/>
+      <node ref="R109" pin="2" pintype="passive"/>
+      <node ref="R110" pin="2" pintype="passive"/>
+    </net>
+    <net code="2" name="GND">
+      <node ref="C201" pin="2" pintype="passive"/>
+      <node ref="C301" pin="2" pintype="passive"/>
+      <node ref="C401" pin="2" pintype="passive"/>
+      <node ref="C501" pin="2" pintype="passive"/>
+      <node ref="CO101" pin="Bl*" pintype="input"/>
+      <node ref="CO101" pin="Br*" pintype="input"/>
+      <node ref="CO101" pin="Gr*" pintype="input"/>
+      <node ref="CO101" pin="Or*" pintype="input"/>
+      <node ref="J101" pin="1" pinfunction="Pin_1" pintype="passive"/>
+      <node ref="J202" pin="S" pintype="passive"/>
+      <node ref="J302" pin="S" pintype="passive"/>
+      <node ref="J402" pin="S" pintype="passive"/>
+      <node ref="J502" pin="S" pintype="passive"/>
+      <node ref="Q105" pin="3" pinfunction="S" pintype="passive"/>
+      <node ref="Q201" pin="3" pinfunction="S" pintype="bidirectional"/>
+      <node ref="Q301" pin="3" pinfunction="S" pintype="bidirectional"/>
+      <node ref="Q401" pin="3" pinfunction="S" pintype="bidirectional"/>
+      <node ref="Q501" pin="3" pinfunction="S" pintype="bidirectional"/>
+      <node ref="R202" pin="1" pintype="passive"/>
+      <node ref="R302" pin="1" pintype="passive"/>
+      <node ref="R402" pin="1" pintype="passive"/>
+      <node ref="R502" pin="1" pintype="passive"/>
+    </net>
+    <net code="3" name="LED_B">
+      <node ref="CO101" pin="Bl" pintype="input"/>
+      <node ref="J202" pin="T" pintype="passive"/>
+      <node ref="R201" pin="1" pintype="passive"/>
+    </net>
+    <net code="4" name="LED_G">
+      <node ref="CO101" pin="Gr" pintype="input"/>
+      <node ref="J402" pin="T" pintype="passive"/>
+      <node ref="R401" pin="1" pintype="passive"/>
+    </net>
+    <net code="5" name="LED_R">
+      <node ref="CO101" pin="Or" pintype="input"/>
+      <node ref="J502" pin="T" pintype="passive"/>
+      <node ref="R501" pin="1" pintype="passive"/>
+    </net>
+    <net code="6" name="LED_W">
+      <node ref="CO101" pin="Br" pintype="input"/>
+      <node ref="J302" pin="T" pintype="passive"/>
+      <node ref="R301" pin="1" pintype="passive"/>
+    </net>
+    <net code="7" name="Net-(Q201-G)">
+      <node ref="Q201" pin="1" pinfunction="G" pintype="bidirectional"/>
+      <node ref="R201" pin="2" pintype="passive"/>
+      <node ref="R202" pin="2" pintype="passive"/>
+    </net>
+    <net code="8" name="Net-(Q301-G)">
+      <node ref="Q301" pin="1" pinfunction="G" pintype="bidirectional"/>
+      <node ref="R301" pin="2" pintype="passive"/>
+      <node ref="R302" pin="2" pintype="passive"/>
+    </net>
+    <net code="9" name="Net-(Q401-G)">
+      <node ref="Q401" pin="1" pinfunction="G" pintype="bidirectional"/>
+      <node ref="R401" pin="2" pintype="passive"/>
+      <node ref="R402" pin="2" pintype="passive"/>
+    </net>
+    <net code="10" name="Net-(Q501-G)">
+      <node ref="Q501" pin="1" pinfunction="G" pintype="bidirectional"/>
+      <node ref="R501" pin="2" pintype="passive"/>
+      <node ref="R502" pin="2" pintype="passive"/>
+    </net>
+    <net code="11" name="VDC">
+      <node ref="C201" pin="1" pintype="passive"/>
+      <node ref="C301" pin="1" pintype="passive"/>
+      <node ref="C401" pin="1" pintype="passive"/>
+      <node ref="C501" pin="1" pintype="passive"/>
+      <node ref="D101" pin="1" pinfunction="+V" pintype="passive"/>
+      <node ref="D103" pin="2" pinfunction="K" pintype="passive"/>
+      <node ref="J102" pin="2" pinfunction="Pin_2" pintype="passive"/>
+      <node ref="J103" pin="1" pinfunction="Pin_1" pintype="passive"/>
+      <node ref="J104" pin="1" pinfunction="Pin_1" pintype="passive"/>
+      <node ref="J105" pin="2" pinfunction="Pin_2" pintype="passive"/>
+      <node ref="R109" pin="1" pintype="passive"/>
+      <node ref="R110" pin="1" pintype="passive"/>
+    </net>
+    <net code="12" name="Vin">
+      <node ref="D103" pin="1" pinfunction="A" pintype="input"/>
+      <node ref="D103" pin="3" pinfunction="A" pintype="passive"/>
+      <node ref="J101" pin="2" pinfunction="Pin_2" pintype="passive"/>
+      <node ref="Q105" pin="1" pinfunction="G" pintype="input"/>
+    </net>
+    <net code="13" name="drain_B">
+      <node ref="D101" pin="4" pinfunction="BK" pintype="passive"/>
+      <node ref="J102" pin="1" pinfunction="Pin_1" pintype="passive"/>
+      <node ref="Q201" pin="2" pinfunction="D" pintype="bidirectional"/>
+    </net>
+    <net code="14" name="drain_G">
+      <node ref="D101" pin="2" pinfunction="GK" pintype="passive"/>
+      <node ref="J105" pin="1" pinfunction="Pin_1" pintype="passive"/>
+      <node ref="Q401" pin="2" pinfunction="D" pintype="bidirectional"/>
+    </net>
+    <net code="15" name="drain_R">
+      <node ref="D101" pin="3" pinfunction="RK" pintype="passive"/>
+      <node ref="J104" pin="2" pinfunction="Pin_2" pintype="passive"/>
+      <node ref="Q501" pin="2" pinfunction="D" pintype="bidirectional"/>
+    </net>
+    <net code="16" name="drain_W">
+      <node ref="D101" pin="5" pinfunction="WK" pintype="passive"/>
+      <node ref="J103" pin="2" pinfunction="Pin_2" pintype="passive"/>
+      <node ref="Q301" pin="2" pinfunction="D" pintype="bidirectional"/>
+    </net>
+    <net code="17" name="unconnected-(CO101-PadS)">
+      <node ref="CO101" pin="S" pintype="input"/>
+    </net>
+    <net code="18" name="unconnected-(CO101-PadS)_1">
+      <node ref="CO101" pin="S" pintype="input"/>
+    </net>
+    <net code="19" name="unconnected-(CO101-PadS)_2">
+      <node ref="CO101" pin="S" pintype="input"/>
+    </net>
+    <net code="20" name="unconnected-(CO101-PadS)_3">
+      <node ref="CO101" pin="S" pintype="input"/>
+    </net>
+    <net code="21" name="unconnected-(J202-PadTN)">
+      <node ref="J202" pin="TN" pintype="passive+no_connect"/>
+    </net>
+    <net code="22" name="unconnected-(J302-PadTN)">
+      <node ref="J302" pin="TN" pintype="passive+no_connect"/>
+    </net>
+    <net code="23" name="unconnected-(J402-PadTN)">
+      <node ref="J402" pin="TN" pintype="passive+no_connect"/>
+    </net>
+    <net code="24" name="unconnected-(J502-PadTN)">
+      <node ref="J502" pin="TN" pintype="passive+no_connect"/>
+    </net>
+  </nets>
+</export>

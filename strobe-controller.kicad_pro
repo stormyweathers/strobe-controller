@@ -34,9 +34,9 @@
         "other_text_thickness": 0.15,
         "other_text_upright": false,
         "pads": {
-          "drill": 0.762,
-          "height": 1.524,
-          "width": 1.524
+          "drill": 0.95,
+          "height": 1.95,
+          "width": 1.7
         },
         "silk_line_width": 0.15,
         "silk_text_italic": false,
@@ -45,11 +45,20 @@
         "silk_text_thickness": 0.15,
         "silk_text_upright": false,
         "zones": {
-          "min_clearance": 0.75
+          "min_clearance": 1.0
         }
       },
-      "diff_pair_dimensions": [],
-      "drc_exclusions": [],
+      "diff_pair_dimensions": [
+        {
+          "gap": 0.0,
+          "via_gap": 0.0,
+          "width": 0.0
+        }
+      ],
+      "drc_exclusions": [
+        "starved_thermal|100000000|90355000|e359b4ab-4902-43ec-8a94-a3b4219f2fc3|e66aa487-6d5b-46e2-a561-6dffe6e5ceb3|F.Cu",
+        "starved_thermal|72245000|56335340|3f2e3b72-7e3e-479a-8153-9aa2407e4b8c|99884ab6-f89f-446d-9b5d-7bcc0740045b|B.Cu"
+      ],
       "meta": {
         "version": 2
       },
@@ -165,8 +174,20 @@
           "td_width_to_size_filter_ratio": 0.9
         }
       ],
-      "track_widths": [],
-      "via_dimensions": [],
+      "track_widths": [
+        0.0,
+        0.5,
+        1.0,
+        1.5,
+        2.0,
+        4.0
+      ],
+      "via_dimensions": [
+        {
+          "diameter": 0.0,
+          "drill": 0.0
+        }
+      ],
       "zones_allow_external_fillets": false
     },
     "layer_presets": [],
