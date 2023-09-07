@@ -1,0 +1,69 @@
+09-07 12:46:04 com_github_MitjaNemec_ReplicateLayout.action_replicate_layout 392:Plugin executed on: 'linux'
+09-07 12:46:04 com_github_MitjaNemec_ReplicateLayout.action_replicate_layout 393:Plugin executed with python version: '3.8.10 (default, May 26 2023, 14:05:08) \n[GCC 9.4.0]'
+09-07 12:46:04 com_github_MitjaNemec_ReplicateLayout.action_replicate_layout 394:KiCad build version: 7.0.7-7.0.7~ubuntu20.04.1
+09-07 12:46:04 com_github_MitjaNemec_ReplicateLayout.action_replicate_layout 395:Plugin version: 2.1.3
+09-07 12:46:04 com_github_MitjaNemec_ReplicateLayout.action_replicate_layout 396:Frame repr: <wx._core.Frame object at 0x7f32c1e31790>
+09-07 12:46:04 com_github_MitjaNemec_ReplicateLayout.action_replicate_layout 420:Preparing replicator with C201 as a reference
+09-07 12:46:04 com_github_MitjaNemec_ReplicateLayout.replicate_layout 117:getting a list of all footprints on board
+09-07 12:46:04 com_github_MitjaNemec_ReplicateLayout.action_replicate_layout 468:source anchor footprint is 'C201'
+Located on: ['Single_LED_channel']
+With filenames: ['Single_LED_channel.kicad_sch']
+With sheet_id:['Single_LED_channel']
+09-07 12:46:04 com_github_MitjaNemec_ReplicateLayout.action_replicate_layout 475:Corresponding footprints are 
+[('C501', ['Single_LED_channel3']), ('C401', ['Single_LED_channel2']), ('C301', ['Single_LED_channel1']), ('C201', ['Single_LED_channel'])]
+09-07 12:46:04 com_github_MitjaNemec_ReplicateLayout.action_replicate_layout 487:Showing dialog
+09-07 12:46:04 com_github_MitjaNemec_ReplicateLayout.replicate_layout 424:constructing a list of sheets suitable for replication on level:'Single_LED_channel', file:'Single_LED_channel.kicad_sch'
+09-07 12:46:04 com_github_MitjaNemec_ReplicateLayout.replicate_layout 461:suitable sheets are:[['Single_LED_channel1'], ['Single_LED_channel2'], ['Single_LED_channel3']]
+09-07 12:46:05 com_github_MitjaNemec_ReplicateLayout.replicate_layout 1464:Level selected: ['Single_LED_channel']
+09-07 12:46:05 com_github_MitjaNemec_ReplicateLayout.replicate_layout 1299:Filtering list of tracks
+09-07 12:46:05 com_github_MitjaNemec_ReplicateLayout.action_replicate_layout 493:Toolbar position: wx.Point(1884, 77)
+09-07 12:46:05 com_github_MitjaNemec_ReplicateLayout.action_replicate_layout 498:Dialog position: wx.Point(1445, 77)
+09-07 12:46:06 com_github_MitjaNemec_ReplicateLayout.replicate_layout 424:constructing a list of sheets suitable for replication on level:'Single_LED_channel', file:'Single_LED_channel.kicad_sch'
+09-07 12:46:06 com_github_MitjaNemec_ReplicateLayout.replicate_layout 461:suitable sheets are:[['Single_LED_channel1'], ['Single_LED_channel2'], ['Single_LED_channel3']]
+09-07 12:46:06 com_github_MitjaNemec_ReplicateLayout.action_replicate_layout 240:Replicating layout
+09-07 12:46:06 com_github_MitjaNemec_ReplicateLayout.replicate_layout 240:Starting replication of sheets: [['Single_LED_channel1'], ['Single_LED_channel2'], ['Single_LED_channel3']]
+on level: ['Single_LED_channel']
+with tracks=True, zone=True, text=True, text=True, intersecting=False, remove=False, locked footprints=False, group_only=False
+09-07 12:46:06 root 332:updating GUI message: 'Preparing for replication'
+09-07 12:46:06 root 337:updating GUI with: 0
+09-07 12:46:06 com_github_MitjaNemec_ReplicateLayout.replicate_layout 310:Getting the list of source footprints
+09-07 12:46:06 root 337:updating GUI with: 0
+09-07 12:46:06 com_github_MitjaNemec_ReplicateLayout.replicate_layout 320:Getting the list of all the remaining footprints
+09-07 12:46:06 com_github_MitjaNemec_ReplicateLayout.replicate_layout 327:Getting source tracks
+09-07 12:46:06 com_github_MitjaNemec_ReplicateLayout.replicate_layout 1299:Filtering list of tracks
+09-07 12:46:06 com_github_MitjaNemec_ReplicateLayout.replicate_layout 331:Getting source zones
+09-07 12:46:06 com_github_MitjaNemec_ReplicateLayout.replicate_layout 335:Getting source text items
+09-07 12:46:06 com_github_MitjaNemec_ReplicateLayout.replicate_layout 339:Getting source drawing items
+09-07 12:46:06 root 332:updating GUI message: 'Replicating footprints'
+09-07 12:46:06 com_github_MitjaNemec_ReplicateLayout.replicate_layout 806:Replicating footprints
+09-07 12:46:06 com_github_MitjaNemec_ReplicateLayout.replicate_layout 813:Replicating footprints on sheet ['Single_LED_channel1']
+09-07 12:46:06 com_github_MitjaNemec_ReplicateLayout.replicate_layout 813:Replicating footprints on sheet ['Single_LED_channel2']
+09-07 12:46:06 com_github_MitjaNemec_ReplicateLayout.replicate_layout 813:Replicating footprints on sheet ['Single_LED_channel3']
+09-07 12:46:06 root 332:updating GUI message: 'Replicating tracks'
+09-07 12:46:06 root 337:updating GUI with: 0
+09-07 12:46:06 com_github_MitjaNemec_ReplicateLayout.replicate_layout 977:Replicating tracks
+09-07 12:46:06 com_github_MitjaNemec_ReplicateLayout.replicate_layout 983:Replicating tracks on sheet ['Single_LED_channel1']
+09-07 12:46:06 com_github_MitjaNemec_ReplicateLayout.replicate_layout 766:Net pairs for sheet ['Single_LED_channel1'] :[('unconnected-(J202-PadTN)', 'unconnected-(J302-PadTN)'), ('GND', 'GND'), ('VDC', 'VDC'), ('LED_R', 'LED_G'), ('Net-(Q201-G)', 'Net-(Q301-G)'), ('drain_R', 'drain_G')]
+09-07 12:46:06 com_github_MitjaNemec_ReplicateLayout.replicate_layout 983:Replicating tracks on sheet ['Single_LED_channel2']
+09-07 12:46:06 com_github_MitjaNemec_ReplicateLayout.replicate_layout 766:Net pairs for sheet ['Single_LED_channel2'] :[('unconnected-(J202-PadTN)', 'unconnected-(J402-PadTN)'), ('drain_R', 'drain_B'), ('Net-(Q201-G)', 'Net-(Q401-G)'), ('GND', 'GND'), ('VDC', 'VDC'), ('LED_R', 'LED_B')]
+09-07 12:46:06 com_github_MitjaNemec_ReplicateLayout.replicate_layout 983:Replicating tracks on sheet ['Single_LED_channel3']
+09-07 12:46:06 com_github_MitjaNemec_ReplicateLayout.replicate_layout 766:Net pairs for sheet ['Single_LED_channel3'] :[('drain_R', 'drain_W'), ('Net-(Q201-G)', 'Net-(Q501-G)'), ('GND', 'GND'), ('VDC', 'VDC'), ('LED_R', 'LED_W'), ('unconnected-(J202-PadTN)', 'unconnected-(J502-PadTN)')]
+09-07 12:46:06 root 332:updating GUI message: 'Replicating zones'
+09-07 12:46:06 com_github_MitjaNemec_ReplicateLayout.replicate_layout 1047:Replicating zones
+09-07 12:46:06 com_github_MitjaNemec_ReplicateLayout.replicate_layout 1054:Replicating zones on sheet ['Single_LED_channel1']
+09-07 12:46:06 com_github_MitjaNemec_ReplicateLayout.replicate_layout 766:Net pairs for sheet ['Single_LED_channel1'] :[('unconnected-(J202-PadTN)', 'unconnected-(J302-PadTN)'), ('GND', 'GND'), ('VDC', 'VDC'), ('LED_R', 'LED_G'), ('Net-(Q201-G)', 'Net-(Q301-G)'), ('drain_R', 'drain_G')]
+09-07 12:46:06 com_github_MitjaNemec_ReplicateLayout.replicate_layout 1054:Replicating zones on sheet ['Single_LED_channel2']
+09-07 12:46:06 com_github_MitjaNemec_ReplicateLayout.replicate_layout 766:Net pairs for sheet ['Single_LED_channel2'] :[('unconnected-(J202-PadTN)', 'unconnected-(J402-PadTN)'), ('drain_R', 'drain_B'), ('Net-(Q201-G)', 'Net-(Q401-G)'), ('GND', 'GND'), ('VDC', 'VDC'), ('LED_R', 'LED_B')]
+09-07 12:46:06 com_github_MitjaNemec_ReplicateLayout.replicate_layout 1054:Replicating zones on sheet ['Single_LED_channel3']
+09-07 12:46:06 com_github_MitjaNemec_ReplicateLayout.replicate_layout 766:Net pairs for sheet ['Single_LED_channel3'] :[('drain_R', 'drain_W'), ('Net-(Q201-G)', 'Net-(Q501-G)'), ('GND', 'GND'), ('VDC', 'VDC'), ('LED_R', 'LED_W'), ('unconnected-(J202-PadTN)', 'unconnected-(J502-PadTN)')]
+09-07 12:46:06 root 332:updating GUI message: 'Replicating text'
+09-07 12:46:06 com_github_MitjaNemec_ReplicateLayout.replicate_layout 1136:Replicating text
+09-07 12:46:06 com_github_MitjaNemec_ReplicateLayout.replicate_layout 1143:Replicating text on sheet ['Single_LED_channel1']
+09-07 12:46:06 com_github_MitjaNemec_ReplicateLayout.replicate_layout 1143:Replicating text on sheet ['Single_LED_channel2']
+09-07 12:46:06 com_github_MitjaNemec_ReplicateLayout.replicate_layout 1143:Replicating text on sheet ['Single_LED_channel3']
+09-07 12:46:06 root 332:updating GUI message: 'Replicating drawings'
+09-07 12:46:06 com_github_MitjaNemec_ReplicateLayout.replicate_layout 1187:Replicating drawings
+09-07 12:46:06 com_github_MitjaNemec_ReplicateLayout.replicate_layout 1193:Replicating drawings on sheet ['Single_LED_channel1']
+09-07 12:46:06 com_github_MitjaNemec_ReplicateLayout.replicate_layout 1193:Replicating drawings on sheet ['Single_LED_channel2']
+09-07 12:46:06 com_github_MitjaNemec_ReplicateLayout.replicate_layout 1193:Replicating drawings on sheet ['Single_LED_channel3']
+09-07 12:46:07 com_github_MitjaNemec_ReplicateLayout.action_replicate_layout 256:Replication complete
