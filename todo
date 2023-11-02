@@ -1,0 +1,19 @@
+*) Get color path transformations to work
+    *) Sepcify a manual color control mode
+    *) map joystick xyz to params
+        *) tune it so default joystick setting gives white only
+
+*) Get all 8 output channels working
+    *) Most common use case: each cluster of 4 output channels are tied to teh same master clock
+
+*) Water drops:
+    RGB
+
+*) Slow Dance:
+    NESW
+
+*) Fan:
+    RGB
+
+*) requires 2 drivers daisy chained
+    *) Master / Slave
