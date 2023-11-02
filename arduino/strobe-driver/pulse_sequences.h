@@ -1,18 +1,15 @@
 #ifndef PULSE_SEQUENCES_H
 #define PULSE_SEQUENCES_H 
 
-volatile uint32_t pulse_code=0xFFFFFFFF;
-volatile uint32_t pulse_code_2=0xFFFFFFFF;
+volatile uint32_t pulse_code_fan=0xFFFFFFFF;
+volatile uint32_t pulse_code_dance=0xFFFFFFFF;
+volatile uint32_t pulse_code_drip=0xFFFFFFFF;
 
 //                           0xRRGGBBWW
 #define WIDTH_R(BITS) ( static_cast<uint8_t>(  (BITS & 0xFF000000) >> 24) )
 #define WIDTH_G(BITS) ( static_cast<uint8_t>(  (BITS & 0x00FF0000) >> 16) )
 #define WIDTH_B(BITS) ( static_cast<uint8_t>(  (BITS & 0x0000FF00) >> 8 ) )
 #define WIDTH_W(BITS) ( static_cast<uint8_t>(  (BITS & 0x000000FF) >> 0 ) ) 
-
-//uint32_t pulse_count_local = 0;
-//uint32_t pulse_count_previous = 0;
-//uint32_t pulse_code_previous=0;
 
 // For the slow dance effect
 volatile uint32_t cycle_path[4]={0xff000000, 0x00ff0000, 0x0000ff00, 0x000000ff};
