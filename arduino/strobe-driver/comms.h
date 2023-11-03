@@ -12,6 +12,7 @@
 #define COMMS_H 
 
 #include "pulse_sequences.h"
+#include "globals.h"
 
 char read_buff[8];
 const char delim = '|';
@@ -71,36 +72,40 @@ void parse_line(char buff[]){
 
 void apply_mode_fan(uint8_t color_mode, uint8_t freq_mode)
 {
+  if ( (color_mode > 2) or (freq_mode > 7) )
+  {
+    Serial.printf("Apply fan mode invalid args: %i, %i", color_mode, freq_mode);
+    Serial.println();
+    return;
+  }
   switch (color_mode)
   {
     case 0:
     // Slow color change, too slow for strobe effects
-      pulse_sequence_ptr_fan = &fractal_path_4[0];
-      pulse_sequence_size_fan = 243;
-
+      fan.pulse_sequence_ptr = &fractal_path_4[0];
+      fan.pulse_sequence_size = 243;
       break;
     
     case 1:
     // R-> G -> B Mode
-      pulse_sequence_ptr_fan = &fractal_path_0[0];
-      pulse_sequence_size_fan = 3;
+      fan.pulse_sequence_ptr = &fractal_path_0[0];
+      fan.pulse_sequence_size = 3;
       break;
 
     case 2:
     // 9-step fractal path
-      pulse_sequence_ptr_fan = &fractal_path_1[0];
-      pulse_sequence_size_fan = 9;
+      fan.pulse_sequence_ptr = &fractal_path_1[0];
+      fan.pulse_sequence_size = 9;
 
     default: 
       break;
   }
 
+  // 1:1 5:1 10:1 15:1 15:4 20:1 45:1 135:1
   uint16_t numerators[8] = {1,5,10,15,15,20,45,135};
   uint16_t denominators[8] = {1,1,1,1,4,1,1,1};
-  
-
-// 1:1 5:1 10:1 15:1 15:4 20:1 45:1 135:1
-
+  fan.numerator = numerators[freq_mode];
+  fan.denominator = denominators[freq_mode];
 }
 
 

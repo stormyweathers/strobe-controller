@@ -7,21 +7,18 @@ using namespace TeensyTimerTool;
 //my custom libs
 #include <control-panel.h>
 controlPanel panel;
+
+#include "globals.h"
 #include "pulse_sequences.h"
 #include "comms.h"
 #include "menu.h"
-#include "params.h"
+
 #include "strobe_channel.h"
 #include "timers.h"
 
 bool strobe_enabled = 0;
 errorCode err;
 
-// Construct the 3 strobe channels
-//    strobe_channel(uint8_t num_subchannels, int pin_numbers[], TeensyTimerTool::TimerGenerator* pulse_timer_id );
-strobe_channel   fan(3,   fan_pins, TMR1);
-strobe_channel dance(4, dance_pins, TMR2);
-strobe_channel  drip(3, drip_pins, TMR3);
 
 float transform_matrix[3][3] = {{1,0,0},{0,1,0},{0,0,1}};
 float x=0,y=0;
@@ -53,7 +50,7 @@ void compute_transform_matrix(){
 }
 
 uint32_t apply_transform(uint32_t pulse_code){
-  uint8_t rgb_val[3] = {WIDTH_R(pulse_code),WIDTH_G(pulse_code),WIDTH_B(pulse_code)};
+  uint8_t rgb_val[3] ={0,0,0}; //{WIDTH_R(pulse_code),WIDTH_G(pulse_code),WIDTH_B(pulse_code)};
   uint8_t new_rgb_val[3]={0,0,0};
 
   // 3x3 matrix multuplication
@@ -87,13 +84,13 @@ void setup() {
   err = drip.initialize_timers();
   err = dance.initialize_timers();
 
-  fan.pulse_sequence_ptr = &fractal_path_1[0];
-  fan.pulse_sequence_size = 9;
+  fan.pulse_sequence_ptr = &fractal_path_0[0];
+  fan.pulse_sequence_size = 3;
   fan.fundamental_freq_hz = 7.5;
   fan.compute_strobe_period(128,0);
 
-  dance.pulse_sequence_ptr = &no_color[0];
-  dance.pulse_sequence_size = 4;
+  dance.pulse_sequence_ptr = &all_strobe[0];
+  dance.pulse_sequence_size = 2;
   dance.fundamental_freq_hz = 30.0;
   dance.compute_strobe_period(128,0);
 

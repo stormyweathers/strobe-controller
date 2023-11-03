@@ -1,6 +1,8 @@
 #ifndef PARAMS_H
 #define PARAMS_H
 
+#include "strobe_channel.h"
+
 //Pin numbers on control panel board
 
 // 3- channels to control the fan
@@ -24,7 +26,17 @@ int fan_pins[] = { LED_FAN_R, LED_FAN_G, LED_FAN_B };
 int dance_pins[] = { LED_DANCE_1, LED_DANCE_2, LED_DANCE_3, LED_DANCE_4};
 int drip_pins[] = { LED_DRIP_R, LED_DRIP_G, LED_DRIP_B};
 
+
+// Construct the 3 strobe channels
+//    strobe_channel(uint8_t num_subchannels, int pin_numbers[], TeensyTimerTool::TimerGenerator* pulse_timer_id );
+strobe_channel   fan(3,   fan_pins, TMR1);
+strobe_channel dance(4, dance_pins, TMR2);
+strobe_channel  drip(3, drip_pins, TMR3);
+
+
 uint8_t read_resolution = 8;
+
+
 
 
 #endif

@@ -137,6 +137,7 @@ class strobe_channel{
         {
           return 0;
         }
+        position = 3-position;
         uint32_t mask = 0xFF << (8*position);
         return ( static_cast<uint8_t>(  ( this->pulse_code & mask ) >> (8*position)  ) );
       }
