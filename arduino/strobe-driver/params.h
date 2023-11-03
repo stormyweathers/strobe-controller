@@ -15,16 +15,17 @@ volatile float pulse_width_multiple = 1 ;
 
 // 4-channels to control the slow-dance
 #define LED_DANCE_1  8
-#define LED_DANCE_2  9
-#define LED_DANCE_3  7
-#define LED_DANCE_4  10
+#define LED_DANCE_2  10
+#define LED_DANCE_3  9
+#define LED_DANCE_4  7
 
 //3-channels to control the water drip
 //repurposing the 
 #define LED_DRIP_R 6
-#define LED_DRIP_G A8
-#define LED_DRIP_B A9
+#define LED_DRIP_G 22
+#define LED_DRIP_B 23
 
 uint8_t read_resolution = 8;
+
 
 #endif

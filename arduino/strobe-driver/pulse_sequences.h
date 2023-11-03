@@ -1,9 +1,30 @@
 #ifndef PULSE_SEQUENCES_H
 #define PULSE_SEQUENCES_H 
 
+
+// Declare variables that are necessary for pulse sequences
+volatile uint32_t strobe_period_us_fan;
+volatile uint32_t pulse_count_fan;
+volatile uint32_t *pulse_sequence_ptr_fan;
+uint16_t pulse_sequence_size_fan;
+
+volatile uint32_t strobe_period_us_dance;
+volatile uint32_t pulse_count_dance;
+volatile uint32_t *pulse_sequence_ptr_dance;
+uint16_t pulse_sequence_size_dance;
+
+volatile uint32_t strobe_period_us_drip;
+volatile uint32_t pulse_count_drip;
+volatile uint32_t *pulse_sequence_ptr_drip;
+uint16_t pulse_sequence_size_drip;
+
+
+
 volatile uint32_t pulse_code_fan=0xFFFFFFFF;
 volatile uint32_t pulse_code_dance=0xFFFFFFFF;
 volatile uint32_t pulse_code_drip=0xFFFFFFFF;
+
+
 
 //                           0xRRGGBBWW
 #define WIDTH_R(BITS) ( static_cast<uint8_t>(  (BITS & 0xFF000000) >> 24) )
@@ -13,6 +34,7 @@ volatile uint32_t pulse_code_drip=0xFFFFFFFF;
 
 // For the slow dance effect
 volatile uint32_t cycle_path[4]={0xff000000, 0x00ff0000, 0x0000ff00, 0x000000ff};
+//volatile uint32_t cycle_path[4]={0x0000ff, 0x0000ff, 0x0000ff, 0x0000ff};
 
 //volatile uint32_t pulse_sequence[]={0xFF000000,0x00FF0000,0x0000FF00,0x000000FF};
 

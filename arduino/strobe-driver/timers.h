@@ -39,7 +39,7 @@ void single_pulse_fan(){
   pulse_code_fan = *(pulse_sequence_ptr_fan+pulse_count_fan%pulse_sequence_size_fan);
   //pulse_code = apply_transform(pulse_code);
 
-  digitalWriteFast(LED_FAN_R,1);
+  digitalWriteFast(LED_FAN_R,HIGH);
   timer_fan_r.trigger(int( pulse_width_multiple*WIDTH_R(pulse_code_fan)) );
 
   digitalWriteFast(LED_FAN_G,HIGH);
@@ -54,7 +54,7 @@ void single_pulse_dance(){
   pulse_code_dance = *(pulse_sequence_ptr_dance+pulse_count_dance%pulse_sequence_size_dance);
   //pulse_code = apply_transform(pulse_code);
 
-  digitalWriteFast(LED_DANCE_1,1);
+  digitalWriteFast(LED_DANCE_1,HIGH);
   timer_dance_1.trigger(int( pulse_width_multiple*WIDTH_R(pulse_code_dance)) );
 
   digitalWriteFast(LED_DANCE_2,HIGH);
@@ -72,7 +72,7 @@ void single_pulse_drip(){
   pulse_code_drip = *(pulse_sequence_ptr_drip+pulse_count_drip%pulse_sequence_size_drip);
   //pulse_code = apply_transform(pulse_code);
 
-  digitalWriteFast(LED_DRIP_R,1);
+  digitalWriteFast(LED_DRIP_R,HIGH);
   timer_drip_r.trigger(int( pulse_width_multiple*WIDTH_R(pulse_code_drip)) );
 
   digitalWriteFast(LED_DRIP_G,HIGH);

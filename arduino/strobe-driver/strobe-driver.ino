@@ -13,20 +13,24 @@ controlPanel panel;
 #include "menu.h"
 #include "params.h"
 
-volatile uint32_t strobe_period_us_fan = 5000;
-volatile uint32_t pulse_count_fan = 0;
-volatile uint32_t *pulse_sequence_ptr_fan = &fractal_path_1[0];
-uint16_t pulse_sequence_size_fan = 9;
 
-volatile uint32_t strobe_period_us_dance = 5000;
-volatile uint32_t pulse_count_dance = 0;
-volatile uint32_t *pulse_sequence_ptr_dance = &cycle_path[0];
-uint16_t pulse_sequence_size_dance = 4;
+void init_pulse_seq_params()
+{
+strobe_period_us_fan = 5000;
+pulse_count_fan = 0;
+pulse_sequence_ptr_fan = &fractal_path_1[0];
+pulse_sequence_size_fan = 9;
 
-volatile uint32_t strobe_period_us_drip = 5000;
-volatile uint32_t pulse_count_drip = 0;
-volatile uint32_t *pulse_sequence_ptr_drip = &fractal_path_0[0];
-uint16_t pulse_sequence_size_drip = 3;
+strobe_period_us_dance = 5000;
+pulse_count_dance = 0;
+pulse_sequence_ptr_dance = &no_color[0];
+pulse_sequence_size_dance = 2;
+
+strobe_period_us_drip = 5000;
+pulse_count_drip = 0;
+pulse_sequence_ptr_drip = &fractal_path_0[0];
+pulse_sequence_size_drip = 3;
+}
 
 bool strobe_enabled = 0;
 
@@ -97,10 +101,18 @@ void setup() {
 
   Serial.println("started panel init");
   panel.init();
+
+// These are done manually, because they are repurposing pins that were allocated for analog input on the teensy control panel.
+  pinModeFast(LED_DRIP_G, OUTPUT);
+  digitalWriteFast(LED_DRIP_G, 0);
+  pinModeFast(LED_DRIP_B, OUTPUT);
+  digitalWriteFast(LED_DRIP_B, 0);
+
   analogReadResolution(read_resolution);
 
+  init_pulse_seq_params();
+
   init_timers();
-  
   //defined in menu.h
   panel.enc.attachButtonCallback(onButtonChanged);
   panel.enc.attachCallback(onRotorChanged);
@@ -158,6 +170,9 @@ void loop() {
 
     strobe_period_us_dance = compute_strobe_period();    
     err = strobe_timer_dance.setPeriod(strobe_period_us_dance);
+
+    strobe_period_us_drip = compute_strobe_period();    
+    err = strobe_timer_drip.setPeriod(strobe_period_us_drip);
 
     pulse_width_multiple =  map(float(panel.analog_in_state[3]),0.0,255.0,0.03125,4.0);
     
@@ -228,8 +243,10 @@ void update_display(){
 */
       panel.display.print("Speed: ");
       panel.display.println(speed);
-      panel.display.print("Mode: ");
-      panel.display.println(mode);
+      panel.display.print("Color Mode: ");
+      panel.display.println(color_mode);
+      panel.display.print("Freq Mode: ");
+      panel.display.println(freq_mode);
       panel.display.display();
       panel.display.display();
 }
