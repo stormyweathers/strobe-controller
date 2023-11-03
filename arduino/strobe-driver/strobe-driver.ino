@@ -8,64 +8,20 @@ using namespace TeensyTimerTool;
 #include <control-panel.h>
 controlPanel panel;
 #include "pulse_sequences.h"
-//#include "rhythm.h"
 #include "comms.h"
 #include "menu.h"
 #include "params.h"
 #include "strobe_channel.h"
-
-
-/*
-void init_pulse_seq_params()
-{
-strobe_period_us_fan = 5000;
-pulse_count_fan = 0;
-pulse_sequence_ptr_fan = &fractal_path_1[0];
-pulse_sequence_size_fan = 9;
-
-strobe_period_us_dance = 5000;
-pulse_count_dance = 0;
-pulse_sequence_ptr_dance = &no_color[0];
-pulse_sequence_size_dance = 2;
-
-strobe_period_us_drip = 5000;
-pulse_count_drip = 0;
-pulse_sequence_ptr_drip = &fractal_path_0[0];
-pulse_sequence_size_drip = 3;
-}
-*/
-
-bool strobe_enabled = 0;
-
 #include "timers.h"
 
+bool strobe_enabled = 0;
 errorCode err;
-
-uint8_t channel_select = 0;
 
 // Construct the 3 strobe channels
 //    strobe_channel(uint8_t num_subchannels, int pin_numbers[], TeensyTimerTool::TimerGenerator* pulse_timer_id );
-int fan_pins[] = { LED_FAN_R, LED_FAN_G, LED_FAN_B };
-int dance_pins[] = { LED_DANCE_1, LED_DANCE_2, LED_DANCE_3, LED_DANCE_4};
-int drip_pins[] = { LED_DRIP_R, LED_DRIP_G, LED_DRIP_B};
-
 strobe_channel   fan(3,   fan_pins, TMR1);
 strobe_channel dance(4, dance_pins, TMR2);
 strobe_channel  drip(3, drip_pins, TMR3);
-
-/*
-uint32_t compute_strobe_period(){
-  uint32_t coarse = panel.analog_in_state[5];
-  float offset_hz = map(coarse,0,255,-5,5);
-  if (manual_control){
-    float freq_hz = fundamental_hz*float(numerator)/float(denominator);
-    return static_cast<uint32_t> (1000000/freq_hz);
-  }
-  else{
-    return static_cast<uint32_t> ( 1000000/map(speed,-1000,1000,140+offset_hz,100-offset_hz) );
-  }
-}
-*/
 
 float transform_matrix[3][3] = {{1,0,0},{0,1,0},{0,0,1}};
 float x=0,y=0;
@@ -125,7 +81,6 @@ void setup() {
 
   analogReadResolution(read_resolution);
 
-  //init_pulse_seq_params();
   init_timers();
 
   err = fan.initialize_timers();
@@ -150,6 +105,10 @@ void setup() {
   //defined in menu.h
   panel.enc.attachButtonCallback(onButtonChanged);
   panel.enc.attachCallback(onRotorChanged);
+
+  channel_list[0]=&fan;
+  channel_list[1]=&dance;
+  channel_list[2]=&drip;
 
   Serial.println("initialized");
 }
@@ -182,13 +141,12 @@ void loop() {
     manual_control = !manual_control;
   }
 
-  // Switch between different pulse sequences
+  // cycle which channel is controlled by the encoder
   if (panel.button.fell() ){
     Serial.println("Main button pressed!");
-    
     channel_select = (channel_select+ 1) % 3;
-    
   }
+
   if (panel.button.rose() ){
   }
 
@@ -198,10 +156,10 @@ void loop() {
     fan.compute_strobe_period(panel.analog_in_state[1],speed);
     drip.compute_strobe_period(128,speed);
     dance.compute_strobe_period(128,speed);
+
     //Interrupts off
-      
-    
     cli();
+
     fan.update_strobe_period();
     drip.update_strobe_period();
     dance.update_strobe_period();
@@ -212,7 +170,6 @@ void loop() {
     
     //Interrupts on
     sei();
-    //Serial.println(pulse_width_multiple);
   }
 
   if (update_display_flag){
@@ -255,7 +212,6 @@ void update_display(){
   }
   else{  panel.display.println();  }
   
-
   panel.display.println("---------------------");
   panel.display.println("f (Hz)");
   panel.display.printf(" %6.1f %6.1f %6.1f\n",fan.freq_hz, dance.freq_hz, drip.freq_hz);
@@ -281,7 +237,6 @@ void print_spaces(uint8_t num_spaces)
     panel.display.print(" ");
   }
 }
-
 
 /*
 void update_display(){
