@@ -135,14 +135,17 @@ void setup() {
   fan.pulse_sequence_ptr = &fractal_path_1[0];
   fan.pulse_sequence_size = 9;
   fan.fundamental_freq_hz = 7.5;
+  fan.compute_strobe_period(128,0);
 
   dance.pulse_sequence_ptr = &no_color[0];
   dance.pulse_sequence_size = 4;
   dance.fundamental_freq_hz = 30.0;
+  dance.compute_strobe_period(128,0);
 
   drip.pulse_sequence_ptr = &fractal_path_0[0];
   drip.pulse_sequence_size = 3;
   drip.fundamental_freq_hz = 60.0;
+  drip.compute_strobe_period(128,0);
 
   //defined in menu.h
   panel.enc.attachButtonCallback(onButtonChanged);
@@ -225,21 +228,26 @@ void update_display(){
   panel.display.clearDisplay();
   panel.display.setCursor(0,0);
   // 21 chars per line
-
   panel.display.println("   Fan     Dan     Dr");
   panel.display.println("---------------------");
   panel.display.println("f0 (Hz)");
-  panel.display.println(" xxx.xx xxx.xx xxx.xx");
+  panel.display.printf(" %6.2f %6.2f %6.2f\n",fan.fundamental_freq_hz, dance.fundamental_freq_hz, drip.fundamental_freq_hz);
+  //panel.display.println("|xxx.xx|xxx.xx|xxx.xx");
 
   if (enc_select_mode == FUNDAMENTAL)
   {
-    highlight_frequency(decimal_place,channel_select);
+    //line format "|xxx.xx|xxx.xx|xxx.xx"
+    //Add an extra space for the decimal point
+    print_spaces(1+7*channel_select+2-decimal_place + (decimal_place < 0) );
+    panel.display.println("^");
   }
   else{  panel.display.println();  }
   
   panel.display.println("---------------------");
   panel.display.println("ratio");
-  panel.display.println("  a/b     a/b     a/b");
+  //panel.display.println("..a/b.....a/b.....a/b");
+  //panel.display.println("aaa/bbb.aaa/bbb.aaa/b");
+  panel.display.printf("%3i/%3i %2i/%2i  %2i/%2i\n",fan.numerator,fan.denominator,dance.numerator,dance.denominator,drip.numerator,drip.denominator);
 
   if (enc_select_mode == RATIO)
   {
@@ -250,7 +258,7 @@ void update_display(){
 
   panel.display.println("---------------------");
   panel.display.println("f (Hz)");
-  panel.display.println(" xxx.xx xxx.xx xxx.xx");
+  panel.display.printf(" %6.1f %6.1f %6.1f\n",fan.freq_hz, dance.freq_hz, drip.freq_hz);
   panel.display.println("---------------------");
   panel.display.println("     last msg     ");
   panel.display.println("Speed   Color    Freq");
@@ -259,20 +267,11 @@ void update_display(){
   panel.display.display();
 }
 
-void highlight_frequency(int8_t decimal_place, uint8_t channel_select)
-{
-  //line format "|xxx.xx|xxx.xx|xxx.xx"
-  print_spaces(1+7*channel_select+2-decimal_place + (decimal_place < 0) );
-  //Add an extra space for the decimal point
-  
-  panel.display.println("^");
-}
-
 void highlight_ratio(bool fraction_component, uint8_t channel_select)
 {
   //Line format ..a/b.....a/b.....a/b
-  print_spaces(2+8*channel_select);
-  panel.display.println(fraction_component == NUMERATOR ? "^  " : "  ^");
+  print_spaces(2+7*channel_select);
+  panel.display.println(fraction_component == NUMERATOR ? "^  " : "   ^");
 }
 
 void print_spaces(uint8_t num_spaces)
