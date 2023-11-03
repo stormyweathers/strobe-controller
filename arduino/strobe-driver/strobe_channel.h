@@ -3,7 +3,8 @@ class strobe_channel{
     float fundamental_freq_hz;
     uint16_t numerator;
     uint16_t denominator;
-
+    
+    float freq_hz;
     volatile uint32_t strobe_period_us;
     
     volatile uint32_t *pulse_sequence_ptr;
@@ -24,6 +25,8 @@ class strobe_channel{
 
     // Periodic timer for clocking intervals between pulses
     PeriodicTimer strobe_timer(TCK);
+
+    bool manual_control = true;
 
 
     //constructor
@@ -69,7 +72,8 @@ class strobe_channel{
     }
 
   
-    void single_pulse(){
+    void single_pulse()
+    {
 
       // Get the next pulse code
       pulse_code = *(pulse_sequence_ptr+pulse_count%pulse_sequence_size);
@@ -80,6 +84,25 @@ class strobe_channel{
        pulse_width_timer_list[i].trigger(int(pulse_width_multiple*extract_pulse_code(pulse_code,i)) );
       }
       pulse_count++;
+    }
+
+    void compute_strobe_period(uint16_t slider_position)
+    {
+      float offset_hz = map(slider_position,0,255,-5,5);
+      if (manual_control){
+        freq_hz = fundamental_hz*float(numerator)/float(denominator);
+      }
+      else{
+        freq_hz = map(speed,-1000,1000,140+offset_hz,100-offset_hz)
+       }
+      strobe_period_us = static_cast<uint32_t> (1000000/freq_hz);
+    }
+
+
+    // Should always be called between sei(); / cli();
+    void update_strobe_period()
+    {
+      strobe_timer.setPeriod(strobe_period_us);
     }
 
 
