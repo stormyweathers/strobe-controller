@@ -12,7 +12,7 @@ controlPanel panel;
 #include "comms.h"
 #include "menu.h"
 #include "params.h"
-
+#include "strobe_channel.h"
 
 void init_pulse_seq_params()
 {
