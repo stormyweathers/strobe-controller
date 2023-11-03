@@ -3,7 +3,7 @@
 #define STROBE_CHANNEL_H
 
 #include <TeensyTimerTool.h>
-using namespace TeensyTimerTool;
+//using namespace TeensyTimerTool;
 
 class strobe_channel{
   public:
@@ -23,7 +23,7 @@ class strobe_channel{
     float pulse_width_multiple;
 
 
-    static uint8_t num_subchannels;
+    uint8_t num_subchannels;
 
     // Pin numbers for each subchannel
     uint8_t* pin_list;
@@ -53,12 +53,14 @@ class strobe_channel{
       this->denominator = 1;
       this->pulse_code = 0xFFFFFFFF;
 
+      this->compute_strobe_period(0,0);
+
       //Initial values
       this->pulse_count = 0;
 
       this->strobe_timer = PeriodicTimer(TCK);
 
-      for (int i=0; i< num_subchannels;i++)
+      for (int i=0; i< this->num_subchannels;i++)
       {
         // construct the pulse_width_timers
         this->pulse_width_timer_list[i] = OneShotTimer(pulse_timer_id);
@@ -68,17 +70,20 @@ class strobe_channel{
       }
     }
 
-    void initialize_timers()
+    TeensyTimerTool::errorCode initialize_timers()
     {
+
+      TeensyTimerTool::errorCode err;
       //Start main timer in the off-state
       // use lambda with [this] capture to use nonstatic member function as callback
-      this->strobe_timer.begin(  [this] {this->single_pulse();} ,this->strobe_period_us, false);
+      err = this->strobe_timer.begin(  [this] {this->single_pulse();} ,this->strobe_period_us, false);
 
-      for (int i =0; i < num_subchannels; i++){
+      for (int i =0; i < this->num_subchannels; i++){
         // pulse width timer callback: Turn off the light for that subchannel
         // [=] to capture local variables by value in lambda
-        pulse_width_timer_list[i].begin( [=] { digitalWriteFast(this->pin_list[i], LOW); });
+        err = pulse_width_timer_list[i].begin( [=] { digitalWriteFast(this->pin_list[i], LOW); });
       }
+      return err;
     }
 
   

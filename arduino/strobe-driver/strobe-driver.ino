@@ -14,6 +14,8 @@ controlPanel panel;
 #include "params.h"
 #include "strobe_channel.h"
 
+
+/*
 void init_pulse_seq_params()
 {
 strobe_period_us_fan = 5000;
@@ -31,6 +33,7 @@ pulse_count_drip = 0;
 pulse_sequence_ptr_drip = &fractal_path_0[0];
 pulse_sequence_size_drip = 3;
 }
+*/
 
 bool strobe_enabled = 0;
 
@@ -40,6 +43,17 @@ errorCode err;
 
 uint8_t button_press_count = 0;
 
+// Construct the 3 strobe channels
+//    strobe_channel(uint8_t num_subchannels, int pin_numbers[], TeensyTimerTool::TimerGenerator* pulse_timer_id );
+int fan_pins[] = { LED_FAN_R, LED_FAN_G, LED_FAN_B };
+int dance_pins[] = { LED_DANCE_1, LED_DANCE_2, LED_DANCE_3, LED_DANCE_4};
+int drip_pins[] = { LED_DRIP_R, LED_DRIP_G, LED_DRIP_B};
+
+strobe_channel   fan(3,   fan_pins, TMR1);
+strobe_channel dance(4, dance_pins, TMR2);
+strobe_channel  drip(3, drip_pins, TMR3);
+
+/*
 uint32_t compute_strobe_period(){
   uint32_t coarse = panel.analog_in_state[5];
   float offset_hz = map(coarse,0,255,-5,5);
@@ -51,6 +65,7 @@ uint32_t compute_strobe_period(){
     return static_cast<uint32_t> ( 1000000/map(speed,-1000,1000,140+offset_hz,100-offset_hz) );
   }
 }
+*/
 
 float transform_matrix[3][3] = {{1,0,0},{0,1,0},{0,0,1}};
 float x=0,y=0;
@@ -110,9 +125,25 @@ void setup() {
 
   analogReadResolution(read_resolution);
 
-  init_pulse_seq_params();
-
+  //init_pulse_seq_params();
   init_timers();
+
+  err = fan.initialize_timers();
+  err = drip.initialize_timers();
+  err = dance.initialize_timers();
+
+  fan.pulse_sequence_ptr = &fractal_path_1[0];
+  fan.pulse_sequence_size = 9;
+  fan.fundamental_freq_hz = 7.5;
+
+  dance.pulse_sequence_ptr = &no_color[0];
+  dance.pulse_sequence_size = 4;
+  dance.fundamental_freq_hz = 30.0;
+
+  drip.pulse_sequence_ptr = &fractal_path_0[0];
+  drip.pulse_sequence_size = 3;
+  drip.fundamental_freq_hz = 60.0;
+
   //defined in menu.h
   panel.enc.attachButtonCallback(onButtonChanged);
   panel.enc.attachCallback(onRotorChanged);
@@ -130,16 +161,16 @@ void loop() {
   // Master shutoff switch for light triggers
   if (panel.toggle.rose()){
     Serial.println("Turning strobe timer off!");
-    strobe_timer_fan.stop();
-    strobe_timer_dance.stop();
-    strobe_timer_drip.stop();
+    fan.strobe_timer.stop();
+    dance.strobe_timer.stop();
+    drip.strobe_timer.stop();
     strobe_enabled = 0;
   }
   if (panel.toggle.fell()){
     Serial.println("Turning strobe timer on!");
-    strobe_timer_fan.start();
-    strobe_timer_dance.start();
-    strobe_timer_drip.start();
+    fan.strobe_timer.start();
+    dance.strobe_timer.start();
+    drip.strobe_timer.start();
     strobe_enabled = 1;
   }
 
@@ -163,22 +194,25 @@ void loop() {
 
   if (strobe_enabled){
     compute_transform_matrix();
+
+    fan.compute_strobe_period(panel.analog_in_state[1],speed);
+    drip.compute_strobe_period(128,speed);
+    dance.compute_strobe_period(128,speed);
     //Interrupts off
+      
+    
     cli();
-    strobe_period_us_fan = compute_strobe_period();
-    err = strobe_timer_fan.setPeriod(strobe_period_us_fan);
+    fan.update_strobe_period();
+    drip.update_strobe_period();
+    dance.update_strobe_period();
 
-    strobe_period_us_dance = compute_strobe_period();    
-    err = strobe_timer_dance.setPeriod(strobe_period_us_dance);
-
-    strobe_period_us_drip = compute_strobe_period();    
-    err = strobe_timer_drip.setPeriod(strobe_period_us_drip);
-
-    pulse_width_multiple =  map(float(panel.analog_in_state[3]),0.0,255.0,0.03125,4.0);
+    fan.pulse_width_multiple =  map(float(panel.analog_in_state[3]),0.0,255.0,0.03125,4.0);
+    drip.pulse_width_multiple =  map(float(panel.analog_in_state[3]),0.0,255.0,0.03125,4.0);
+    dance.pulse_width_multiple =  map(float(panel.analog_in_state[3]),0.0,255.0,0.03125,4.0);
     
     //Interrupts on
     sei();
-    Serial.println(pulse_width_multiple);
+    //Serial.println(pulse_width_multiple);
   }
 
   if (update_display_flag){

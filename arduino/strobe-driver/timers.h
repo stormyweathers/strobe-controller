@@ -1,6 +1,8 @@
 #ifndef TIMERS_H
 #define TIMERS_H
 
+
+/*
 //Handles pulse widths of individual LED channels
 OneShotTimer timer_fan_r(TMR1);
 OneShotTimer timer_fan_g(TMR1);
@@ -22,6 +24,7 @@ PeriodicTimer strobe_timer_fan(TCK);
 PeriodicTimer strobe_timer_dance(TCK);
 PeriodicTimer strobe_timer_drip(TCK);
 
+*/
 
 //Encoder interface
 PeriodicTimer read_timer(TCK);
@@ -35,6 +38,8 @@ void display_timer_callback(){
   update_display_flag = true;
 }
 
+
+/*
 void single_pulse_fan(){
   pulse_code_fan = *(pulse_sequence_ptr_fan+pulse_count_fan%pulse_sequence_size_fan);
   //pulse_code = apply_transform(pulse_code);
@@ -83,9 +88,11 @@ void single_pulse_drip(){
   pulse_count_drip++;
 }
 
-
+*/
 
 void init_timers(){
+
+  /*
   // begin timer in stopped mode
   strobe_timer_fan.begin(single_pulse_fan,strobe_period_us_fan, false);
   strobe_timer_dance.begin(single_pulse_dance,strobe_period_us_dance, false);
@@ -105,6 +112,7 @@ void init_timers(){
   timer_drip_g.begin([] { digitalWriteFast(LED_DRIP_G, LOW); });
   timer_drip_b.begin([] { digitalWriteFast(LED_DRIP_B, LOW); });
 
+*/
   //Read the panel inputs every 1ms
   //This frequency is necessary for the encoder to register pulses
   read_timer.begin(read_timer_callback,1000);
