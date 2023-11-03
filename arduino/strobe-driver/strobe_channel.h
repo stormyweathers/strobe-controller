@@ -27,8 +27,11 @@ class strobe_channel{
 
 
     //constructor
-    strobe_channel(static uint8_t number_of_subchannels)
+    strobe_channel(static uint8_t number_of_subchannels, int pin_numbers[], int pulse_timer_id )
     {
+      // number_of_subchannels = 1,2,3, or 4
+      // pulse_timer_id = TMR1, TMR2, or TMR3
+
       num_subchannels = number_of_subchannels;
 
       //allocate arrays for list of pins and list of oneshottimers
@@ -43,6 +46,15 @@ class strobe_channel{
 
       //Initial values
       pulse_count = 0;
+
+      for (int i=0; i< num_subchannels;i++)
+      {
+        // construct the pulse_width_timers
+        pulse_width_timer_list[i] = OneShotTimer(pulse_timer_id);
+
+        // Save the pin numbers for later
+        pin_list[i] = pin_numbers[i];
+      }
     }
 
     void initialize_timers()
