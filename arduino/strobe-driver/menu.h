@@ -11,7 +11,7 @@
 
 uint32_t last_enc_press = 0;
 uint32_t long_press_thresh_ms = 250;
-uint8_t enc_select_mode = FUNDAMENTAL;
+uint8_t enc_select_mode = RATIO;
 bool manual_control = true;
 //Fundamental Freq control
 float fundamental_hz = 30.0;
@@ -22,7 +22,7 @@ bool NUMERATOR = 1;
 bool DENOMINATOR = 0;
 bool RATIONAL = 0;
 bool IRRATIONAL = 1;
-bool fraction_component = 0;
+bool fraction_component = NUMERATOR;
 bool coefficient = 0;
 uint16_t numerator = 1;
 uint16_t denominator = 1;

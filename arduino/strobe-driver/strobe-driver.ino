@@ -41,7 +41,7 @@ bool strobe_enabled = 0;
 
 errorCode err;
 
-uint8_t button_press_count = 0;
+uint8_t channel_select = 0;
 
 // Construct the 3 strobe channels
 //    strobe_channel(uint8_t num_subchannels, int pin_numbers[], TeensyTimerTool::TimerGenerator* pulse_timer_id );
@@ -182,11 +182,8 @@ void loop() {
   // Switch between different pulse sequences
   if (panel.button.fell() ){
     Serial.println("Main button pressed!");
-    /*
-    button_press_count = (button_press_count+ 1) % 7;
-    pulse_sequence_ptr = fractal_path_ptrs[button_press_count];
-    pulse_sequence_size = fractal_path_lengths[button_press_count];
-    */
+    
+    channel_select = (channel_select+ 1) % 3;
     
   }
   if (panel.button.rose() ){
@@ -224,6 +221,70 @@ void loop() {
   }
 }
 
+void update_display(){
+  panel.display.clearDisplay();
+  panel.display.setCursor(0,0);
+  // 21 chars per line
+
+  panel.display.println("   Fan     Dan     Dr");
+  panel.display.println("---------------------");
+  panel.display.println("f0 (Hz)");
+  panel.display.println(" xxx.xx xxx.xx xxx.xx");
+
+  if (enc_select_mode == FUNDAMENTAL)
+  {
+    highlight_frequency(decimal_place,channel_select);
+  }
+  else{  panel.display.println();  }
+  
+  panel.display.println("---------------------");
+  panel.display.println("ratio");
+  panel.display.println("  a/b     a/b     a/b");
+
+  if (enc_select_mode == RATIO)
+  {
+    highlight_ratio(fraction_component,channel_select);
+  }
+  else{  panel.display.println();  }
+  
+
+  panel.display.println("---------------------");
+  panel.display.println("f (Hz)");
+  panel.display.println(" xxx.xx xxx.xx xxx.xx");
+  panel.display.println("---------------------");
+  panel.display.println("     last msg     ");
+  panel.display.println("Speed   Color    Freq");
+  panel.display.printf("%04d     %1d        %1d",speed,color_mode,freq_mode);
+
+  panel.display.display();
+}
+
+void highlight_frequency(int8_t decimal_place, uint8_t channel_select)
+{
+  //line format "|xxx.xx|xxx.xx|xxx.xx"
+  print_spaces(1+7*channel_select+2-decimal_place + (decimal_place < 0) );
+  //Add an extra space for the decimal point
+  
+  panel.display.println("^");
+}
+
+void highlight_ratio(bool fraction_component, uint8_t channel_select)
+{
+  //Line format ..a/b.....a/b.....a/b
+  print_spaces(2+8*channel_select);
+  panel.display.println(fraction_component == NUMERATOR ? "^  " : "  ^");
+}
+
+void print_spaces(uint8_t num_spaces)
+{
+  for (int i =0; i< num_spaces; i++)
+  {
+    panel.display.print(" ");
+  }
+}
+
+
+/*
 void update_display(){
   // Write the current status to the oled
       panel.display.clearDisplay();
@@ -268,13 +329,6 @@ void update_display(){
       panel.display.println(manual_control == true ? "Manual" : "Serial");
       panel.display.println();
 
-/*
-      panel.display.print("fractal_path_");
-      panel.display.print(button_press_count);
-      panel.display.print(" (");
-      panel.display.print(pulse_sequence_size);
-      panel.display.println(")");
-*/
       panel.display.print("Speed: ");
       panel.display.println(speed);
       panel.display.print("Color Mode: ");
@@ -284,3 +338,4 @@ void update_display(){
       panel.display.display();
       panel.display.display();
 }
+*/
