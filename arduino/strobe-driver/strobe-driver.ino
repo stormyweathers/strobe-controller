@@ -21,9 +21,9 @@ void setup() {
   Serial.println("started panel init");
   panel.resolution = 8;
   panel.init();
-  panel.joystick_x0 = 128;
-  panel.joystick_y0 = 128;
-  panel.joystick_z0 = 128;
+  panel.joystick_x0 = 123;
+  panel.joystick_y0 = 126;
+  panel.joystick_z0 = 123;
   
 
 
@@ -100,9 +100,14 @@ void loop() {
     speed = map(panel.analog_in_state[4],0,255,-1000.0,1000.0);
   }
 
-  if (panel.joystick_button.pressed() & (panel.joystick_button.currentDuration() > 250)  )
+  if (panel.joystick_button.isPressed())
+  {
+    Serial.printf("duration: %i \n",panel.joystick_button.currentDuration());
+  }
+  if (panel.joystick_button.isPressed() & (panel.joystick_button.currentDuration() > 250)  )
   {
     //Long joystick button press toggles color transformation enable
+    Serial.println("joystick long press!");
     fan.transform_enabled = !fan.transform_enabled;
     drip.transform_enabled = !drip.transform_enabled;
   }
@@ -117,6 +122,7 @@ void loop() {
   }
 
   if (strobe_enabled){
+
     matrix_from_xy(panel.joystick_x,panel.joystick_y);
 
     fan.compute_strobe_period(panel.analog_in_state[5],speed);
@@ -138,6 +144,7 @@ void loop() {
     
     //Interrupts on
     sei();
+    //Serial.printf("X=%f,Y0=%f,Z0=%f \n",panel.joystick_x, panel.joystick_y, panel.joystick_z);
   }
 
   if (update_display_flag){

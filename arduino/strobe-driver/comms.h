@@ -155,8 +155,10 @@ void apply_mode_drip(uint8_t color_mode, uint8_t freq_mode)
     // 6-step star path
       drip.pulse_sequence_ptr = &six_step[0];
       drip.pulse_sequence_size = 6;
-      numerators = (const uint16_t [] ){1,4,3,2,3,4,5,6};
-      denominators = (const uint16_t [] ) {1,3,2,1,1,1,1,1};
+      //numerators = (const uint16_t [] ){1,4,3,2,3,4,5,6};
+      //denominators = (const uint16_t [] ) {1,3,2,1,1,1,1,1};
+      numerators = (const uint16_t [] ){1,3,3,4,5,6,4,2};
+      denominators = (const uint16_t [] ) {1,2,1,1,1,1,3,1};
       speed_tuning_ranges = (const float [] ) {10.0, 5.0, 6.0, 8.0, 8.0, 4.4, 2.0 , 7};
       break;
 

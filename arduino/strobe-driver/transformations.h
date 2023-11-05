@@ -10,6 +10,8 @@ float mat4[3][3];
 float mat_rot[3][3];
 float mat_scale[3][3];
 
+float id[3][3] = {{1,0,0},{0,1,0},{0,0,1}};
+
 
 float input_rgb[3];
 float output_rgb[3];
@@ -119,16 +121,36 @@ void scale_matrix(float radius, float mat[3][3])
   mat[2][2]=1-2*t;
 }
 
+void print_mat(float mat[3][3])
+{
+
+  Serial.printf("\n [ ");
+  for (int i =0; i<3; i++)
+  {
+      Serial.printf(" [ %f,  %f,  %f ] ,]n", mat[i][0],mat[i][1],mat[i][2]);
+  }
+  Serial.printf("\n ] \n");
+
+}
+
 void matrix_from_xy(float x,  float y)
 {
   // Build the RGB color transformation matrix from the X,Y joystick coordinates
-
+  x=constrain(x,-1.0,1.0);
+  y=constrain(y,-1.0,1.0);
   // Convert joystick to proper matrix params
+
+  // How is this going above 1?
   float radius = pow(pow(x,2)+pow(y,2),0.5);
-  float angle = atan2(y,x);
+  radius = constrain(radius,0,1);
+  float angle = atan2(y,x)+PI;
+  
   rotation_matrix_full(angle,mat_rot);
   scale_matrix(radius,mat_scale);
+
+  //print_mat(mat_scale);
   matmul(transform_matrix,mat_scale,mat_rot);
+  //matmul(transform_matrix,mat_scale,id);
 }
 
 

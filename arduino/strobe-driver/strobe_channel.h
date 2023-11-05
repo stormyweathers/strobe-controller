@@ -160,7 +160,10 @@ class strobe_channel{
       }
 
      //use the bitmask to return a pulse code
-     return ( (normalized_rgb[0] & 0xFF) << 24) | (  (normalized_rgb[1] & 0xFF) << 16) | (  (normalized_rgb[2] & 0xFF << 8) ) ;
+     uint32_t new_pulse_code = reconstruct_pulse_code(normalized_rgb);
+//     Serial.printf(" in_rgb: %f,%f,%f::: out_rgb: %f,%f,%f  ::: normd: %i,%i,%i :: new_pulse_code = %#010x \n",
+//                          input_rgb[0],input_rgb[1],input_rgb[2],output_rgb[0],output_rgb[1],output_rgb[2],normalized_rgb[0],normalized_rgb[1],normalized_rgb[2],new_pulse_code);
+     return  new_pulse_code;
     }
 
     void set_transform_matrix(float mat[3][3])
@@ -201,8 +204,24 @@ class strobe_channel{
           {
             out[ii] += left[ii][kk] * right[kk];
           }
+        }
       }
-}
+      uint32_t reconstruct_pulse_code(uint8_t rgb[3])
+      {
+        uint32_t r_shifted = rgb[0] << 24;
+        uint32_t g_shifted = rgb[1] << 16;
+        uint32_t b_shifted = rgb[2] << 8;
+        return r_shifted+g_shifted+b_shifted;
+      }
+
+      uint32_t reconstruct_pulse_code_4(uint8_t udlr[4])
+      {
+        uint32_t u_shifted = udlr[0] << 24;
+        uint32_t d_shifted = udlr[1] << 16;
+        uint32_t l_shifted = udlr[2] << 8;
+        uint32_t r_shifted = udlr[3] << 0;
+        return u_shifted+d_shifted+l_shifted+r_shifted;
+      }
 
 };
 
