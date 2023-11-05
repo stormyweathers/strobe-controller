@@ -2,7 +2,7 @@
 #define PARAMS_H
 
 #include "strobe_channel.h"
-
+controlPanel panel;
 //Pin numbers on control panel board
 
 // 3- channels to control the fan

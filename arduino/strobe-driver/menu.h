@@ -5,6 +5,7 @@
  #define MENU_H
 
 #include "strobe_channel.h"
+#include "globals.h"
 
 // Main mode selection
 #define FUNDAMENTAL 0
@@ -86,4 +87,60 @@ void onRotorChanged(int state, int delta){
   }
 }
 
+void print_spaces(uint8_t num_spaces)
+{
+  for (int i =0; i< num_spaces; i++)
+  {
+    panel.display.print(" ");
+  }
+}
+
+void highlight_ratio(bool fraction_component, uint8_t channel_select)
+{
+  //Line format ..a/b.....a/b.....a/b
+  print_spaces(2+7*channel_select);
+  panel.display.println(fraction_component == NUMERATOR ? "^  " : "   ^");
+}
+
+void update_display(){
+  panel.display.clearDisplay();
+  panel.display.setCursor(0,0);
+  // 21 chars per line
+  panel.display.println("   Fan     Dan     Dr");
+  panel.display.println("---------------------");
+  panel.display.println("f0 (Hz)");
+  panel.display.printf(" %6.2f %6.2f %6.2f\n",fan.fundamental_freq_hz, dance.fundamental_freq_hz, drip.fundamental_freq_hz);
+  //panel.display.println("|xxx.xx|xxx.xx|xxx.xx");
+
+  if (enc_select_mode == FUNDAMENTAL)
+  {
+    //line format "|xxx.xx|xxx.xx|xxx.xx"
+    //Add an extra space for the decimal point
+    print_spaces(1+7*channel_select+2-decimal_place + (decimal_place < 0) );
+    panel.display.println("^");
+  }
+  else{  panel.display.println();  }
+  
+  panel.display.println("---------------------");
+  panel.display.println("ratio");
+  //panel.display.println("..a/b.....a/b.....a/b");
+  //panel.display.println("aaa/bbb.aaa/bbb.aaa/b");
+  panel.display.printf("%3i/%3i %2i/%2i  %2i/%2i\n",fan.numerator,fan.denominator,dance.numerator,dance.denominator,drip.numerator,drip.denominator);
+
+  if (enc_select_mode == RATIO)
+  {
+    highlight_ratio(fraction_component,channel_select);
+  }
+  else{  panel.display.println();  }
+  
+  panel.display.println("---------------------");
+  panel.display.println("f (Hz)");
+  panel.display.printf(" %6.1f %6.1f %6.1f\n",fan.freq_hz, dance.freq_hz, drip.freq_hz);
+  panel.display.println("---------------------");
+  panel.display.println("     last msg     ");
+  panel.display.println("Speed   Color    Freq");
+  panel.display.printf("%04d     %1d        %1d",speed,color_mode,freq_mode);
+
+  panel.display.display();
+}
  #endif
