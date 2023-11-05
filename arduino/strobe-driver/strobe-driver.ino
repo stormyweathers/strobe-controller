@@ -19,9 +19,13 @@ void setup() {
   attachErrFunc(ErrorHandler(Serial));
 
   Serial.println("started panel init");
+  panel.resolution = 8;
   panel.init();
+  panel.joystick_x0 = 128;
+  panel.joystick_y0 = 128;
+  panel.joystick_z0 = 128;
+  
 
-  analogReadResolution(read_resolution);
 
   fan.pulse_sequence_ptr = &fractal_path_0[0];
   fan.pulse_sequence_size = 3;
@@ -92,9 +96,15 @@ void loop() {
   }
 
   if (panel.joystick_button.fell()){
-    //button press toggles between RATIONAL/IRRATIONAL multiples
-    //manual_control = !manual_control;
+    //
     speed = map(panel.analog_in_state[4],0,255,-1000.0,1000.0);
+  }
+
+  if (panel.joystick_button.pressed() & (panel.joystick_button.currentDuration() > 250)  )
+  {
+    //Long joystick button press toggles color transformation enable
+    fan.transform_enabled = !fan.transform_enabled;
+    drip.transform_enabled = !drip.transform_enabled;
   }
 
   // cycle which channel is controlled by the encoder
@@ -107,7 +117,7 @@ void loop() {
   }
 
   if (strobe_enabled){
-    matrix_from_joystick();
+    matrix_from_xy(panel.joystick_x,panel.joystick_y);
 
     fan.compute_strobe_period(panel.analog_in_state[5],speed);
     drip.compute_strobe_period(127,speed);
@@ -117,7 +127,9 @@ void loop() {
     cli();
 
     fan.update_strobe_period();
+    fan.set_transform_matrix(transform_matrix);
     drip.update_strobe_period();
+    drip.set_transform_matrix(transform_matrix);
     dance.update_strobe_period();
 
     fan.pulse_width_multiple =  map(float(panel.analog_in_state[3]),0.0,255.0,0.03125,4.0);

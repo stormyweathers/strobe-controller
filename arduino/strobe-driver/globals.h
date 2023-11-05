@@ -4,12 +4,6 @@
 #include "strobe_channel.h"
 #include <control-panel.h>
 
-uint8_t read_resolution = 8;
-uint8_t joystick_x0 =128;
-uint8_t joystick_y0 =128;
-uint8_t joystick_z0 =128;
-
-
 controlPanel panel;
 bool strobe_enabled = 0;
 errorCode err;

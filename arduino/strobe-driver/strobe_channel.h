@@ -1,12 +1,12 @@
 #include "ITimerChannel.h"
 #ifndef STROBE_CHANNEL_H
 #define STROBE_CHANNEL_H
-g
+
 #include <TeensyTimerTool.h>
 //using namespace TeensyTimerTool;
 
 #include "rhythm.h"
-#include "transformations.h"
+//#include "transformations.h"
 
 class strobe_channel{
   public:
@@ -43,6 +43,7 @@ class strobe_channel{
     float rhythm_slope = 1;
 
     bool transform_enabled = 0;
+    float transform_matrix[3][3]={{1,0,0},{0,1,0},{0,0,1}};
 
     //constructor
     strobe_channel(uint8_t num_subchannels, int pin_numbers[], TeensyTimerTool::TimerGenerator* pulse_timer_id )
@@ -103,7 +104,7 @@ class strobe_channel{
       this->pulse_code = *(this->pulse_sequence_ptr+this->pulse_count%this->pulse_sequence_size);
       if (this->transform_enabled)
       {
-        this->pulse_code = apply_transform(this->pulse_code);
+        this->pulse_code = apply_transform(this->transform_matrix);
       }
 
       if ( float_rhythm(this->pulse_count, this->rhythm_slope) )
@@ -134,6 +135,44 @@ class strobe_channel{
       this->strobe_timer.setPeriod(this->strobe_period_us);
     }
 
+    uint32_t apply_transform(float transform_matrix[3][3])
+    {
+      float input_rgb[3];
+      float output_rgb[3];
+      uint8_t normalized_rgb[3];
+
+      //Extract pulse code
+      for (int i=0; i<3; i++)
+      {
+        input_rgb[i] = float(this->extract_pulse_code(i));
+      }
+
+      // Apply transform matrix
+      this->matmul(output_rgb,transform_matrix,input_rgb);
+
+      //Renormalize results back to ints
+      //The new num may not be exactly 255, it may be off by 1 thats ok
+      // Using absolute value is an artistic choice to get reflecting boundary conditions on the simplex
+     float rescale = 255/(output_rgb[0] + output_rgb[1]+output_rgb[2]);
+     for (int i =0; i<3; i++)
+     {
+      normalized_rgb[i]=static_cast<uint8_t> round(rescale*abs(output_rgb[i]));
+      }
+
+     //use the bitmask to return a pulse code
+     return ( (normalized_rgb[0] & 0xFF) << 24) | (  (normalized_rgb[1] & 0xFF) << 16) | (  (normalized_rgb[2] & 0xFF << 8) ) ;
+    }
+
+    void set_transform_matrix(float mat[3][3])
+    {
+      for (int i=0;i<3;i++)
+      {
+        for (int j=0;j<3;j++)
+        {
+          this->transform_matrix[i][j] = mat[i][j];
+        }
+      }
+    }
     private:
       uint8_t extract_pulse_code( uint8_t position)
       {
@@ -153,6 +192,17 @@ class strobe_channel{
         uint32_t mask = 0xFF << (8*position);
         return ( static_cast<uint8_t>(  ( this->pulse_code & mask ) >> (8*position)  ) );
       }
+      void matmul(float out[3],float left[3][3], float right[3])
+      {
+        // 3x3 matrix multuplication
+        for (uint8_t ii=0; ii<3;ii++){
+          out[ii] = 0.0;
+          for (uint8_t kk=0; kk<3; kk++)
+          {
+            out[ii] += left[ii][kk] * right[kk];
+          }
+      }
+}
 
 };
 

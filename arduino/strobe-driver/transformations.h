@@ -119,42 +119,11 @@ void scale_matrix(float radius, float mat[3][3])
   mat[2][2]=1-2*t;
 }
 
-uint32_t apply_transform(uint32_t pulse_code, float transform_matrix[3][3]){
-  uint8_t position;
-
-  //Extract pulse code
-  for (int i=0; i<3; i++)
-  {
-    position = 3-i;
-    uint32_t mask = 0xFF << (8*position);
-    input_rgb[i] =  1.0*( static_cast<uint8_t>(  ( pulse_code & mask ) >> (8*position)  ) );
-  }
-
-  // Apply transform matrix
-  matmul(output_rgb,transform_matrix,input_rgb);
-
-  //Renormalize results back to ints
-  //The new num may not be exactly 255, it may be off by 1 thats ok
-  // Using absolute value is an artistic choice to get reflecting boundary conditions on the simplex
-  float rescale = 255/(output_rgb[0] + output_rgb[1]+output_rgb[2]);
-  for (int i =0; i<3; i++)
-  {
-    normalized_rgb[i]=static_cast<uint8_t> round(rescale*abs(output_rgb[i]));
-  }
-
-  //use the bitmask to return a pulse code
-  return ( (normalized_rgb[0] & 0xFF) << 24) | (  (normalized_rgb[1] & 0xFF) << 16) | (  (normalized_rgb[2] & 0xFF << 8) ) ;
-}
-
-void matrix_from_joystick(int x_input, int y_input)
+void matrix_from_xy(float x,  float y)
 {
   // Build the RGB color transformation matrix from the X,Y joystick coordinates
 
   // Convert joystick to proper matrix params
-  float x=0,y=0;
-  x = float(x_input-joystick_x0)/(pow(2,read_resolution)-1);
-  y = float(panel.analog_in_state[1]-joystick_y0)/(pow(2,read_resolution)-1);
-
   float radius = pow(pow(x,2)+pow(y,2),0.5);
   float angle = atan2(y,x);
   rotation_matrix_full(angle,mat_rot);
