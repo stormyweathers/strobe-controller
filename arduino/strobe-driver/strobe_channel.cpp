@@ -1,7 +1,7 @@
 #include "ITimerChannel.h"
 #ifndef STROBE_CHANNEL_H
 #define STROBE_CHANNEL_H
-g
+
 #include <TeensyTimerTool.h>
 //using namespace TeensyTimerTool;
 

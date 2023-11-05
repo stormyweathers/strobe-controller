@@ -6,71 +6,13 @@ using namespace TeensyTimerTool;
 
 //my custom libs
 #include <control-panel.h>
-
-
 #include "globals.h"
 #include "pulse_sequences.h"
 #include "comms.h"
 #include "menu.h"
-
 #include "strobe_channel.h"
 #include "timers.h"
-
-bool strobe_enabled = 0;
-errorCode err;
-
-
-float transform_matrix[3][3] = {{1,0,0},{0,1,0},{0,0,1}};
-float x=0,y=0;
-void compute_transform_matrix(){
-
-  // Build a stochastic matrix from the X,Y joystick coordinates
-
-  //Extract s,t parameters from joystick X,Y coords
-  x = panel.analog_in_state[0]/(pow(2,read_resolution)-1);
-  y = panel.analog_in_state[1]/(pow(2,read_resolution)-1);
-  float delta = x+y-1;
-  //Fold the unit square across its diagonal
-  if (delta>0){
-    x=x-delta;
-    y=y-delta;
-  }
-  transform_matrix[0][0]=1-x-y;
-  transform_matrix[1][0]=x;
-  transform_matrix[2][0]=y;
-
-  transform_matrix[0][1]=y;
-  transform_matrix[1][1]=1-x-y;
-  transform_matrix[2][1]=x;
-
-  transform_matrix[0][2]=x;
-  transform_matrix[1][2]=y;
-  transform_matrix[2][2]=1-x-y;
-}
-
-uint32_t apply_transform(uint32_t pulse_code, float transform_matrix[3][3]){
-  uint8_t rgb_val[3] ={0,0,0}; //{WIDTH_R(pulse_code),WIDTH_G(pulse_code),WIDTH_B(pulse_code)};
-  uint8_t new_rgb_val[3]={0,0,0};
-  uint8_t position;
-
-  //Extract pulse code
-  for (int i=0; i<3; i++)
-  {
-    position = 3-i;
-    uint32_t mask = 0xFF << (8*position);
-    rgb_val[i] =  ( static_cast<uint8_t>(  ( pulse_code & mask ) >> (8*position)  ) );
-  }
-
-  // 3x3 matrix multuplication
-  for (uint8_t ii=0; ii<3;ii++){
-    for (uint8_t jj=0; jj<3 ;jj++){
-      new_rgb_val[ii] += transform_matrix[ii][jj]*rgb_val[jj];
-    }
-  }
-
-  //use the bitmask to return a pulse code
-  return ( (new_rgb_val[0] & 0xFF) << 24) | (  (new_rgb_val[1] & 0xFF) << 16) | (  (new_rgb_val[2] & 0xFF << 8) ) ;
-}
+#include "transformations.h"
 
 void setup() {
   //TeensyTimerTool error handler
@@ -79,13 +21,6 @@ void setup() {
   Serial.println("started panel init");
   panel.init();
 
-// These are done manually, because they are repurposing pins that were allocated for analog input on the teensy control panel
-/*
-  pinModeFast(LED_DRIP_G, OUTPUT);
-  digitalWriteFast(LED_DRIP_G, 0);
-  pinModeFast(LED_DRIP_B, OUTPUT);
-  digitalWriteFast(LED_DRIP_B, 0);
-*/
   analogReadResolution(read_resolution);
 
   fan.pulse_sequence_ptr = &fractal_path_0[0];
@@ -124,11 +59,9 @@ void setup() {
   channel_list[2]=&drip;
 
   Serial.println("initialized");
-  Serial.println( apply_transform(0x00FF0000,transform_matrix),HEX );
 }
 
 void loop() {
-
   // Read human inputs
   panel.readState();
 
@@ -174,7 +107,7 @@ void loop() {
   }
 
   if (strobe_enabled){
-    compute_transform_matrix();
+    matrix_from_joystick();
 
     fan.compute_strobe_period(panel.analog_in_state[5],speed);
     drip.compute_strobe_period(127,speed);
@@ -205,61 +138,3 @@ void loop() {
     apply_mode_drip(color_mode, freq_mode);
   }
 }
-
-
-
-/*
-void update_display(){
-  // Write the current status to the oled
-      panel.display.clearDisplay();
-      panel.display.setCursor(0,0);
-      //panel.reportStateOled(false);
-
-      panel.display.printf("Fund (Hz): %07.2f \n",fundamental_hz  );
-      if (enc_select_mode == FUNDAMENTAL)  {
-        panel.display.print("            ");
-        for (int i = decimal_place-3;i<-1;i++   ){
-          panel.display.print(" ");
-        }
-        if (decimal_place < 0){
-          panel.display.print(" ");
-        }
-        panel.display.println("*");
-
-      } 
-      else{
-        panel.display.println();
-      }
-
-      panel.display.print("Freq Ratio: ");
-      panel.display.print(numerator);
-      panel.display.print(" / ");
-      panel.display.println(denominator);
-      if ( (fraction_component == NUMERATOR ) & (enc_select_mode == RATIO) ){
-        panel.display.println("           ***");
-      }
-      else if ( (fraction_component == DENOMINATOR) & (enc_select_mode == RATIO)){
-        panel.display.println("               ***");
-      }
-      else{
-        panel.display.println();
-      }
-
-      panel.display.printf("Freq: %07.2f Hz\n",1000000.0/strobe_period_us_fan);
-      panel.display.printf("      %07.1f BPM\n",60*1000000.0/strobe_period_us_fan);
-      panel.display.printf("      %07i us\n",strobe_period_us_fan);
-
-      panel.display.print("Control Mode: ");
-      panel.display.println(manual_control == true ? "Manual" : "Serial");
-      panel.display.println();
-
-      panel.display.print("Speed: ");
-      panel.display.println(speed);
-      panel.display.print("Color Mode: ");
-      panel.display.println(color_mode);
-      panel.display.print("Freq Mode: ");
-      panel.display.println(freq_mode);
-      panel.display.display();
-      panel.display.display();
-}
-*/

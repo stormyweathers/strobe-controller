@@ -143,4 +143,61 @@ void update_display(){
 
   panel.display.display();
 }
+
+/*
+void update_display(){
+  // Write the current status to the oled
+      panel.display.clearDisplay();
+      panel.display.setCursor(0,0);
+      //panel.reportStateOled(false);
+
+      panel.display.printf("Fund (Hz): %07.2f \n",fundamental_hz  );
+      if (enc_select_mode == FUNDAMENTAL)  {
+        panel.display.print("            ");
+        for (int i = decimal_place-3;i<-1;i++   ){
+          panel.display.print(" ");
+        }
+        if (decimal_place < 0){
+          panel.display.print(" ");
+        }
+        panel.display.println("*");
+
+      } 
+      else{
+        panel.display.println();
+      }
+
+      panel.display.print("Freq Ratio: ");
+      panel.display.print(numerator);
+      panel.display.print(" / ");
+      panel.display.println(denominator);
+      if ( (fraction_component == NUMERATOR ) & (enc_select_mode == RATIO) ){
+        panel.display.println("           ***");
+      }
+      else if ( (fraction_component == DENOMINATOR) & (enc_select_mode == RATIO)){
+        panel.display.println("               ***");
+      }
+      else{
+        panel.display.println();
+      }
+
+      panel.display.printf("Freq: %07.2f Hz\n",1000000.0/strobe_period_us_fan);
+      panel.display.printf("      %07.1f BPM\n",60*1000000.0/strobe_period_us_fan);
+      panel.display.printf("      %07i us\n",strobe_period_us_fan);
+
+      panel.display.print("Control Mode: ");
+      panel.display.println(manual_control == true ? "Manual" : "Serial");
+      panel.display.println();
+
+      panel.display.print("Speed: ");
+      panel.display.println(speed);
+      panel.display.print("Color Mode: ");
+      panel.display.println(color_mode);
+      panel.display.print("Freq Mode: ");
+      panel.display.println(freq_mode);
+      panel.display.display();
+      panel.display.display();
+}
+*/
+
  #endif

@@ -2,7 +2,17 @@
 #define PARAMS_H
 
 #include "strobe_channel.h"
+#include <control-panel.h>
+
+uint8_t read_resolution = 8;
+uint8_t joystick_x0 =128;
+uint8_t joystick_y0 =128;
+uint8_t joystick_z0 =128;
+
+
 controlPanel panel;
+bool strobe_enabled = 0;
+errorCode err;
 //Pin numbers on control panel board
 
 // 3- channels to control the fan
@@ -26,16 +36,11 @@ int fan_pins[] = { LED_FAN_R, LED_FAN_G, LED_FAN_B };
 int dance_pins[] = { LED_DANCE_1, LED_DANCE_2, LED_DANCE_3, LED_DANCE_4};
 int drip_pins[] = { LED_DRIP_R, LED_DRIP_G, LED_DRIP_B};
 
-
 // Construct the 3 strobe channels
 //    strobe_channel(uint8_t num_subchannels, int pin_numbers[], TeensyTimerTool::TimerGenerator* pulse_timer_id );
 strobe_channel   fan(3,   fan_pins, TMR1);
 strobe_channel dance(4, dance_pins, TMR2);
 strobe_channel  drip(3, drip_pins, TMR3);
-
-
-uint8_t read_resolution = 8;
-
 
 //Fields that are communicated from the raspi
 int16_t speed =  0;
@@ -44,5 +49,6 @@ uint8_t freq_mode = 0;
 bool    strobe_coin_enabled =0;
 bool    strobe_coin_enabled_prev =0;
 
+float transform_matrix[3][3] = {{1,0,0},{0,1,0},{0,0,1}};
 
 #endif

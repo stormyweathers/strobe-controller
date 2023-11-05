@@ -5,9 +5,6 @@
  * that sets the master speed
  *
  */
-
-
-
 #ifndef COMMS_H
 #define COMMS_H 
 
@@ -124,8 +121,6 @@ void apply_mode_fan(uint8_t color_mode, uint8_t freq_mode)
 
     fan.numerator = numerators[freq_mode-1];
     fan.denominator = denominators[freq_mode-1];
-
-
 }
 
 void apply_mode_drip(uint8_t color_mode, uint8_t freq_mode)
@@ -175,11 +170,6 @@ void apply_mode_drip(uint8_t color_mode, uint8_t freq_mode)
     drip.numerator = numerators[freq_mode-1];
     drip.denominator = denominators[freq_mode-1];
     drip.speed_control_range_hz = speed_tuning_ranges[freq_mode-1];
-
-
 }
-
-
-
 
 #endif
