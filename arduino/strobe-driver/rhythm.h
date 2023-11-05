@@ -13,7 +13,7 @@ bool fibonacci_rhythm(uint32_t n){
   return floor(n/phi) - floor((n-1)/phi)  ;
 }
 
-void euclidean_rhythm(uint16_t hits, uint16_t steps){
+void euclidean_rhythm(bool rhythm_buff[], uint16_t hits, uint16_t steps){
   /*
   precompute the buffer necessary for a euclidean rhythm
   access the buff later using: rhythm_buff[i%rhythm_size]

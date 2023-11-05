@@ -6,21 +6,8 @@ volatile uint32_t cycle_path[4]={0xff000000, 0x00ff0000, 0x0000ff00, 0x000000ff}
 volatile uint32_t two_piece[2]={0xFF00FF00,0x00FF00FF};
 volatile uint32_t all_strobe[2]={0xFFFFFFFF,0xFFFFFFFF};
 
-
-
-//volatile uint32_t cycle_path[4]={0x0000ff, 0x0000ff, 0x0000ff, 0x0000ff};
-
-//volatile uint32_t pulse_sequence[]={0xFF000000,0x00FF0000,0x0000FF00,0x000000FF};
-
-//volatile uint32_t pulse_sequence[]={0x000000FF,0x000000FF};
-volatile uint32_t pulse_sequence[]={0xFF000000,0x80800000, 0x00FF000000,0x80800000};
-
 volatile uint32_t pulse_5[]={0xFF000000,0xFFFF0000, 0x00FF0000,0x00FFFF00,0x0000FF00};
-
-volatile uint32_t rb_sequence[]={0xFF000000,0x0000FF00, 0x00000000};
-//volatile uint32_t pulse_sequence[]={0x0000FF00,0x0000FF00};
-//uint16_t pulse_sequence_size = sizeof(pulse_sequence)/sizeof(pulse_sequence[0]);
-
+volatile uint32_t six_step[]={0xFF000000,0x00FF0000, 0x0000FF00,0x80800000,0x80008000, 0x00808000 };
 
 // Precomputed pulse codes for sierpinksi walks in RGB simplex space
 volatile uint32_t fractal_path_0[3]={0xff000000, 0xff0000, 0x00ff00};

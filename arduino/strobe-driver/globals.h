@@ -37,6 +37,12 @@ strobe_channel  drip(3, drip_pins, TMR3);
 uint8_t read_resolution = 8;
 
 
+//Fields that are communicated from the raspi
+int16_t speed =  0;
+uint8_t color_mode = 0;
+uint8_t freq_mode = 0;
+bool    strobe_coin_enabled =0;
+bool    strobe_coin_enabled_prev =0;
 
 
 #endif

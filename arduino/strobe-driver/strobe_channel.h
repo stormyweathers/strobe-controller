@@ -5,6 +5,8 @@
 #include <TeensyTimerTool.h>
 //using namespace TeensyTimerTool;
 
+#include "rhythm.h"
+
 class strobe_channel{
   public:
     float fundamental_freq_hz;
@@ -34,6 +36,10 @@ class strobe_channel{
     PeriodicTimer strobe_timer;
 
     bool manual_control = true;
+    
+    float speed_control_range_hz = 3.0;
+
+    float rhythm_slope = 1;
 
     //constructor
     strobe_channel(uint8_t num_subchannels, int pin_numbers[], TeensyTimerTool::TimerGenerator* pulse_timer_id )
@@ -93,25 +99,25 @@ class strobe_channel{
       // Get the next pulse code
       this->pulse_code = *(this->pulse_sequence_ptr+this->pulse_count%this->pulse_sequence_size);
 
-      // Send a pulse for to each subchannel determined by the pulse code
-      for (int i =0; i < this->num_subchannels; i++){
-       digitalWriteFast(this->pin_list[i],HIGH);
-       this->pulse_width_timer_list[i].trigger(int(this->pulse_width_multiple*this->extract_pulse_code(i)) );
+      if ( float_rhythm(this->pulse_count, this->rhythm_slope) )
+      {
+        // Send a pulse for to each subchannel determined by the pulse code
+        for (int i =0; i < this->num_subchannels; i++){
+         digitalWriteFast(this->pin_list[i],HIGH);
+         this->pulse_width_timer_list[i].trigger(int(this->pulse_width_multiple*this->extract_pulse_code(i)) );
+        }
       }
       this->pulse_count++;
     }
 
     void compute_strobe_period(uint16_t slider_position,int16_t speed)
     {
-      float offset_hz = map(slider_position,0,255,-5,5);
-      if (manual_control)
-      {
-        this->freq_hz = this->fundamental_freq_hz*float(this->numerator)/float(this->denominator);
-      }
-      else
-      {
-        this->freq_hz = map(speed,-1000,1000,140+offset_hz,100-offset_hz);
-      }
+      //Add offsets for fine-tuning and lever-controlled speed adjustmnet
+      float speed_offset = - map(float(speed),float(-1000),float(1000), -speed_control_range_hz,+speed_control_range_hz);
+      float slider_offset =  map(float(slider_position),0.0,255.0,-1,1);
+      this->freq_hz = this->fundamental_freq_hz +speed_offset + slider_offset ;
+      //apply ratio
+      this->freq_hz = this->freq_hz * float(this->numerator)/float(this->denominator);
       this->strobe_period_us = static_cast<uint32_t> (1000000/this->freq_hz);
     }
 
@@ -120,7 +126,6 @@ class strobe_channel{
     {
       this->strobe_timer.setPeriod(this->strobe_period_us);
     }
-
 
     private:
       uint8_t extract_pulse_code( uint8_t position)
