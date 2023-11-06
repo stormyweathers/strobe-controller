@@ -27,8 +27,8 @@ void setup() {
   
 
 
-  fan.pulse_sequence_ptr = &fractal_path_0[0];
-  fan.pulse_sequence_size = 3;
+  fan.pulse_sequence_ptr = &four_tone[0];
+  fan.pulse_sequence_size = 4;
   fan.fundamental_freq_hz = 29.0;
   fan.speed_control_range_hz = 3;
   fan.compute_strobe_period(128,0);
@@ -133,9 +133,9 @@ void loop() {
     cli();
 
     fan.update_strobe_period();
-    fan.set_transform_matrix(transform_matrix);
+    //fan.set_transform_matrix(transform_matrix);
     drip.update_strobe_period();
-    drip.set_transform_matrix(transform_matrix);
+    //drip.set_transform_matrix(transform_matrix);
     dance.update_strobe_period();
 
     fan.pulse_width_multiple =  map(float(panel.analog_in_state[3]),0.0,255.0,0.03125,4.0);

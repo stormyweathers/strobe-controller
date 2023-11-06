@@ -10,6 +10,7 @@
 
 #include "pulse_sequences.h"
 #include "globals.h"
+#include "transformations.h"
 
 char read_buff[8];
 const char delim = '|';
@@ -73,6 +74,16 @@ void apply_mode_fan(uint8_t color_mode, uint8_t freq_mode)
 {
   const uint16_t* numerators;
   const uint16_t* denominators;
+  const float* speed_tuning_ranges;
+
+  const volatile uint32_t* pulse_seqs;
+  const uint32_t* pulse_sizes;
+  
+// could not find a way to cast pointer array in place like the other params
+  volatile uint32_t* pulse_seqs_2[] = {&two_tone[0],&two_tone[0],&two_tone[0], &fractal_path_0[0],&fractal_path_0[0],&fractal_path_0[0], &four_tone[0], &five_tone[0]};
+  const volatile uint32_t pulse_seq_sizes_2[] = {2,2,2,3,3,3,4,5};
+  const float    transform_angles[] = {0,       5*PI/3,    PI/2,    PI/4,       PI,       0,   7*PI/4, PI/2};
+
   color_mode = constrain(color_mode,1,3);
   freq_mode = constrain(freq_mode,1,8);
   switch (color_mode)
@@ -81,27 +92,51 @@ void apply_mode_fan(uint8_t color_mode, uint8_t freq_mode)
     // Slow color change, too slow for strobe effects
       fan.pulse_sequence_ptr = &fractal_path_4[0];
       fan.pulse_sequence_size = 243;
-      numerators = (const uint16_t [] ){1,2,5,9,18,27,36,45};
-      denominators = (const uint16_t [] ) {1,1,1,1,1,1,1,1};
-
-      // Freq Modes:
-      // 1: 1000
-      // 2: 450 
-      // 3: 275 
-      // 4: 540 
-      // 5: 360
-      // 6: 500
-      // 7: 140
-      // 8: 80
+      /*
+      3:1 (5p)
+      6:1 (10p)
+      9:1 (15p)
+      21:2 (shimmering many)
+      27:2 (shimmering, many+)
+      39:2 (shimmering, many++)
+      45:2 (many+++)
+      83:2 (most)
+      */
+      numerators = (const uint16_t [] )      {3,  6,9,21,27,39,45,83};
+      denominators = (const uint16_t [] )    {1,  1,1, 2, 2, 2, 2, 2};
+      speed_tuning_ranges = (const float []) {3,  3,3,3,3,3,3,3 };
 
       break;
     
     case 2:
     // R-> G -> B Mode
-      fan.pulse_sequence_ptr = &fractal_path_0[0];
-      fan.pulse_sequence_size = 3;
-      numerators = (const uint16_t [] ){1,2,5,9,18,27,36,45};
+      fan.pulse_sequence_ptr = pulse_seqs_2[freq_mode-1];
+      fan.pulse_sequence_size = pulse_seq_sizes_2[freq_mode-1];
+
+      rotation_matrix_full(transform_angles[freq_mode-1],fan.transform_matrix);
+      fan.transform_enabled = true;
+      /*
+        6:1 ratio, two-tone 0deg (10 petal)
+        6:1 ratio, two-tone 30deg (10 petal)
+        6:1 ratio, two-tone -90deg (10 petal)
+
+        3-3-3
+        9:1 ratio, 3-tone -30deg (15 petal)
+        9:1 ratio, 3-tone 30deg (15 petal)
+        9:1 ratio, 3-tone 180deg (15 petal)
+
+
+        4
+        12:1 ratio, 4-tone (-30deg) (20 petal)
+
+        5
+        16:1 20 petals 90 deg
+      */
+      numerators = (const uint16_t [] )   {6,6,6,9,9,9,12,15};
       denominators = (const uint16_t [] ) {1,1,1,1,1,1,1,1};
+      speed_tuning_ranges = (const float []) {3,3,3,3,3,3,3,3 };
+
+
 
       break;
 
