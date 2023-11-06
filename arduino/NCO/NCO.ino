@@ -1,8 +1,11 @@
 #include <TeensyTimerTool.h>
 #include "Teensy_PWM.h"
+#include <Wire.h>
+
 
 
 #define OUTPUT_PIN 13
+#define I2C_ADDRESS 0xAF
 
 Teensy_PWM* PWM_Instance;
 const uint32_t write_resolution = 10;
@@ -10,7 +13,7 @@ const float pwm_freq = 50000.0;
 
 const uint16_t num_waveform_samples = 1024;
 uint16_t waveform_samples[num_waveform_samples];
-float waveform_frequency = 10.0;
+float waveform_frequency = 1.0;
 
 
 uint16_t sin_waveform(uint16_t sample_num)
@@ -59,6 +62,61 @@ uint32_t period_from_frequency(float frequency)
   return sample_period;
 }
 
+
+float new_waveform_frequency = 0;
+void receiveEvent(int howMany)
+{
+  //Serial.printf("Recieved mess with %i bytes\n",howMany);
+  new_waveform_frequency = parseMsg(); 
+  //Serial.printf("Recoeved new waveform freq: %f\n",new_waveform_frequency);
+}
+
+float parseMsg()
+{
+  char buff[4];
+  uint8_t bytesRead = 0;
+  //while( Wire1.available() & (bytesRead < 4) )
+  while(  (bytesRead < 4) )
+  {
+    buff[bytesRead++] = Wire1.read();
+    //Serial.printf("%#x",buff[bytesRead-1]);
+  }
+  //Interpret the 4-bytes as a float
+  return  *(float*)(buff) ;
+}
+
+
+void testByteParse(float number)
+{
+  union {
+    float f;
+    uint32_t u;
+    } f2u = { .f = number };
+
+  //Serial.printf("%f --> %#010X\n",number,f2u.u);
+
+  unsigned char buff[4];
+  for (int i=0;i<4; i++)
+  {
+    buff[i]= *(  (unsigned char *)(&number)+i ) ;
+  }
+  
+  float reconstructed = *(float*)(buff);
+
+  Serial.printf("%010.5f --> 0x%02X %02X %02X %02X --> %010.5f \n",number,(uint8_t) buff[0], (uint8_t)buff[1],(uint8_t)buff[2],(uint8_t)buff[3],reconstructed);
+
+  if (number == reconstructed)
+  {
+    Serial.println("Equality checked!");
+  }
+  else
+  {
+    Serial.println("Equality failed!");
+  }
+
+}
+
+
 void setup() {
   // put your setup code here, to run once:
 
@@ -74,10 +132,23 @@ void setup() {
   Serial.println("Initializing waveform timer");
   err = waveform_timer.begin(  waveform_timer_callback,period_from_frequency(waveform_frequency)  , true);
 
+  Serial.printf("Initializing I2C comm with addr: %i \n",I2C_ADDRESS);
+  Wire1.begin(I2C_ADDRESS);
+  Wire1.onReceive(receiveEvent);
+
+  //testByteParse(-10000*TWO_PI);
 
 }
 
 void loop() {
   // put your main code here, to run repeatedly:
 
+
+  if (new_waveform_frequency > 0.1)
+  {
+    Serial.printf("Recieved new freq: %02.2f\n",new_waveform_frequency);
+    waveform_timer.setPeriod( period_from_frequency(new_waveform_frequency) );
+    //Serial.printf("Set freq to: %f \n",new_waveform_frequency);
+    new_waveform_frequency = 0;
+  }
 }

@@ -20,6 +20,8 @@ void setup() {
   //TeensyTimerTool error handler
   attachErrFunc(ErrorHandler(Serial));
 
+  Wire1.begin();
+
   Serial.println("started panel init");
   panel.resolution = 8;
   panel.init();
@@ -159,9 +161,13 @@ void loop() {
     update_display();
   }
 
+  // Hande communications
+
   if ( read_line(&read_buff[0])){
     parse_line(&read_buff[0]);
     apply_mode_fan(color_mode, freq_mode);
     apply_mode_drip(color_mode, freq_mode);
   }
+
+  send_I2C_frequency(2*PI);
 }

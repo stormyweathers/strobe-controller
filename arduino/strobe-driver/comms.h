@@ -17,9 +17,33 @@ const char delim = '|';
 
 
 
+#define I2C_ADDR 0xAF
+void send_I2C_frequency(float frequency)
+{
+  //Send a message to the slave I2C device
+  // to set the slow-dance driver frequency
+
+  Wire1.beginTransmission(I2C_ADDR);
+  unsigned char c;
+  for (int i=0;i<4; i++)
+  {
+    //Convert float to its constituite bytes
+    c= *(  (unsigned char *)(&frequency)+i ) ;
+    //Send the message to the slave device
+    Wire1.write(c);
+  }
+  uint8_t status = Wire1.endTransmission();
+  if (status != 0)
+  {
+    Serial.printf("I2C send failed with freq=%f, status %i\n",frequency, status);
+  }
+}
+
+
+
+
 //Size of message
 uint8_t num_bytes = 5;
-
 bool read_line(char buff[]){ 
   // Read a single line from serial buffer into read_buff
   uint8_t bytes_read = 0;
@@ -52,6 +76,7 @@ void parse_line(char buff[]){
   strobe_coin_enabled = static_cast<bool>(buff[4]);
   Serial.flush();
 }
+
 
 // Define the list of mode codes
 // 3 modes for the pulse seqeunce:
