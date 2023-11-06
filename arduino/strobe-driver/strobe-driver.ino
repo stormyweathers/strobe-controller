@@ -14,6 +14,8 @@ using namespace TeensyTimerTool;
 #include "timers.h"
 #include "transformations.h"
 
+bool manual_color = true;
+
 void setup() {
   //TeensyTimerTool error handler
   attachErrFunc(ErrorHandler(Serial));
@@ -27,8 +29,8 @@ void setup() {
   
 
 
-  fan.pulse_sequence_ptr = &four_tone[0];
-  fan.pulse_sequence_size = 4;
+  fan.pulse_sequence_ptr = &fractal_path_1[0];
+  fan.pulse_sequence_size = 9;
   fan.fundamental_freq_hz = 29.0;
   fan.speed_control_range_hz = 3;
   fan.compute_strobe_period(128,0);
@@ -133,10 +135,16 @@ void loop() {
     cli();
 
     fan.update_strobe_period();
-    //fan.set_transform_matrix(transform_matrix);
+    
     drip.update_strobe_period();
-    //drip.set_transform_matrix(transform_matrix);
+    
     dance.update_strobe_period();
+
+    if (manual_color)
+    {
+      fan.set_transform_matrix(transform_matrix);
+      drip.set_transform_matrix(transform_matrix);
+    }
 
     fan.pulse_width_multiple =  map(float(panel.analog_in_state[3]),0.0,255.0,0.03125,4.0);
     drip.pulse_width_multiple = 4;

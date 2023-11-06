@@ -1,67 +1,9 @@
-drip:
-
-in RGB color, 60 Hz fundamental
-
-1-1
-+-10 Hz
-
-4:3
-+-10 * 250/1000
-
-2:1
-+-10 * 625/1000
-
-8:3
-+-10 * 200/1000
-
-3:1
-+-10 * 600/1000
-
-4:1
-+-10 * 400/1000
-
-5:1
-250
-
-6:1
-450
-
-
-6-step mode:
-
-1:1
-+-10 Hz
-
-4:3
-5 hz
-
-3:2
-6 Hz
-
-2:1
-8 Hz
-
-3:1
-8
-
-4:1
-4.4 Hz
-
-5:1
-2 Hz
-
-6:1
-7 Hz
-
-
-colorless / slow color mode
-
-
-1:
-10
-
-2:
-7
+TODO:
+  Tune fan mode speed ranges
+  develop chromo-modulator
+  I2C-controlled teensy oscillator
+  develop slow-dance modes
+  bring 2 variacs
 
 
 
@@ -94,6 +36,21 @@ color mode 2:
 
   5
   16:1 20 petals 90 deg
+
+Color mode 3 (dynamic color):
+
+  6:1 ratio, two-tone (10-petal), circle at full scale
+  12:1 ratio, two-tone (20-petal), circle at full scale
+
+  12:1 ratio, 4-tone (20-petal), circle at full scale
+  24:1 ratio, 4-tone (40-petal), circle at full scale
+
+  15:1 ratio, 5-tone (25 petal), circle at full scale
+  30:1 ratio, 5-tone (50 petal), circle at full scale
+
+  27:1 ratio, 9-step (45 petal), 0-45deg  arc
+  54:1 ratio, 9-step (90 petal), 0-45deg  arc
+
 
 
 

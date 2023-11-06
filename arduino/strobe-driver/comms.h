@@ -84,14 +84,19 @@ void apply_mode_fan(uint8_t color_mode, uint8_t freq_mode)
   const volatile uint32_t pulse_seq_sizes_2[] = {2,2,2,3,3,3,4,5};
   const float    transform_angles[] = {0,       5*PI/3,    PI/2,    PI/4,       PI,       0,   7*PI/4, PI/2};
 
+
+  volatile uint32_t* pulse_seqs_3[] = {&two_tone[0],&two_tone[0], &four_tone[0],&four_tone[0], &five_tone[0],&five_tone[0],&fractal_path_1[0],&fractal_path_1[0]};
+  const volatile uint32_t pulse_seq_sizes_3[] = {2,2,4,4,5,5,9,9};
+  const float    arc_angles[] = {TWO_PI, TWO_PI,    TWO_PI,    TWO_PI,       TWO_PI,       TWO_PI,   PI/4, PI/4};
+
   color_mode = constrain(color_mode,1,3);
   freq_mode = constrain(freq_mode,1,8);
   switch (color_mode)
   {
     case 1:
     // Slow color change, too slow for strobe effects
-      fan.pulse_sequence_ptr = &fractal_path_4[0];
-      fan.pulse_sequence_size = 243;
+      fan.pulse_sequence_ptr = &fractal_path_6[0];
+      fan.pulse_sequence_size = 2187;
       /*
       3:1 (5p)
       6:1 (10p)
@@ -141,11 +146,24 @@ void apply_mode_fan(uint8_t color_mode, uint8_t freq_mode)
       break;
 
     case 3:
-    // 9-step fractal path
-      fan.pulse_sequence_ptr = &fractal_path_1[0];
-      fan.pulse_sequence_size = 9;
-      numerators = (const uint16_t [] ){1,5,10,15,15,20,45,135};
-      denominators =(const uint16_t [] ){1,1,1,1,4,1,1,1};
+  /*
+    6:1 ratio, two-tone (10-petal), circle at full scale
+  12:1 ratio, two-tone (20-petal), circle at full scale
+
+  12:1 ratio, 4-tone (20-petal), circle at full scale
+  24:1 ratio, 4-tone (40-petal), circle at full scale
+
+  15:1 ratio, 5-tone (25 petal), circle at full scale
+  30:1 ratio, 5-tone (50 petal), circle at full scale
+
+  27:1 ratio, 9-step (45 petal), 0-45deg  arc
+  54:1 ratio, 9-step (90 petal), 0-45deg  arc
+  */
+      fan.pulse_sequence_ptr = pulse_seqs_3[freq_mode-1];
+      fan.pulse_sequence_size = pulse_seq_sizes_3[freq_mode-1];
+      numerators = (const uint16_t [] ) {6,12,12,24,15,30,27,54};
+      denominators =(const uint16_t [] ){1,1,1,1,1,1,1,1};
+      speed_tuning_ranges = (const float []) {3,3,3,3,3,3,3,3 };
       break;
 
     default: 
