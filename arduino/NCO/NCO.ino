@@ -11,13 +11,24 @@
 
 Teensy_PWM* PWM_Instance;
 const uint32_t write_resolution = 10;
-const float pwm_freq = 200000.0;
+const float pwm_freq = 200000.0; // much faster than waveform freq, or sample freq
 
+TeensyTimerTool::errorCode err;
+TeensyTimerTool::PeriodicTimer waveform_timer(TeensyTimerTool::TCK);
+
+float waveform_frequency = 20.0;
+const uint32_t sample_period = 50; // 50 us --> 20 kHz
+
+float waveform_period = 1000000.0/waveform_frequency;
+volatile float phase_per_sample = float(sample_period) / waveform_period;
+
+
+// EVerything for precompute method
 const uint16_t num_waveform_samples = 16383;
 uint16_t waveform_samples[num_waveform_samples];
-float waveform_frequency = 20.0;
 elapsedMicros micros_in_cycle;
 volatile uint32_t micros_per_cycle;
+volatile uint16_t sample_idx=0;
 
 uint16_t sin_waveform(uint16_t sample_num)
 {
@@ -32,6 +43,12 @@ uint16_t sin_waveform(uint16_t sample_num)
   uint16_t quantized_wave = constrain( static_cast<uint32_t>(round(wave_sample * amplitude)) , amplitude*0 ,amplitude) ;
   return quantized_wave;
 }
+void waveform_timer_callback(){
+  sample_idx = float(micros_in_cycle)/micros_per_cycle * num_waveform_samples;
+  analogWrite(OUTPUT_PIN,waveform_samples[sample_idx]);
+  //sample_idx = (sample_idx+1)%num_waveform_samples;
+  micros_in_cycle = micros_in_cycle % micros_per_cycle;
+}
 void compute_waveform_samples( uint16_t (*waveform_func) (uint16_t), uint16_t sample_buff[]  )
 {
   for (int i =0; i< num_waveform_samples; i++)
@@ -39,7 +56,6 @@ void compute_waveform_samples( uint16_t (*waveform_func) (uint16_t), uint16_t sa
     sample_buff[i] = waveform_func(i);
   }
 }
-
 void print_buff( uint16_t buff[], uint16_t buff_size  )
 {
   for (int i =0; i< buff_size; i++)
@@ -47,18 +63,6 @@ void print_buff( uint16_t buff[], uint16_t buff_size  )
     Serial.printf("idx %04i: %i\n", i, buff[i]);
   }
 }
-
-TeensyTimerTool::errorCode err;
-TeensyTimerTool::PeriodicTimer waveform_timer(TeensyTimerTool::TCK);
-volatile uint16_t sample_idx=0;
-
-void waveform_timer_callback(){
-  sample_idx = float(micros_in_cycle)/micros_per_cycle * num_waveform_samples;
-  analogWrite(OUTPUT_PIN,waveform_samples[sample_idx]);
-  //sample_idx = (sample_idx+1)%num_waveform_samples;
-  micros_in_cycle = micros_in_cycle % micros_per_cycle;
-}
-
 uint32_t period_from_frequency(float frequency)
 {
   //Timer periods are in us
@@ -68,7 +72,28 @@ uint32_t period_from_frequency(float frequency)
   uint32_t sample_period = static_cast<uint32_t>( round( full_waveform_period/ num_waveform_samples  ));
   return sample_period;
 }
+/// end precompute method
 
+// Direct wave sampling, no precomputation
+float global_phase = 0.0;
+uint16_t sin_waveform_direct(float phase)
+{
+  //Use different math here to generate the waveform samples
+  // should always be normalized such that:
+  //  Peak-Peak signal goes from 0 --> 2^write_resolution -1
+  //  phase from 0-->1 is one full cycle
+
+  phase = phase/(TWO_PI);
+  float wave_sample = (sin(phase-PI/2)+1)/2;
+  uint32_t amplitude = pow(2,write_resolution)-1 ;
+  uint16_t quantized_wave = constrain( static_cast<uint32_t>(round(wave_sample * amplitude)) , amplitude*0 ,amplitude) ;
+  return quantized_wave;
+}
+void waveform_direct_timer_callback(){
+  global_phase += phase_per_sample;
+  analogWrite(OUTPUT_PIN,sin_waveform_direct(global_phase));
+}
+//
 
 float new_waveform_frequency = 0;
 void receiveEvent(int howMany)
@@ -130,35 +155,37 @@ void setup() {
   Serial.begin(115200);
   delay(500);
 
-  Serial.println("Precomputing waveform");
-  analogWriteResolution(write_resolution);
-  analogWriteFrequency(OUTPUT_PIN,pwm_freq);
-  compute_waveform_samples(&sin_waveform, waveform_samples);
+  //Serial.println("Precomputing waveform");
+  //compute_waveform_samples(&sin_waveform, waveform_samples);
   //print_buff(waveform_samples,num_waveform_samples);
 
+  analogWriteResolution(write_resolution);
+  analogWriteFrequency(OUTPUT_PIN,pwm_freq);
+  
   Serial.println("Initializing waveform timer");
-  err = waveform_timer.begin(  waveform_timer_callback,1, true);
+  err = waveform_timer.begin(  waveform_timer_callback,sample_period, true);
 
   Serial.printf("Initializing I2C comm with addr: %i \n",I2C_ADDRESS);
   Wire1.begin(I2C_ADDRESS);
   Wire1.onReceive(receiveEvent);
 
+  // Test communication protocol byte packing
   //testByteParse(-10000*TWO_PI);
-
 }
 
 void loop() {
-  // put your main code here, to run repeatedly:
-
-
   if (new_waveform_frequency > 0.1)
   {
     Serial.printf("Recieved new freq: %02.2f\n",new_waveform_frequency);
     Serial.printf("New sample period: %i us\n",period_from_frequency(new_waveform_frequency));
     cli();
-    //waveform_frequency = new_waveform_frequency;
-    micros_per_cycle = (uint32_t) round(1000000/new_waveform_frequency);
+    //micros_per_cycle = (uint32_t) round(1000000/new_waveform_frequency);
     //waveform_timer.setPeriod( period_from_frequency(new_waveform_frequency) );
+
+    waveform_frequency = new_waveform_frequency;
+    waveform_period = 1000000.0/waveform_frequency;
+    phase_per_sample = float(sample_period) / waveform_period;
+  
     sei();
     //Serial.printf("Set freq to: %f \n",new_waveform_frequency);
     new_waveform_frequency = 0;
