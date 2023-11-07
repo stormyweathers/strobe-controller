@@ -83,15 +83,18 @@ uint16_t sin_waveform_direct(float phase)
   //  Peak-Peak signal goes from 0 --> 2^write_resolution -1
   //  phase from 0-->1 is one full cycle
 
-  phase = phase/(TWO_PI);
+  phase = phase*TWO_PI;
   float wave_sample = (sin(phase-PI/2)+1)/2;
   uint32_t amplitude = pow(2,write_resolution)-1 ;
-  uint16_t quantized_wave = constrain( static_cast<uint32_t>(round(wave_sample * amplitude)) , amplitude*0 ,amplitude) ;
+
+  uint16_t quantized_wave = constrain( static_cast<uint32_t>(round(wave_sample * amplitude)) , 0*amplitude,amplitude) ;
   return quantized_wave;
 }
 void waveform_direct_timer_callback(){
   global_phase += phase_per_sample;
+  if (global_phase > 1){global_phase -= 1.0;}
   analogWrite(OUTPUT_PIN,sin_waveform_direct(global_phase));
+  
 }
 //
 
@@ -163,7 +166,7 @@ void setup() {
   analogWriteFrequency(OUTPUT_PIN,pwm_freq);
   
   Serial.println("Initializing waveform timer");
-  err = waveform_timer.begin(  waveform_timer_callback,sample_period, true);
+  err = waveform_timer.begin(  waveform_direct_timer_callback,sample_period, true);
 
   Serial.printf("Initializing I2C comm with addr: %i \n",I2C_ADDRESS);
   Wire1.begin(I2C_ADDRESS);
@@ -177,7 +180,7 @@ void loop() {
   if (new_waveform_frequency > 0.1)
   {
     Serial.printf("Recieved new freq: %02.2f\n",new_waveform_frequency);
-    Serial.printf("New sample period: %i us\n",period_from_frequency(new_waveform_frequency));
+    //Serial.printf("New sample period: %i us\n",period_from_frequency(new_waveform_frequency));
     cli();
     //micros_per_cycle = (uint32_t) round(1000000/new_waveform_frequency);
     //waveform_timer.setPeriod( period_from_frequency(new_waveform_frequency) );
@@ -187,6 +190,7 @@ void loop() {
     phase_per_sample = float(sample_period) / waveform_period;
   
     sei();
+    Serial.printf("%1.5f\n",phase_per_sample);
     //Serial.printf("Set freq to: %f \n",new_waveform_frequency);
     new_waveform_frequency = 0;
   }

@@ -172,7 +172,7 @@ void loop() {
     if (dance_changed)
     {
 
-      drive_frequency =  1.06*( dance.fundamental_freq_hz);
+      drive_frequency =  ( dance.fundamental_freq_hz);
       Serial.printf("dance freq: %f\n", dance.freq_hz);
       Serial.printf("sending I2C freq: %f\n", drive_frequency);
       send_I2C_frequency(drive_frequency);
