@@ -72,28 +72,15 @@ void parse_line(char buff[]){
   speed = static_cast<int16_t> (  (  int(buff[1]) << 8) |  int(buff[0]) );
   color_mode = static_cast<uint8_t> ( buff[2]);
   freq_mode = static_cast<uint8_t> ( buff[3]);
-  strobe_coin_enabled_prev = strobe_coin_enabled;
+  bool strobe_coin_enabled_prev = strobe_coin_enabled;
   strobe_coin_enabled = static_cast<bool>(buff[4]);
+
+  //Detect edges on the strobe_coin_enabled message sent from raspi
+  coin_turn_on = strobe_coin_enabled & !strobe_coin_enabled_prev;
+  coin_turn_off = !strobe_coin_enabled & strobe_coin_enabled_prev;
   Serial.flush();
 }
 
-
-// Define the list of mode codes
-// 3 modes for the pulse seqeunce:
-/* PULSE MODES
- * 1 --> 1 step, white
- * 2 --> 3 step, cycle RGB
- * 3 --> 9 step, sierpinski path
- */
-
- // Frequency MODES
-/* Fan:
- * 
- *
- *
- *
- *
- */
 
 void apply_mode_fan(uint8_t color_mode, uint8_t freq_mode)
 {
@@ -135,7 +122,7 @@ void apply_mode_fan(uint8_t color_mode, uint8_t freq_mode)
       numerators = (const uint16_t [] )      {3,  6,9,21,27,39,45,83};
       denominators = (const uint16_t [] )    {1,  1,1, 2, 2, 2, 2, 2};
       speed_tuning_ranges = (const float []) {3,  3,3,3,3,3,3,3 };
-
+      fanColorModulationEnabled = false;
       break;
     
     case 2:
@@ -165,9 +152,7 @@ void apply_mode_fan(uint8_t color_mode, uint8_t freq_mode)
       numerators = (const uint16_t [] )   {6,6,6,9,9,9,12,15};
       denominators = (const uint16_t [] ) {1,1,1,1,1,1,1,1};
       speed_tuning_ranges = (const float []) {3,3,3,3,3,3,3,3 };
-
-
-
+      fanColorModulationEnabled = false;
       break;
 
     case 3:
@@ -189,14 +174,14 @@ void apply_mode_fan(uint8_t color_mode, uint8_t freq_mode)
       numerators = (const uint16_t [] ) {6,12,12,24,15,30,27,54};
       denominators =(const uint16_t [] ){1,1,1,1,1,1,1,1};
       speed_tuning_ranges = (const float []) {3,3,3,3,3,3,3,3 };
-      fanColorModulationEnabled = true;
-
       arc_angle = arc_angles[freq_mode-1];
+      fanColorModulationEnabled = true;
       break;
 
     default: 
       numerators = (const uint16_t [] ){1,1,1,1,1,1,1,1};
       denominators =(const uint16_t [] ){1,1,1,1,1,1,1,1};
+      fanColorModulationEnabled = false;
       break;
   }
 
@@ -281,6 +266,7 @@ void apply_mode_dance(uint8_t color_mode, uint8_t freq_mode)
       numerators =   (const uint16_t []) {1,2,1,2,2,3,4,4};
       frequencies = (const float [])     {60,60,40,40,20,20,20,25};
       speed_tuning_ranges = (const float []) {10,10,10,10,10,10,10,10};
+      break;
     case 2:
     /*
       60 Hz 2:1, Diagonal
@@ -304,6 +290,7 @@ void apply_mode_dance(uint8_t color_mode, uint8_t freq_mode)
       numerators =   (const uint16_t []) {2,2,2,2,2,2,2,2};
       frequencies = (const float [])     {60,60,50,50,40,40,30,30};
       speed_tuning_ranges = (const float []) {10,10,10,10,10,10,10,10};
+      break;
 
     case 3:
     /*
@@ -317,10 +304,11 @@ void apply_mode_dance(uint8_t color_mode, uint8_t freq_mode)
     25 Hz 4:1 cycle
     */
       dance.pulse_sequence_ptr = &cycle[0];
-      dance.pulse_sequence_size = 2;
+      dance.pulse_sequence_size = 4;
       numerators =   (const uint16_t []) {4,4,4,4,4,4,4,4};
       frequencies = (const float [])     {60,55,50,45,40,35,30,25};
       speed_tuning_ranges = (const float []) {10,10,10,10,10,10,10,10};
+      break;
 
     default:
       break;
@@ -329,5 +317,6 @@ void apply_mode_dance(uint8_t color_mode, uint8_t freq_mode)
   dance.numerator = numerators[freq_mode-1];
   dance.denominator = 1;
   dance.speed_control_range_hz = speed_tuning_ranges[freq_mode-1];
+  dance.fundamental_freq_hz = frequencies[freq_mode-1];
 }
 #endif

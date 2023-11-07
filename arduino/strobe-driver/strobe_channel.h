@@ -40,6 +40,7 @@ class strobe_channel{
     bool manual_control = true;
     
     float speed_control_range_hz = 3.0;
+    float slider_control_range_hz = 1.0;
 
     float rhythm_slope = 1;
 
@@ -123,7 +124,7 @@ class strobe_channel{
     {
       //Add offsets for fine-tuning and lever-controlled speed adjustmnet
       this->speed_offset = - map(float(speed),float(-1000),float(1000), -1*this->speed_control_range_hz,this->speed_control_range_hz);
-      float slider_offset =  map(float(slider_position),0.0,255.0,-1,1);
+      float slider_offset =  map(float(slider_position),0.0,255.0,-1*this->slider_control_range_hz,this->slider_control_range_hz);
       this->freq_hz = this->fundamental_freq_hz + this->speed_offset + slider_offset ;
       //apply ratio
       this->freq_hz = this->freq_hz * float(this->numerator)/float(this->denominator);

@@ -137,11 +137,9 @@ void update_display(){
   panel.display.println("f (Hz)");
   panel.display.printf(" %6.1f %6.1f %6.1f\n",fan.freq_hz, dance.freq_hz, drip.freq_hz);
   panel.display.println("---------------------");
-  panel.display.println("     last msg     ");
-  panel.display.println("Speed   Color    Freq");
-  panel.display.printf("%04d     %1d        %1d",speed,color_mode,freq_mode);
-
-  panel.display.printf("fan color mod: %i",fanColorModulationEnabled);
+  panel.display.printf("strb:%i,tgl:%i,coil:%i%i \n",strobe_enabled,panel.toggle.read(),coin_turn_on,coin_turn_off);
+  panel.display.println("Speed Color Freq coin");
+  panel.display.printf("%04d   %1d     %1d   %1d,%1d",speed,color_mode,freq_mode,strobe_coin_enabled,last_coin_edge);
   panel.display.display();
 }
 

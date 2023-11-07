@@ -17,6 +17,26 @@ using namespace TeensyTimerTool;
 
 bool manual_color = false;
 
+void all_on()
+{
+  Serial.println("Turning strobe timer on!");
+  fan.strobe_timer.start();
+  dance.strobe_timer.start();
+  drip.strobe_timer.start();
+  send_I2C_frequency(dance.fundamental_freq_hz);
+  strobe_enabled = 1;
+}
+
+void all_off()
+{
+  Serial.println("Turning strobe timer off!");
+  fan.strobe_timer.stop();
+  dance.strobe_timer.stop();
+  drip.strobe_timer.stop();
+  send_I2C_frequency(-1);
+  strobe_enabled = 0;
+}
+
 void setup() {
   //TeensyTimerTool error handler
   attachErrFunc(ErrorHandler(Serial));
@@ -34,6 +54,7 @@ void setup() {
   fan.pulse_sequence_size = 2;
   fan.fundamental_freq_hz = 29.0;
   fan.speed_control_range_hz = 3;
+  fan.slider_control_range_hz = 3;
   fan.compute_strobe_period(128,0);
   Serial.printf("fan period: %i\n",fan.strobe_period_us);
 
@@ -68,8 +89,8 @@ void setup() {
   Serial.println("initialized");
 
 
-  fanColorModulationEnabled = 1;
-//  arc_angle=TWO_PI;
+  //fanColorModulationEnabled = 1;
+  //  arc_angle=TWO_PI;
  // fan.numerator = 6;
 }
 
@@ -78,12 +99,13 @@ elapsedMillis since_cycle;
 
 
 void loop() {
-  if (since_cycle > modulation_period_ms)
-  {
-    since_cycle -= modulation_period_ms;
-  }
+
   if (fanColorModulationEnabled)
   {
+    if (since_cycle > modulation_period_ms)
+    {
+     //since_cycle -= modulation_period_ms;
+    }
     //Compute angle for modulation
     float angle = map_bounce(float(since_cycle)/modulation_period_ms,0,1,-arc_angle/2, arc_angle/2); 
     //Serial.println(angle);
@@ -96,37 +118,37 @@ void loop() {
   // Read human inputs
   panel.readState();
 
-  //Detect edges on the strobe_coin_enabled message sent from raspi
-  bool coin_turn_on = strobe_coin_enabled & !strobe_coin_enabled_prev;
-  bool coin_turn_off = !strobe_coin_enabled & strobe_coin_enabled_prev;
-
   if (coin_turn_on){
     Serial.println("Coin on!");
+    last_coin_edge = 1;
   }
   if (coin_turn_off){
     Serial.println("Coin off!");
+    last_coin_edge = 2;
   }
 
-
-  // Decide when to toggle main strobe timers
-  // Turn on when:
-  //  strobe timer is off AND ( coin slot state has just turned on OR master switch is on)
-  if (  (!strobe_enabled) & ( (!panel.toggle.read()) | coin_turn_on ) ){
-    Serial.println("Turning strobe timer on!");
-    fan.strobe_timer.start();
-    dance.strobe_timer.start();
-    drip.strobe_timer.start();
-    strobe_enabled = 1;
+  if (!strobe_enabled)
+  {
+    //When strobes are off, turn them on if:
+    // Toggle is up (=0)
+    if (!panel.toggle.read()){
+      all_on();
+    }
+    // toggle is down, AND coin slot has the right edge
+    else if ( strobe_coin_enabled  )
+    {
+      all_on();
+    }
   }
 
-  // Turn off when:
-  //  strobe timer is on AND ( coin slot state has just turned off OR master switch is off)
-  if ( strobe_enabled & ( coin_turn_off | panel.toggle.read() ) ){
-    Serial.println("Turning strobe timer off!");
-    fan.strobe_timer.stop();
-    dance.strobe_timer.stop();
-    drip.strobe_timer.stop();
-    strobe_enabled = 0;
+  if (strobe_enabled)
+  {    
+    //When strobes are off, turn them on if:
+    // Toggle is DOWN (=1), and coin slot has the right edge
+    if (panel.toggle.read() & !strobe_coin_enabled)
+    {
+      all_off();
+    } 
   }
 
   if (panel.joystick_button.fell()){
@@ -165,27 +187,18 @@ void loop() {
     fan.compute_strobe_period(panel.analog_in_state[5],speed);
     drip.compute_strobe_period(127,speed);
 
-    //For slow dance, the speed is set by driving the 
     dance.compute_strobe_period(127,speed);
-    // factor of 1.06 was measured to get them to match...
     dance_changed = (dance.numerator != dance_numerator_prev) | (dance.denominator != dance_denominator_prev) | (dance.fundamental_freq_hz != dance_fundamental_prev);
     if (dance_changed)
     {
-
-      drive_frequency =  ( dance.fundamental_freq_hz);
-      Serial.printf("dance freq: %f\n", dance.freq_hz);
-      Serial.printf("sending I2C freq: %f\n", drive_frequency);
-      send_I2C_frequency(drive_frequency);
-
+      send_I2C_frequency(dance.fundamental_freq_hz);
       dance_numerator_prev =dance.numerator;
       dance_denominator_prev = dance.denominator;
       dance_fundamental_prev = dance.fundamental_freq_hz;
     }
-    
-
-
     //Interrupts off
     cli();
+    
     fan.update_strobe_period();
     drip.update_strobe_period();
     dance.update_strobe_period();
@@ -210,12 +223,11 @@ void loop() {
   }
 
   // Hande communications
-
   if ( read_line(&read_buff[0])){
     parse_line(&read_buff[0]);
     apply_mode_fan(color_mode, freq_mode);
     apply_mode_drip(color_mode, freq_mode);
+    apply_mode_dance(color_mode, freq_mode);
   }
 
-  
 }

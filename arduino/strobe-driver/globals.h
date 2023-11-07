@@ -88,4 +88,8 @@ float map_wrap(float val, float old_min, float old_max, float new_min, float new
 }
 
 
+bool coin_turn_on = 0;
+bool coin_turn_off =0;
+uint8_t last_coin_edge = 0;
+
 #endif

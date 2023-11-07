@@ -166,7 +166,7 @@ void setup() {
   analogWriteFrequency(OUTPUT_PIN,pwm_freq);
   
   Serial.println("Initializing waveform timer");
-  err = waveform_timer.begin(  waveform_direct_timer_callback,sample_period, true);
+  err = waveform_timer.begin(  waveform_direct_timer_callback,sample_period, false);
 
   Serial.printf("Initializing I2C comm with addr: %i \n",I2C_ADDRESS);
   Wire1.begin(I2C_ADDRESS);
@@ -175,9 +175,20 @@ void setup() {
   // Test communication protocol byte packing
   //testByteParse(-10000*TWO_PI);
 }
-
+bool output_enabled = false;
 void loop() {
-  if (new_waveform_frequency > 0.1)
+  if ( (!output_enabled) & (new_waveform_frequency >0) )
+  {
+    waveform_timer.start();
+    output_enabled = 1;
+  }
+  else if ( output_enabled & (new_waveform_frequency < 0) )
+  {
+    waveform_timer.stop();
+    output_enabled = 0;
+  }
+  
+  if (output_enabled & (new_waveform_frequency > 0.1) )
   {
     Serial.printf("Recieved new freq: %02.2f\n",new_waveform_frequency);
     //Serial.printf("New sample period: %i us\n",period_from_frequency(new_waveform_frequency));
@@ -194,4 +205,6 @@ void loop() {
     //Serial.printf("Set freq to: %f \n",new_waveform_frequency);
     new_waveform_frequency = 0;
   }
+
+
 }
