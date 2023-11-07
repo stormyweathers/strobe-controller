@@ -13,6 +13,7 @@ class strobe_channel{
     float fundamental_freq_hz;
     uint16_t numerator;
     uint16_t denominator;
+    float speed_offset;
     
     float freq_hz;
     volatile uint32_t strobe_period_us;
@@ -121,9 +122,9 @@ class strobe_channel{
     void compute_strobe_period(uint16_t slider_position,int16_t speed)
     {
       //Add offsets for fine-tuning and lever-controlled speed adjustmnet
-      float speed_offset = - map(float(speed),float(-1000),float(1000), -speed_control_range_hz,+speed_control_range_hz);
+      this->speed_offset = - map(float(speed),float(-1000),float(1000), -1*this->speed_control_range_hz,this->speed_control_range_hz);
       float slider_offset =  map(float(slider_position),0.0,255.0,-1,1);
-      this->freq_hz = this->fundamental_freq_hz +speed_offset + slider_offset ;
+      this->freq_hz = this->fundamental_freq_hz + this->speed_offset + slider_offset ;
       //apply ratio
       this->freq_hz = this->freq_hz * float(this->numerator)/float(this->denominator);
       this->strobe_period_us = static_cast<uint32_t> (1000000/this->freq_hz);

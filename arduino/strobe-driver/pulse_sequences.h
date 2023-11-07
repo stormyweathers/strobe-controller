@@ -2,15 +2,23 @@
 #define PULSE_SEQUENCES_H 
 
 // For the slow dance effect
-volatile uint32_t cycle_path[4]={0xff000000, 0x00ff0000, 0x0000ff00, 0x000000ff};
-volatile uint32_t two_piece[2]={0xFF00FF00,0x00FF00FF};
-volatile uint32_t all_strobe[2]={0xFFFFFFFF,0xFFFFFFFF};
+const uint32_t UP    = 0xFF000000;
+const uint32_t RIGHT = 0x00FF0000;
+const uint32_t DOWN  = 0x0000FF00;
+const uint32_t LEFT  = 0x000000FF;
+const uint32_t ALL   = 0xFFFFFFFF;
+const uint32_t TL    = UP | LEFT;
+const uint32_t BR    = DOWN | RIGHT;
+const uint32_t VERT  = UP | DOWN;
+const uint32_t HOR   = LEFT | RIGHT;
+
+volatile uint32_t cycle[4]={UP,RIGHT,DOWN,LEFT};
+volatile uint32_t diagonal[2]= {TL,BR};
+volatile uint32_t orthogonal[2]={VERT,HOR};
+volatile uint32_t all_strobe[2]={ALL,ALL};
 
 volatile uint32_t pulse_5[]={0xFF000000,0xFFFF0000, 0x00FF0000,0x00FFFF00,0x0000FF00};
 volatile uint32_t six_step[]={0xFF000000,0x00FF0000, 0x0000FF00,0x80800000,0x80008000, 0x00808000 };
-
-
-
 
 //Primary colors and their complements
 const uint32_t R  = 0xFF000000;
@@ -24,7 +32,6 @@ const uint32_t B_ = 0x80800000;
 volatile uint32_t two_tone[]={G,G_};
 volatile uint32_t four_tone[]={R,R_,B,B_};
 volatile uint32_t five_tone[]={R,R_,G_,B_,B};
-
 
 // Precomputed pulse codes for sierpinksi walks in RGB simplex space
 volatile uint32_t fractal_path_0[3]={0xff000000, 0xff0000, 0x00ff00};

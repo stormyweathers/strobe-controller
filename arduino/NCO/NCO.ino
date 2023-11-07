@@ -1,7 +1,9 @@
 #include <TeensyTimerTool.h>
 #include "Teensy_PWM.h"
 #include <Wire.h>
-
+#include <elapsedMillis.h>
+//Blue -> 16
+// Yellow -> 17
 
 
 #define OUTPUT_PIN 13
@@ -9,12 +11,13 @@
 
 Teensy_PWM* PWM_Instance;
 const uint32_t write_resolution = 10;
-const float pwm_freq = 50000.0;
+const float pwm_freq = 200000.0;
 
-const uint16_t num_waveform_samples = 1024;
+const uint16_t num_waveform_samples = 16383;
 uint16_t waveform_samples[num_waveform_samples];
-float waveform_frequency = 1.0;
-
+float waveform_frequency = 20.0;
+elapsedMicros micros_in_cycle;
+volatile uint32_t micros_per_cycle;
 
 uint16_t sin_waveform(uint16_t sample_num)
 {
@@ -48,10 +51,14 @@ void print_buff( uint16_t buff[], uint16_t buff_size  )
 TeensyTimerTool::errorCode err;
 TeensyTimerTool::PeriodicTimer waveform_timer(TeensyTimerTool::TCK);
 volatile uint16_t sample_idx=0;
+
 void waveform_timer_callback(){
+  sample_idx = float(micros_in_cycle)/micros_per_cycle * num_waveform_samples;
   analogWrite(OUTPUT_PIN,waveform_samples[sample_idx]);
-  sample_idx = (sample_idx+1)%num_waveform_samples;
+  //sample_idx = (sample_idx+1)%num_waveform_samples;
+  micros_in_cycle = micros_in_cycle % micros_per_cycle;
 }
+
 uint32_t period_from_frequency(float frequency)
 {
   //Timer periods are in us
@@ -130,7 +137,7 @@ void setup() {
   //print_buff(waveform_samples,num_waveform_samples);
 
   Serial.println("Initializing waveform timer");
-  err = waveform_timer.begin(  waveform_timer_callback,period_from_frequency(waveform_frequency)  , true);
+  err = waveform_timer.begin(  waveform_timer_callback,1, true);
 
   Serial.printf("Initializing I2C comm with addr: %i \n",I2C_ADDRESS);
   Wire1.begin(I2C_ADDRESS);
@@ -147,7 +154,12 @@ void loop() {
   if (new_waveform_frequency > 0.1)
   {
     Serial.printf("Recieved new freq: %02.2f\n",new_waveform_frequency);
-    waveform_timer.setPeriod( period_from_frequency(new_waveform_frequency) );
+    Serial.printf("New sample period: %i us\n",period_from_frequency(new_waveform_frequency));
+    cli();
+    //waveform_frequency = new_waveform_frequency;
+    micros_per_cycle = (uint32_t) round(1000000/new_waveform_frequency);
+    //waveform_timer.setPeriod( period_from_frequency(new_waveform_frequency) );
+    sei();
     //Serial.printf("Set freq to: %f \n",new_waveform_frequency);
     new_waveform_frequency = 0;
   }

@@ -1,60 +1,55 @@
 TODO:
   Tune fan mode speed ranges
   develop chromo-modulator
-  I2C-controlled teensy oscillator
-  develop slow-dance modes
+  // I2C-controlled teensy oscillator
+  Test slow-dance modes
   bring 2 variacs
+  MAke coin slot actually turn on
 
 
 
 
-Color mode 1: (colorless)
-just increase the number of "white" petals
-3:1 (5p)
-6:1 (10p)
-9:1 (15p)
-21:2 (shimmering many)
-27:2 (shimmering, many+)
-39:2 (shimmering, many++)
-45:2 (many+++)
-83:2 (most)
+Color mode 1:
+All strobe
 
-color mode 2:
-1:
-  6:1 ratio, two-tone 0deg (10 petal)
-  6:1 ratio, two-tone 30deg (10 petal)
-  6:1 ratio, two-tone -90deg (10 petal)
-
-  3-3-3
-  9:1 ratio, 3-tone -30deg (15 petal)
-  9:1 ratio, 3-tone 30deg (15 petal)
-  9:1 ratio, 3-tone 180deg (15 petal)
+60 Hz 1:1
+60 Hz 2:1
+40 Hz 1:1
+40 hz 2:1
+20 Hz 2:1
+20 Hz 3:1
+20 Hz 4:1
+25 Hz 4:1
 
 
-  4
-  12:1 ratio, 4-tone (-30deg) (20 petal)
+Color mode 2:
 
-  5
-  16:1 20 petals 90 deg
 
-Color mode 3 (dynamic color):
+60 Hz 2:1, Diagonal
+60 Hz 2:1, Orthogonal
 
-  6:1 ratio, two-tone (10-petal), circle at full scale
-  12:1 ratio, two-tone (20-petal), circle at full scale
+50Hz 2:1, Diagonal
+50Hz 2:1, Orthogonal
 
-  12:1 ratio, 4-tone (20-petal), circle at full scale
-  24:1 ratio, 4-tone (40-petal), circle at full scale
+40 Hz 2:1, Diagonal
+40 Hz 2:1, Orthogonal
 
-  15:1 ratio, 5-tone (25 petal), circle at full scale
-  30:1 ratio, 5-tone (50 petal), circle at full scale
+30 Hz 2:1, Diagonal
+30 Hz 2:1, Orthogonal
 
-  27:1 ratio, 9-step (45 petal), 0-45deg  arc
-  54:1 ratio, 9-step (90 petal), 0-45deg  arc
+
+color mode 3:
+
+60 Hz 4:1, cycle
+55 Hz 4:1, cycle
+50 Hz 4:1, cycle
+45 Hz 4:1, cycle
+40 Hz 4:1, cycle
+35 Hz 4:1, cycle
+30 Hz 4:1, cycle
+25 Hz 4:1 cycle
 
 
 
 
-5-blade w
-10blade w
-15 blade W
-15 
+

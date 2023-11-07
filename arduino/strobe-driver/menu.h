@@ -141,6 +141,7 @@ void update_display(){
   panel.display.println("Speed   Color    Freq");
   panel.display.printf("%04d     %1d        %1d",speed,color_mode,freq_mode);
 
+  panel.display.printf("fan color mod: %i",fanColorModulationEnabled);
   panel.display.display();
 }
 

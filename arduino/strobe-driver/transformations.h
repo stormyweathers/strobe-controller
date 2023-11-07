@@ -151,7 +151,7 @@ void matrix_from_xy(float x,  float y)
   //print_mat(mat_scale);
   matmul(transform_matrix,mat_scale,mat_rot);
   //matmul(transform_matrix,mat_scale,id);
-  Serial.printf("angle = %1.3f * pi \n",angle/PI);
+  //Serial.printf("angle = %1.3f * pi \n",angle/PI);
 }
 
 

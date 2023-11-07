@@ -33,7 +33,13 @@ int drip_pins[] = { LED_DRIP_R, LED_DRIP_G, LED_DRIP_B};
 // Construct the 3 strobe channels
 //    strobe_channel(uint8_t num_subchannels, int pin_numbers[], TeensyTimerTool::TimerGenerator* pulse_timer_id );
 strobe_channel   fan(3,   fan_pins, TMR1);
+bool fanColorModulationEnabled = false;
 strobe_channel dance(4, dance_pins, TMR2);
+float drive_frequency = 30.0;
+bool dance_changed = false;
+uint16_t dance_numerator_prev = 1 ;
+uint16_t dance_denominator_prev = 1;
+uint16_t dance_fundamental_prev = 1;
 strobe_channel  drip(3, drip_pins, TMR3);
 
 //Fields that are communicated from the raspi
@@ -44,5 +50,42 @@ bool    strobe_coin_enabled =0;
 bool    strobe_coin_enabled_prev =0;
 
 float transform_matrix[3][3] = {{1,0,0},{0,1,0},{0,0,1}};
+
+float arc_angle = TWO_PI;
+
+float map_bounce(float val, float old_min, float old_max, float new_min, float new_max)
+//Modification of the map function to reflect off boundaries
+{
+  float diff;
+    if (val > old_max)
+    {
+        diff = -2*(val-old_max);    
+        return map_bounce( val+diff, old_min,old_max,new_min,new_max     );
+    }
+    if (val < old_min)
+    {  
+        diff = 2*(old_min-val);
+        return map_bounce(val+diff,old_min,old_max,new_min,new_max);
+    }
+    return (val - old_min) * (new_max - new_min) / (old_max - old_min) + old_min;
+}
+
+float map_wrap(float val, float old_min, float old_max, float new_min, float new_max)
+//Modification of the map function to reflect off boundaries
+{
+  float diff;
+    if (val > old_max)
+    {
+        diff = -old_max;
+        return map_wrap( val+diff, old_min,old_max,new_min,new_max     );
+    }
+    if (val < old_min)
+    {  
+        diff = old_min;
+        return map_wrap(val+diff,old_min,old_max,new_min,new_max);
+    }
+    return (val - old_min) * (new_max - new_min) / (old_max - old_min) + old_min;
+}
+
 
 #endif
