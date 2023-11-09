@@ -52,7 +52,7 @@ void setup() {
   
   fan.pulse_sequence_ptr = &two_tone[0];
   fan.pulse_sequence_size = 2;
-  fan.fundamental_freq_hz = 29.0;
+  fan.fundamental_freq_hz = 33.8;
   fan.speed_control_range_hz = 3;
   fan.slider_control_range_hz = 3;
   fan.compute_strobe_period(128,0);
@@ -117,6 +117,12 @@ void loop() {
 
   // Read human inputs
   panel.readState();
+
+/*
+  color_mode = 3;
+  freq_mode = 8;
+  apply_mode_fan(color_mode,freq_mode);
+*/
 
   if (coin_turn_on){
     Serial.println("Coin on!");
