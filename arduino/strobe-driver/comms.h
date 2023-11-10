@@ -265,9 +265,9 @@ void apply_mode_dance(uint8_t color_mode, uint8_t freq_mode)
       */
       dance.pulse_sequence_ptr = &all_strobe[0];
       dance.pulse_sequence_size = 2;
-      numerators =   (const uint16_t []) {1,2,1,2,2,3,4,4};
-      frequencies = (const float [])     {60,60,40,40,20,20,20,25};
-      speed_tuning_ranges = (const float []) {10,10,10,10,10,10,10,10};
+      numerators =   (const uint16_t [])     {1,  2,  1, 2, 2, 3, 4,  4};
+      frequencies = (const float [])         {60,60, 40,40,20,20,20, 25};
+      speed_tuning_ranges = (const float []) {15, 9,7.5,10, 4, 2, 3,1.8};
       break;
     case 2:
     /*
@@ -289,9 +289,9 @@ void apply_mode_dance(uint8_t color_mode, uint8_t freq_mode)
         dance.pulse_sequence_ptr = &orthogonal[0];
       }
       dance.pulse_sequence_size = 2;
-      numerators =   (const uint16_t []) {2,2,2,2,2,2,2,2};
-      frequencies = (const float [])     {60,60,50,50,40,40,30,30};
-      speed_tuning_ranges = (const float []) {10,10,10,10,10,10,10,10};
+      numerators =   (const uint16_t [])     { 2, 2, 2, 2, 2, 2, 2, 2};
+      frequencies = (const float [])         {60,60,50,50,40,40,30,30};
+      speed_tuning_ranges = (const float []) {10,10,10,10, 9, 9, 9, 9};
       break;
 
     case 3:
@@ -307,9 +307,9 @@ void apply_mode_dance(uint8_t color_mode, uint8_t freq_mode)
     */
       dance.pulse_sequence_ptr = &cycle[0];
       dance.pulse_sequence_size = 4;
-      numerators =   (const uint16_t []) {4,4,4,4,4,4,4,4};
-      frequencies = (const float [])     {60,55,50,45,40,35,30,25};
-      speed_tuning_ranges = (const float []) {10,10,10,10,10,10,10,10};
+      numerators =   (const uint16_t [])     { 4, 4, 4, 4, 4, 4, 4, 4};
+      frequencies = (const float [])         {60,55,50,45,40,35,30,25};
+      speed_tuning_ranges = (const float []) {10,10,10,10,10,10,10, 8};
       break;
 
     default:

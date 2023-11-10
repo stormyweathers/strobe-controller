@@ -92,6 +92,12 @@ void setup() {
   //fanColorModulationEnabled = 1;
   //  arc_angle=TWO_PI;
  // fan.numerator = 6;
+  color_mode = 1;
+  freq_mode = 3;
+  apply_mode_drip(color_mode, freq_mode);
+  //dance.compute_strobe_period(127,0);
+  //send_I2C_frequency(dance.fundamental_freq_hz);
+
 }
 
 uint32_t modulation_period_ms = 5000;
@@ -117,12 +123,6 @@ void loop() {
 
   // Read human inputs
   panel.readState();
-
-/*
-  color_mode = 3;
-  freq_mode = 8;
-  apply_mode_fan(color_mode,freq_mode);
-*/
 
   if (coin_turn_on){
     Serial.println("Coin on!");
