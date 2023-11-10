@@ -199,6 +199,11 @@ void apply_mode_drip(uint8_t color_mode, uint8_t freq_mode)
   const float* speed_tuning_ranges;
   color_mode = constrain(color_mode,1,3);
   freq_mode = constrain(freq_mode,1,8);
+
+  volatile uint32_t* pulse_seqs_3[] = {&two_tone[0],&two_tone[0], &four_tone[0],&four_tone[0], &five_tone[0],&five_tone[0],&six_step[0],&six_step[0]};
+  const volatile uint32_t pulse_seq_sizes_3[] = {2,2,4,4,5,5,9,9};
+  const float    arc_angles[] = {TWO_PI, TWO_PI,    TWO_PI,    TWO_PI,       TWO_PI,       TWO_PI,   PI/2, PI/2};
+
   switch (color_mode)
   {
     case 1:
@@ -221,6 +226,7 @@ void apply_mode_drip(uint8_t color_mode, uint8_t freq_mode)
       break;
 
     case 3:
+    /*
     // 6-step star path
       drip.pulse_sequence_ptr = &six_step[0];
       drip.pulse_sequence_size = 6;
@@ -229,6 +235,14 @@ void apply_mode_drip(uint8_t color_mode, uint8_t freq_mode)
       numerators = (const uint16_t [] ){1,3,3,4,5,6,4,2};
       denominators = (const uint16_t [] ) {1,2,1,1,1,1,3,1};
       speed_tuning_ranges = (const float [] ) {10.0, 5.0, 6.0, 8.0, 8.0, 4.4, 2.0 , 7};
+      */
+      drip.pulse_sequence_ptr = pulse_seqs_3[freq_mode-1];
+      drip.pulse_sequence_size = pulse_seq_sizes_3[freq_mode-1];
+      numerators = (const uint16_t [] )      { 2, 4, 4, 8, 5, 5, 6,6};
+      denominators =(const uint16_t [] )     { 1, 1, 1, 1, 2, 1, 2,1};
+      speed_tuning_ranges = (const float []) {10, 7, 5, 7, 7, 7, 7,7 };
+      arc_angle = arc_angles[freq_mode-1];
+      fanColorModulationEnabled = true;
       break;
 
     default: 

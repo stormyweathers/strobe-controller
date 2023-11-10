@@ -92,9 +92,10 @@ void setup() {
   //fanColorModulationEnabled = 1;
   //  arc_angle=TWO_PI;
  // fan.numerator = 6;
-  color_mode = 1;
-  freq_mode = 3;
+  color_mode = 3;
+  freq_mode = 8;
   apply_mode_drip(color_mode, freq_mode);
+  apply_mode_fan(color_mode, freq_mode);
   //dance.compute_strobe_period(127,0);
   //send_I2C_frequency(dance.fundamental_freq_hz);
 
@@ -114,10 +115,14 @@ void loop() {
     }
     //Compute angle for modulation
     float angle = map_bounce(float(since_cycle)/modulation_period_ms,0,1,-arc_angle/2, arc_angle/2); 
-    //Serial.println(angle);
-    fan.transform_enabled = 1;
     rotation_matrix_full(angle,mat_rot);
+
+    fan.transform_enabled = 1;    
     fan.set_transform_matrix(mat_rot);
+
+    drip.transform_enabled = 1;
+    drip.set_transform_matrix(mat_rot);
+  
     //print_mat(mat_rot);
   }
 
