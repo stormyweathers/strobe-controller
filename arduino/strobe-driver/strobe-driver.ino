@@ -92,8 +92,8 @@ void setup() {
   //fanColorModulationEnabled = 1;
   //  arc_angle=TWO_PI;
  // fan.numerator = 6;
-  color_mode = 3;
-  freq_mode = 8;
+  color_mode = 2;
+  freq_mode = 2;
   apply_mode_drip(color_mode, freq_mode);
   apply_mode_fan(color_mode, freq_mode);
   //dance.compute_strobe_period(127,0);
@@ -124,10 +124,12 @@ void loop() {
     drip.set_transform_matrix(mat_rot);
   
     //print_mat(mat_rot);
+    yield();
   }
 
   // Read human inputs
   panel.readState();
+  yield();
 
   if (coin_turn_on){
     Serial.println("Coin on!");
@@ -137,6 +139,7 @@ void loop() {
     Serial.println("Coin off!");
     last_coin_edge = 2;
   }
+  yield();
 
   if (!strobe_enabled)
   {
@@ -161,6 +164,7 @@ void loop() {
       all_off();
     } 
   }
+  yield();
 
   if (panel.joystick_button.fell()){
     //
@@ -178,35 +182,39 @@ void loop() {
     fan.transform_enabled = !fan.transform_enabled;
     drip.transform_enabled = !drip.transform_enabled;
   }
+  yield();
 
   // cycle which channel is controlled by the encoder
   if (panel.button.fell() ){
     Serial.println("Main button pressed!");
     channel_select = (channel_select+ 1) % 3;
   }
-
-  if (panel.button.rose() ){
-  }
+  yield();
 
   if (strobe_enabled){
 
     if (manual_color)
     {
       matrix_from_xy(panel.joystick_x,panel.joystick_y);
+      yield();
     }
 
     fan.compute_strobe_period(panel.analog_in_state[5],speed);
+    yield();
     drip.compute_strobe_period(127,speed);
-
+    yield();
     dance.compute_strobe_period(127,speed);
+    yield();
     dance_changed = (dance.numerator != dance_numerator_prev) | (dance.denominator != dance_denominator_prev) | (dance.fundamental_freq_hz != dance_fundamental_prev);
     if (dance_changed)
     {
       send_I2C_frequency(dance.fundamental_freq_hz);
+      yield();
       dance_numerator_prev =dance.numerator;
       dance_denominator_prev = dance.denominator;
       dance_fundamental_prev = dance.fundamental_freq_hz;
     }
+    yield();
     //Interrupts off
     cli();
     
@@ -229,10 +237,11 @@ void loop() {
     //Serial.printf("X=%f,Y0=%f,Z0=%f \n",panel.joystick_x, panel.joystick_y, panel.joystick_z);
   }
 
+  yield();
   if (update_display_flag){
     update_display();
   }
-
+  yield();
   // Hande communications
   if ( read_line(&read_buff[0])){
     parse_line(&read_buff[0]);

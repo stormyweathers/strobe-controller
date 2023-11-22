@@ -53,6 +53,8 @@ float transform_matrix[3][3] = {{1,0,0},{0,1,0},{0,0,1}};
 
 float arc_angle = TWO_PI;
 
+bool update_display_flag = false;
+
 float map_bounce(float val, float old_min, float old_max, float new_min, float new_max)
 //Modification of the map function to reflect off boundaries
 {
