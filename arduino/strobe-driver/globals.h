@@ -32,15 +32,15 @@ int drip_pins[] = { LED_DRIP_R, LED_DRIP_G, LED_DRIP_B};
 
 // Construct the 3 strobe channels
 //    strobe_channel(uint8_t num_subchannels, int pin_numbers[], TeensyTimerTool::TimerGenerator* pulse_timer_id );
-strobe_channel   fan(3,   fan_pins, TMR1);
+strobe_channel   fan(3,   fan_pins, TMR1,TMR1);
 bool fanColorModulationEnabled = false;
-strobe_channel dance(4, dance_pins, TMR2);
+strobe_channel dance(4, dance_pins, TMR4,TMR2);
 float drive_frequency = 30.0;
 bool dance_changed = false;
 uint16_t dance_numerator_prev = 1 ;
 uint16_t dance_denominator_prev = 1;
 uint16_t dance_fundamental_prev = 1;
-strobe_channel  drip(3, drip_pins, TMR3);
+strobe_channel  drip(3, drip_pins, TMR3,TMR3);
 
 //Fields that are communicated from the raspi
 int16_t speed =  0;

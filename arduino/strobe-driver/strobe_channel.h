@@ -1,7 +1,8 @@
-#include "ITimerChannel.h"
+
 #ifndef STROBE_CHANNEL_H
 #define STROBE_CHANNEL_H
 
+#include "ITimerChannel.h"
 #include <TeensyTimerTool.h>
 //using namespace TeensyTimerTool;
 
@@ -48,7 +49,7 @@ class strobe_channel{
     float transform_matrix[3][3]={{1,0,0},{0,1,0},{0,0,1}};
 
     //constructor
-    strobe_channel(uint8_t num_subchannels, int pin_numbers[], TeensyTimerTool::TimerGenerator* pulse_timer_id )
+    strobe_channel(uint8_t num_subchannels, int pin_numbers[],TeensyTimerTool::TimerGenerator* strobe_timer_id ,  TeensyTimerTool::TimerGenerator* pulse_timer_id )
     {
       // number_of_subchannels = 1,2,3, or 4
       // pulse_timer_id = TMR1, TMR2, or TMR3
@@ -70,7 +71,7 @@ class strobe_channel{
       //Initial values
       this->pulse_count = 0;
 
-      this->strobe_timer = PeriodicTimer(TCK);
+      this->strobe_timer = PeriodicTimer(strobe_timer_id);
 
       for (int i=0; i< this->num_subchannels;i++)
       {
