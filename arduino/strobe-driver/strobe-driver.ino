@@ -14,6 +14,7 @@ using namespace TeensyTimerTool;
 #include "strobe_channel.h"
 #include "timers.h"
 #include "transformations.h"
+#include "PulseTrain.h"
 
 bool manual_color = false;
 

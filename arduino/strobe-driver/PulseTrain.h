@@ -4,17 +4,18 @@
 #include <vector>
 #include <string>
 #include "LinkedList.h"
+#include <Arduino.h>
 
 class PulseTrain : public LinkedList {
 public:
     bool verbose;
-    int total_duration;
+    uint32_t total_duration;
 
-    PulseTrain(const std::vector<int>& data, bool verbose = false);
+    PulseTrain(const std::vector<uint32_t>& data, bool verbose = false);
 
     void VPrint(const std::string& message);
 
-    void AddPulse(int t_start, int t_width);
+    void AddPulse(uint32_t t_start, uint32_t t_width);
 
     // Add any additional methods specific to PulseTrain here
 };

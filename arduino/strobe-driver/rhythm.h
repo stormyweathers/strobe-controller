@@ -1,3 +1,5 @@
+#ifndef RHYTHM_H
+#define RHYTHM_H
 const uint16_t RHYTHM_BUFF_SIZE=1024;
 bool rhythm_buff[RHYTHM_BUFF_SIZE];
 uint16_t rhythm_size = 10;
@@ -28,3 +30,5 @@ bool float_rhythm(uint32_t n, float slope){
   // slope must be < 1 !!
   return floor(n*slope) - floor((n-1)*slope)  ;
 }
+
+#endif

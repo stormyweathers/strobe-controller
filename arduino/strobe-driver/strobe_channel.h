@@ -33,10 +33,10 @@ class strobe_channel{
     // Pin numbers for each subchannel
     uint8_t* pin_list;
     // Timers for individual subchannel pulse widths
-    OneShotTimer* pulse_width_timer_list;
+    TeensyTimerTool::OneShotTimer* pulse_width_timer_list;
 
     // Periodic timer for clocking intervals between pulses
-    PeriodicTimer strobe_timer;
+    TeensyTimerTool::PeriodicTimer strobe_timer;
 
     bool manual_control = true;
     
@@ -58,7 +58,7 @@ class strobe_channel{
 
       //allocate arrays for list of pins and list of oneshottimers
       this->pin_list = (uint8_t*)malloc(this->num_subchannels*sizeof(uint8_t));
-      this->pulse_width_timer_list = (OneShotTimer*)malloc(this->num_subchannels*sizeof(OneShotTimer));
+      this->pulse_width_timer_list = (TeensyTimerTool::OneShotTimer*)malloc(this->num_subchannels*sizeof(TeensyTimerTool::OneShotTimer));
 
       //Default values to prevent things from crashing
       this->fundamental_freq_hz = 60.0;
@@ -71,12 +71,12 @@ class strobe_channel{
       //Initial values
       this->pulse_count = 0;
 
-      this->strobe_timer = PeriodicTimer(strobe_timer_id);
+      this->strobe_timer = TeensyTimerTool::PeriodicTimer(strobe_timer_id);
 
       for (int i=0; i< this->num_subchannels;i++)
       {
         // construct the pulse_width_timers
-        this->pulse_width_timer_list[i] = OneShotTimer(pulse_timer_id);
+        this->pulse_width_timer_list[i] = TeensyTimerTool::OneShotTimer(pulse_timer_id);
 
         // Save the pin numbers for later
         this->pin_list[i] = pin_numbers[i];
