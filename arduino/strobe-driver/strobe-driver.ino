@@ -53,7 +53,7 @@ void setup() {
   
   fan.pulse_sequence_ptr = &two_tone[0];
   fan.pulse_sequence_size = 2;
-  fan.fundamental_freq_hz = 33.8;
+  fan.fundamental_freq_hz = 28.4;
   fan.speed_control_range_hz = 3;
   fan.slider_control_range_hz = 3;
   fan.compute_strobe_period(128,0);
@@ -93,8 +93,8 @@ void setup() {
   //fanColorModulationEnabled = 1;
   //  arc_angle=TWO_PI;
  // fan.numerator = 6;
-  color_mode = 2;
-  freq_mode = 2;
+  color_mode = 3;
+  freq_mode = 3;
   apply_mode_drip(color_mode, freq_mode);
   apply_mode_fan(color_mode, freq_mode);
   //dance.compute_strobe_period(127,0);
