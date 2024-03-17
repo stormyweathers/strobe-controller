@@ -53,7 +53,7 @@ void setup() {
   
   fan.pulse_sequence_ptr = &two_tone[0];
   fan.pulse_sequence_size = 2;
-  fan.fundamental_freq_hz = 28.4;
+  fan.fundamental_freq_hz = 25.0;
   fan.speed_control_range_hz = 3;
   fan.slider_control_range_hz = 3;
   fan.compute_strobe_period(128,0);
@@ -93,9 +93,9 @@ void setup() {
   //fanColorModulationEnabled = 1;
   //  arc_angle=TWO_PI;
  // fan.numerator = 6;
-  color_mode = 3;
-  freq_mode = 3;
-  apply_mode_drip(color_mode, freq_mode);
+  color_mode = 2;
+  freq_mode = 1;
+  //apply_mode_drip(color_mode, freq_mode);
   apply_mode_fan(color_mode, freq_mode);
   //dance.compute_strobe_period(127,0);
   //send_I2C_frequency(dance.fundamental_freq_hz);
@@ -169,9 +169,16 @@ void loop() {
 
   if (panel.joystick_button.fell()){
     //
-    speed = map(panel.analog_in_state[4],0,255,-1000.0,1000.0);
-  }
 
+    freq_mode++;
+    if (9 == freq_mode)
+    {
+      color_mode = (color_mode +1 )%3+1;
+      freq_mode = 1;
+    }
+    apply_mode_fan(color_mode, freq_mode);
+  }
+/*
   if (panel.joystick_button.isPressed())
   {
     Serial.printf("duration: %i \n",panel.joystick_button.currentDuration());
@@ -183,12 +190,28 @@ void loop() {
     fan.transform_enabled = !fan.transform_enabled;
     drip.transform_enabled = !drip.transform_enabled;
   }
-  
+  */
 
-  // cycle which channel is controlled by the encoder
+  
   if (panel.button.fell() ){
     Serial.println("Main button pressed!");
-    channel_select = (channel_select+ 1) % 3;
+    // cycle which channel is controlled by the encoder
+    //channel_select = (channel_select+ 1) % 3;
+    manual_color = !manual_color;
+    if (!manual_color)
+    {
+      //reset the transform to identity matrix when manual color is disabled
+      for (uint8_t ii=0; ii<3;ii++){
+        for (uint8_t jj=0; jj<3 ;jj++){
+          transform_matrix[ii][jj]=0;
+          if(ii==jj){
+            transform_matrix[ii][jj] = 1;
+          }
+        }
+      }
+      //copy_mat(id,transform_matrix);
+    }
+    print_mat(transform_matrix);
   }
   
 
@@ -243,6 +266,7 @@ void loop() {
     update_display();
   }
   
+  /*
   // Hande communications
   if ( read_line(&read_buff[0])){
     parse_line(&read_buff[0]);
@@ -250,5 +274,6 @@ void loop() {
     apply_mode_drip(color_mode, freq_mode);
     apply_mode_dance(color_mode, freq_mode);
   }
+  */
 
 }
