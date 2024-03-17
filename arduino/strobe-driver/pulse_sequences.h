@@ -18,7 +18,6 @@ volatile uint32_t orthogonal[2]={VERT,HOR};
 volatile uint32_t all_strobe[2]={ALL,ALL};
 
 volatile uint32_t pulse_5[]={0xFF000000,0xFFFF0000, 0x00FF0000,0x00FFFF00,0x0000FF00};
-volatile uint32_t six_step[]={0xFF000000,0x00FF0000, 0x0000FF00,0x80800000,0x80008000, 0x00808000 };
 
 //Primary colors and their complements
 const uint32_t R  = 0xFF000000;
@@ -30,8 +29,13 @@ const uint32_t B_ = 0x80800000;
 
 //Color modes for fan blade:
 volatile uint32_t two_tone[]={G,G_};
+volatile uint32_t three_tone[]={R,G,B};
 volatile uint32_t four_tone[]={R,R_,B,B_};
 volatile uint32_t five_tone[]={R,R_,G_,B_,B};
+volatile uint32_t six_step[]={R,G,B,B_,G_, R_ };
+
+volatile uint32_t three_tone_comp[]={R_,G_,B_};
+
 
 // Precomputed pulse codes for sierpinksi walks in RGB simplex space
 volatile uint32_t fractal_path_0[3]={0xff000000, 0xff0000, 0x00ff00};

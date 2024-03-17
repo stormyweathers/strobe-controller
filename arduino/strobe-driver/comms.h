@@ -92,14 +92,14 @@ void apply_mode_fan(uint8_t color_mode, uint8_t freq_mode)
   const uint32_t* pulse_sizes;
   
 // could not find a way to cast pointer array in place like the other params
-  volatile uint32_t* pulse_seqs_2[] = {&two_tone[0],&two_tone[0],&two_tone[0], &fractal_path_0[0],&fractal_path_0[0],&fractal_path_0[0], &four_tone[0], &five_tone[0]};
-  const volatile uint32_t pulse_seq_sizes_2[] = {2,2,2,3,3,3,4,5};
-  const float    transform_angles[] = {0,       5*PI/3,    PI/2,    PI/4,       PI,       0,   7*PI/4, PI/2};
+  volatile uint32_t* pulse_seqs_2[] =           {&two_tone[0],&two_tone[0],&two_tone[0], &three_tone[0], &three_tone[0],&three_tone[0], &four_tone[0], &five_tone[0]};
+  const volatile uint32_t pulse_seq_sizes_2[] = {2,           2,           2,            3,              3,             3,              4,              5};
+  const float    transform_angles[] =           {0,           5*PI/3,      PI/2,         PI/4,           PI,            0,             7*PI/4,         PI/2};
 
 
-  volatile uint32_t* pulse_seqs_3[] = {&two_tone[0],&two_tone[0], &four_tone[0],&four_tone[0], &five_tone[0],&five_tone[0],&fractal_path_1[0],&fractal_path_1[0]};
-  const volatile uint32_t pulse_seq_sizes_3[] = {2,2,4,4,5,5,9,9};
-  const float    arc_angles[] = {TWO_PI, TWO_PI,    TWO_PI,    TWO_PI,       TWO_PI,       TWO_PI,   PI/2, PI/2};
+  volatile uint32_t* pulse_seqs_3[] =           {&two_tone[0],&three_tone[0], &four_tone[0],&five_tone[0], &six_step[0],&five_tone[0],&fractal_path_1[0],&fractal_path_1[0]};
+  const volatile uint32_t pulse_seq_sizes_3[] = {2,           3,              4,            5,             6,             5,            9,                  9};
+  const float    arc_angles[] =                 {TWO_PI,      PI/2,         TWO_PI,      TWO_PI,         PI/2,       TWO_PI,       PI/2,              PI/2};
 
   color_mode = constrain(color_mode,1,3);
   freq_mode = constrain(freq_mode,1,8);
@@ -119,8 +119,8 @@ void apply_mode_fan(uint8_t color_mode, uint8_t freq_mode)
       45:2 (many+++)
       83:2 (most)
       */
-      numerators = (const uint16_t [] )      {3, 6, 9,  21,   27,  39,    45,  83};
-      denominators = (const uint16_t [] )    {1, 1, 1,   2,    2,   2,     2,   2};
+      numerators = (const uint16_t [] )      {1, 1, 1,  1,   1,  1,    1,  1};
+      denominators = (const uint16_t [] )    {1, 1, 1,   1,    1,   1,     1,   1};
       speed_tuning_ranges = (const float []) {4, 3, 3, 0.7, 0.55, 0.35, 0.35, 0.5};
       fanColorModulationEnabled = false;
       break;
@@ -149,7 +149,7 @@ void apply_mode_fan(uint8_t color_mode, uint8_t freq_mode)
         5
         16:1 20 petals 90 deg
       */
-      numerators = (const uint16_t [] )      {6,6,6,9,9,9, 12,15};
+      numerators = (const uint16_t [] )      {1,1,1,1,1,1, 1,1};
       denominators = (const uint16_t [] )    {1,1,1,1,1,1,  1, 1};
       speed_tuning_ranges = (const float []) {3,3,3,3,3,3,2.4, 2};
       fanColorModulationEnabled = false;
@@ -171,7 +171,7 @@ void apply_mode_fan(uint8_t color_mode, uint8_t freq_mode)
   */
       fan.pulse_sequence_ptr = pulse_seqs_3[freq_mode-1];
       fan.pulse_sequence_size = pulse_seq_sizes_3[freq_mode-1];
-      numerators = (const uint16_t [] )      {6, 12, 12,24,15, 30,27,54};
+      numerators = (const uint16_t [] )      {1,  1,  1, 1, 1,  1, 1,1};
       denominators =(const uint16_t [] )     {1,  1,  1, 1, 1,  1, 1,1};
       speed_tuning_ranges = (const float []) {3,2.4,2.4, 3, 3,2.4, 3,3 };
       arc_angle = arc_angles[freq_mode-1];
@@ -186,9 +186,9 @@ void apply_mode_fan(uint8_t color_mode, uint8_t freq_mode)
       break;
   }
 
-    fan.numerator = numerators[freq_mode-1];
-    fan.denominator = denominators[freq_mode-1];
-    fan.speed_control_range_hz = speed_tuning_ranges[freq_mode-1];
+    fan.numerator = 1;
+    fan.denominator = 1;
+    fan.speed_control_range_hz = 5;
     
 }
 

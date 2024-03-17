@@ -53,7 +53,7 @@ void setup() {
   
   fan.pulse_sequence_ptr = &two_tone[0];
   fan.pulse_sequence_size = 2;
-  fan.fundamental_freq_hz = 25.0;
+  fan.fundamental_freq_hz = 100;
   fan.speed_control_range_hz = 3;
   fan.slider_control_range_hz = 3;
   fan.compute_strobe_period(128,0);
@@ -108,7 +108,7 @@ elapsedMillis since_cycle;
 
 void loop() {
 
-  if (fanColorModulationEnabled)
+  if (fanColorModulationEnabled && !manual_color)
   {
     if (since_cycle > modulation_period_ms)
     {
@@ -168,14 +168,21 @@ void loop() {
   
 
   if (panel.joystick_button.fell()){
-    //
+    //Joystick Cycles through modes, but skip color_mode ==1
 
     freq_mode++;
-    if (9 == freq_mode)
+
+    if ( (9 == freq_mode) && (2 == color_mode) )
     {
-      color_mode = (color_mode +1 )%3+1;
+      color_mode =3 ;
       freq_mode = 1;
     }
+    if ( (6 == freq_mode) && (3 == color_mode) )
+    {
+      color_mode = 2;
+      freq_mode = 1;
+    }
+
     apply_mode_fan(color_mode, freq_mode);
   }
 /*
@@ -198,6 +205,7 @@ void loop() {
     // cycle which channel is controlled by the encoder
     //channel_select = (channel_select+ 1) % 3;
     manual_color = !manual_color;
+    apply_mode_fan(color_mode, freq_mode);
     if (!manual_color)
     {
       //reset the transform to identity matrix when manual color is disabled
