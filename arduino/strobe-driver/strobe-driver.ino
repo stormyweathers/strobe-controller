@@ -105,7 +105,6 @@ void setup() {
 uint32_t modulation_period_ms = 5000;
 elapsedMillis since_cycle;
 
-
 void loop() {
 
   if (fanColorModulationEnabled && !manual_color)
@@ -260,10 +259,15 @@ void loop() {
       drip.set_transform_matrix(transform_matrix);
     }
 
-    fan.pulse_width_multiple =  map(float(panel.analog_in_state[3]),0.0,255.0,0.03125,4.0);
-    drip.pulse_width_multiple = 4;
-    dance.pulse_width_multiple =  map(float(panel.analog_in_state[3]),0.0,255.0,0.03125,4.0);
     
+    modulation_period_ms = map(float(panel.analog_in_state[5]),0.0, 255.0, 1000.0, 30000.0  );
+    
+    fan.pulse_width_multiple =  map(float(panel.analog_in_state[3]),0.0,255.0,0.03125,16.0);
+    drip.pulse_width_multiple = 4;
+    dance.pulse_width_multiple =  map(float(panel.analog_in_state[3]),0.0,255.0,0.03125,16.0);
+    
+
+
     //Interrupts on
     sei();
     //Serial.printf("X=%f,Y0=%f,Z0=%f \n",panel.joystick_x, panel.joystick_y, panel.joystick_z);
