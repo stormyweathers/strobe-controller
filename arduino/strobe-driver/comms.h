@@ -92,9 +92,9 @@ void apply_mode_fan(uint8_t color_mode, uint8_t freq_mode)
   const uint32_t* pulse_sizes;
   
 // could not find a way to cast pointer array in place like the other params
-  volatile uint32_t* pulse_seqs_2[] =           {&two_tone[0],&two_tone[0],&pure_green[0], &three_tone[0], &three_tone[0],&three_tone[0], &four_tone[0], &five_tone[0]};
-  const volatile uint32_t pulse_seq_sizes_2[] = {2,           2,           2,            3,              3,             3,              4,              5};
-  const float    transform_angles[] =           {0,           5*PI/3,      PI/2,         PI/4,           PI,            0,             7*PI/4,         PI/2};
+  volatile uint32_t* pulse_seqs_2[] =           {&R_Rc[0],&G_Gc[0],&B_Bc[0], &R_G_B[0], &Rc_Gc_Bc[0], &three_tone[0], &four_tone[0], &five_tone[0]};
+  const volatile uint32_t pulse_seq_sizes_2[] = {2,           2,     2,            3,     3,             3,              4,              5};
+  const float    transform_angles[] =           {0,           0,      0,         0,           0,            0,             7*PI/4,         PI/2};
 
 
   volatile uint32_t* pulse_seqs_3[] =           {&two_tone[0],&three_tone[0], &four_tone[0],&five_tone[0], &six_step[0],&five_tone[0],&fractal_path_1[0],&fractal_path_1[0]};
@@ -186,9 +186,9 @@ void apply_mode_fan(uint8_t color_mode, uint8_t freq_mode)
       break;
   }
 
-    fan.numerator = 1;
-    fan.denominator = 1;
-    fan.speed_control_range_hz = 5;
+    //fan.numerator = 1;
+    //fan.denominator = 1;
+    //fan.speed_control_range_hz = 5;
     
 }
 

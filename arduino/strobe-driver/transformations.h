@@ -221,12 +221,12 @@ void colorspace_operations::compute_hue_delta(float rgb[3], float z, float delta
   // return: delta (float[3])
   z=constrain(z,-1.0,1.0);
 
-  uint8_t r = rgb[0];
-  uint8_t g = rgb[1];
-  uint8_t b = rgb[2];
+  float r = rgb[0];
+  float g = rgb[1];
+  float b = rgb[2];
 
   //Edge case of pure r, add a little g+b to avoid div by 0
-  if (0== g+b)
+  if (0 == g+b)
   {
     r=r-1;
     g=g+0.5;
@@ -241,9 +241,10 @@ void colorspace_operations::compute_hue_delta(float rgb[3], float z, float delta
   }
   else if (z<0)
   {
-    delta[0] = r*z;
+    
     delta[1] = -g*r*z / (g+b);
     delta[2] = -b*r*z / (g+b);
+    delta[0] = -delta[1]-delta[2];
   }
   return;
 }
@@ -256,7 +257,9 @@ void colorspace_operations::normalize_rgb( float rgb[3], uint8_t normalized_rgb[
   float rescale = 255/(rgb[0] + rgb[1]+rgb[2]);
   for (int i =0; i<3; i++)
   {
-    normalized_rgb[i]=static_cast<uint8_t> round(rescale*abs(rgb[i]));
+    normalized_rgb[i]=static_cast<uint8_t> ( constrain(round(
+                                            rescale*abs(rgb[i])),
+                                            0,255) );
   }
 }
 
