@@ -92,7 +92,7 @@ void apply_mode_fan(uint8_t color_mode, uint8_t freq_mode)
   const uint32_t* pulse_sizes;
   
 // could not find a way to cast pointer array in place like the other params
-  volatile uint32_t* pulse_seqs_2[] =           {&two_tone[0],&two_tone[0],&two_tone[0], &three_tone[0], &three_tone[0],&three_tone[0], &four_tone[0], &five_tone[0]};
+  volatile uint32_t* pulse_seqs_2[] =           {&two_tone[0],&two_tone[0],&pure_green[0], &three_tone[0], &three_tone[0],&three_tone[0], &four_tone[0], &five_tone[0]};
   const volatile uint32_t pulse_seq_sizes_2[] = {2,           2,           2,            3,              3,             3,              4,              5};
   const float    transform_angles[] =           {0,           5*PI/3,      PI/2,         PI/4,           PI,            0,             7*PI/4,         PI/2};
 
@@ -130,7 +130,7 @@ void apply_mode_fan(uint8_t color_mode, uint8_t freq_mode)
       fan.pulse_sequence_ptr = pulse_seqs_2[freq_mode-1];
       fan.pulse_sequence_size = pulse_seq_sizes_2[freq_mode-1];
 
-      rotation_matrix_full(transform_angles[freq_mode-1],fan.transform_matrix);
+      colorspace_operations::rotation_matrix_full(transform_angles[freq_mode-1],fan.transform_matrix);
       fan.transform_enabled = true;
       /*
         6:1 ratio, two-tone 0deg (10 petal)

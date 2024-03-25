@@ -7,7 +7,7 @@
 //using namespace TeensyTimerTool;
 
 #include "rhythm.h"
-//#include "transformations.h"
+#include "transformations.h"
 
 class strobe_channel{
   public:
@@ -23,6 +23,7 @@ class strobe_channel{
     uint16_t pulse_sequence_size;
 
     volatile uint32_t pulse_code;
+    uint8_t  extracted_pulse_code[4];
     volatile uint32_t pulse_count;
 
     float pulse_width_multiple;
@@ -47,6 +48,7 @@ class strobe_channel{
 
     bool transform_enabled = 0;
     float transform_matrix[3][3]={{1,0,0},{0,1,0},{0,0,1}};
+    float hue_param = 0.0;
 
     //constructor
     strobe_channel(uint8_t num_subchannels, int pin_numbers[],TeensyTimerTool::TimerGenerator* strobe_timer_id ,  TeensyTimerTool::TimerGenerator* pulse_timer_id )
@@ -107,7 +109,7 @@ class strobe_channel{
       this->pulse_code = *(this->pulse_sequence_ptr+this->pulse_count%this->pulse_sequence_size);
       if (this->transform_enabled)
       {
-        this->pulse_code = apply_transform(this->transform_matrix);
+        this->pulse_code = this->apply_transform(this->transform_matrix,this->hue_param);
       }
 
       if ( float_rhythm(this->pulse_count, this->rhythm_slope) )
@@ -138,35 +140,29 @@ class strobe_channel{
       this->strobe_timer.setPeriod(this->strobe_period_us);
     }
 
-    uint32_t apply_transform(float transform_matrix[3][3])
+    uint32_t apply_transform(float transform_matrix[3][3], float hue_param)
     {
       float input_rgb[3];
       float output_rgb[3];
+      float hue_step[3] = {0.0,0.0,0.0};
       uint8_t normalized_rgb[3];
 
-      //Extract pulse code
-      for (int i=0; i<3; i++)
+      colorspace_operations::extract_pulse_code(this->pulse_code, input_rgb);
+      colorspace_operations::compute_hue_delta(input_rgb, hue_param, hue_step);
+
+      // apply hue step
+      for (int i=0; i<3;i++)
       {
-        input_rgb[i] = float(this->extract_pulse_code(i));
+          input_rgb[i] += hue_step[i];
       }
 
       // Apply transform matrix
-      this->matmul(output_rgb,transform_matrix,input_rgb);
+      colorspace_operations::matmul(output_rgb,transform_matrix,input_rgb);
 
-      //Renormalize results back to ints
-      //The new num may not be exactly 255, it may be off by 1 thats ok
-      // Using absolute value is an artistic choice to get reflecting boundary conditions on the simplex
-     float rescale = 255/(output_rgb[0] + output_rgb[1]+output_rgb[2]);
-     for (int i =0; i<3; i++)
-     {
-      normalized_rgb[i]=static_cast<uint8_t> round(rescale*abs(output_rgb[i]));
-      }
-
-     //use the bitmask to return a pulse code
-     uint32_t new_pulse_code = reconstruct_pulse_code(normalized_rgb);
-//     Serial.printf(" in_rgb: %f,%f,%f::: out_rgb: %f,%f,%f  ::: normd: %i,%i,%i :: new_pulse_code = %#010x \n",
-//                          input_rgb[0],input_rgb[1],input_rgb[2],output_rgb[0],output_rgb[1],output_rgb[2],normalized_rgb[0],normalized_rgb[1],normalized_rgb[2],new_pulse_code);
-     return  new_pulse_code;
+      colorspace_operations::normalize_rgb(output_rgb, normalized_rgb);
+      //use the bitmask to return a pulse normalized_rgbcode
+      uint32_t new_pulse_code = colorspace_operations::reconstruct_pulse_code(normalized_rgb);
+      return  new_pulse_code;
     }
 
     void set_transform_matrix(float mat[3][3])
@@ -197,33 +193,6 @@ class strobe_channel{
         position = 3-position;
         uint32_t mask = 0xFF << (8*position);
         return ( static_cast<uint8_t>(  ( this->pulse_code & mask ) >> (8*position)  ) );
-      }
-      void matmul(float out[3],float left[3][3], float right[3])
-      {
-        // 3x3 matrix multuplication
-        for (uint8_t ii=0; ii<3;ii++){
-          out[ii] = 0.0;
-          for (uint8_t kk=0; kk<3; kk++)
-          {
-            out[ii] += left[ii][kk] * right[kk];
-          }
-        }
-      }
-      uint32_t reconstruct_pulse_code(uint8_t rgb[3])
-      {
-        uint32_t r_shifted = rgb[0] << 24;
-        uint32_t g_shifted = rgb[1] << 16;
-        uint32_t b_shifted = rgb[2] << 8;
-        return r_shifted+g_shifted+b_shifted;
-      }
-
-      uint32_t reconstruct_pulse_code_4(uint8_t udlr[4])
-      {
-        uint32_t u_shifted = udlr[0] << 24;
-        uint32_t d_shifted = udlr[1] << 16;
-        uint32_t l_shifted = udlr[2] << 8;
-        uint32_t r_shifted = udlr[3] << 0;
-        return u_shifted+d_shifted+l_shifted+r_shifted;
       }
 
 };

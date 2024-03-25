@@ -28,6 +28,7 @@ const uint32_t G_ = 0x80008000;
 const uint32_t B_ = 0x80800000;
 
 //Color modes for fan blade:
+volatile uint32_t pure_green[]={G,G};
 volatile uint32_t two_tone[]={G,G_};
 volatile uint32_t three_tone[]={R,G,B};
 volatile uint32_t four_tone[]={R,R_,B,B_};

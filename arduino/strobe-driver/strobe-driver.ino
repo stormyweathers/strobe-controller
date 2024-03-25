@@ -115,13 +115,13 @@ void loop() {
     }
     //Compute angle for modulation
     float angle = map_bounce(float(since_cycle)/modulation_period_ms,0,1,-arc_angle/2, arc_angle/2); 
-    rotation_matrix_full(angle,mat_rot);
+    colorspace_operations::rotation_matrix_full(angle,colorspace_operations::mat_rot);
 
     fan.transform_enabled = 1;    
-    fan.set_transform_matrix(mat_rot);
+    fan.set_transform_matrix(colorspace_operations::mat_rot);
 
     drip.transform_enabled = 1;
-    drip.set_transform_matrix(mat_rot);
+    drip.set_transform_matrix(colorspace_operations::mat_rot);
   
     //print_mat(mat_rot);
     
@@ -216,18 +216,17 @@ void loop() {
           }
         }
       }
+      fan.hue_param = 0.0;
       //copy_mat(id,transform_matrix);
     }
-    print_mat(transform_matrix);
   }
   
-
   if (strobe_enabled){
 
     if (manual_color)
     {
-      matrix_from_xy(panel.joystick_x,panel.joystick_y);
-      
+      colorspace_operations::matrix_from_xy(panel.joystick_x,panel.joystick_y,transform_matrix);
+      fan.hue_param = panel.joystick_z;
     }
 
     fan.compute_strobe_period(panel.analog_in_state[5],speed);
@@ -262,7 +261,7 @@ void loop() {
     
     modulation_period_ms = map(float(panel.analog_in_state[5]),0.0, 255.0, 1000.0, 30000.0  );
     
-    fan.pulse_width_multiple =  map(float(panel.analog_in_state[3]),0.0,255.0,0.03125,16.0);
+    fan.pulse_width_multiple =  map(float(panel.analog_in_state[3]),0.0,255.0,0.03125,32.0);
     drip.pulse_width_multiple = 4;
     dance.pulse_width_multiple =  map(float(panel.analog_in_state[3]),0.0,255.0,0.03125,16.0);
     
