@@ -1,8 +1,6 @@
 #ifndef TRANSFORMATIONS_H
 #define TRANSFORMATIONS_H
 
-
-
 namespace colorspace_operations{
 //Scratch space buffers to avoid many dynamic allocations
 float mat1[3][3];

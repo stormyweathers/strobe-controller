@@ -3,7 +3,7 @@
 
 #include "strobe_channel.h"
 #include <control-panel.h>
-
+#include "flicker_match.h"
 controlPanel panel;
 bool strobe_enabled = 0;
 TeensyTimerTool::errorCode err;
@@ -54,6 +54,8 @@ float transform_matrix[3][3] = {{1,0,0},{0,1,0},{0,0,1}};
 float arc_angle = TWO_PI;
 
 bool update_display_flag = false;
+
+flicker_match flicker_handler(&update_display_flag);
 
 float map_bounce(float val, float old_min, float old_max, float new_min, float new_max)
 //Modification of the map function to reflect off boundaries

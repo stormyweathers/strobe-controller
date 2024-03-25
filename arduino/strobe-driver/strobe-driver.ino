@@ -15,6 +15,7 @@ using namespace TeensyTimerTool;
 #include "timers.h"
 #include "transformations.h"
 #include "PulseTrain.h"
+#include "flicker_match.h"
 
 bool manual_color = false;
 
@@ -57,6 +58,10 @@ void setup() {
   fan.speed_control_range_hz = 3;
   fan.slider_control_range_hz = 3;
   fan.compute_strobe_period(128,0);
+
+  fan.relative_width_factors[1] = 1.1;
+  fan.relative_width_factors[2] = 1.8;
+
   Serial.printf("fan period: %i\n",fan.strobe_period_us);
 
   dance.pulse_sequence_ptr = &cycle[0];
@@ -107,6 +112,9 @@ elapsedMillis since_cycle;
 
 void loop() {
 
+  // Read human inputs
+  panel.readState();
+
   if (fanColorModulationEnabled && !manual_color)
   {
     if (since_cycle > modulation_period_ms)
@@ -126,10 +134,13 @@ void loop() {
     //print_mat(mat_rot);
     
   }
-
-  // Read human inputs
-  panel.readState();
   
+  // Double click main button to enter flicker match calibration mode
+  if ( panel.button.pressed() && ( panel.button.previousDuration() < 250) )
+  {
+    flicker_handler.run_match(&fan, &panel);
+  }
+
 
   if (coin_turn_on){
     Serial.println("Coin on!");

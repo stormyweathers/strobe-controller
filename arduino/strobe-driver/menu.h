@@ -3,9 +3,10 @@
  */
  #ifndef MENU_H
  #define MENU_H
-
-#include "strobe_channel.h"
+ 
 #include "globals.h"
+#include "strobe_channel.h"
+
 
 // Main mode selection
 #define FUNDAMENTAL 0

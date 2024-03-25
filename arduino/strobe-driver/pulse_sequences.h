@@ -35,6 +35,10 @@ volatile uint32_t four_tone[]={R,R_,B,B_};
 volatile uint32_t five_tone[]={R,R_,G_,B_,B};
 volatile uint32_t six_step[]={R,G,B,B_,G_, R_ };
 
+volatile uint32_t R_G[]={R,G};
+volatile uint32_t R_B[]={R,B};
+volatile uint32_t R_G_B[]={R,G,B};
+
 volatile uint32_t three_tone_comp[]={R_,G_,B_};
 
 

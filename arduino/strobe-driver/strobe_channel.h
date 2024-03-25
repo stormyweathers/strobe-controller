@@ -27,6 +27,7 @@ class strobe_channel{
     volatile uint32_t pulse_count;
 
     float pulse_width_multiple;
+    float relative_width_factors[3] = {1.0,1.0,1.0};
 
 
     uint8_t num_subchannels;
@@ -117,7 +118,10 @@ class strobe_channel{
         // Send a pulse for to each subchannel determined by the pulse code
         for (int i =0; i < this->num_subchannels; i++){
          digitalWriteFast(this->pin_list[i],HIGH);
-         this->pulse_width_timer_list[i].trigger(int(this->pulse_width_multiple*this->extract_pulse_code(i)) );
+         this->pulse_width_timer_list[i].trigger(int(
+                                              this->pulse_width_multiple*
+                                              this->relative_width_factors[i]*
+                                              this->extract_pulse_code(i)) );
         }
       }
       this->pulse_count++;
