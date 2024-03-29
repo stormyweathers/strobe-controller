@@ -118,10 +118,6 @@ void loop() {
 
   if (fanColorModulationEnabled && !manual_color)
   {
-    if (since_cycle > modulation_period_ms)
-    {
-     //since_cycle -= modulation_period_ms;
-    }
     //Compute angle for modulation
     float angle = map_bounce(float(since_cycle)/modulation_period_ms,0,1,-arc_angle/2, arc_angle/2); 
     colorspace_operations::rotation_matrix_full(angle,colorspace_operations::mat_rot);
@@ -131,9 +127,6 @@ void loop() {
 
     drip.transform_enabled = 1;
     drip.set_transform_matrix(colorspace_operations::mat_rot);
-  
-    //print_mat(mat_rot);
-    
   }
   
   // Double click main button to enter flicker match calibration mode
@@ -141,7 +134,6 @@ void loop() {
   {
     flicker_handler.run_match(&fan, &panel);
   }
-
 
   if (coin_turn_on){
     Serial.println("Coin on!");
@@ -151,7 +143,6 @@ void loop() {
     Serial.println("Coin off!");
     last_coin_edge = 2;
   }
-  
 
   if (!strobe_enabled)
   {
@@ -177,7 +168,6 @@ void loop() {
     } 
   }
   
-
   if (panel.joystick_button.fell()){
     //Joystick Cycles through modes, but skip color_mode ==1
 
@@ -196,23 +186,8 @@ void loop() {
 
     apply_mode_fan(color_mode, freq_mode);
   }
-/*
-  if (panel.joystick_button.isPressed())
-  {
-    Serial.printf("duration: %i \n",panel.joystick_button.currentDuration());
-  }
-  if (panel.joystick_button.isPressed() & (panel.joystick_button.currentDuration() > 250)  )
-  {
-    //Long joystick button press toggles color transformation enable
-    Serial.println("joystick long press!");
-    fan.transform_enabled = !fan.transform_enabled;
-    drip.transform_enabled = !drip.transform_enabled;
-  }
-  */
-
   
   if (panel.button.fell() ){
-    Serial.println("Main button pressed!");
     // cycle which channel is controlled by the encoder
     //channel_select = (channel_select+ 1) % 3;
     manual_color = !manual_color;
@@ -220,16 +195,8 @@ void loop() {
     if (!manual_color)
     {
       //reset the transform to identity matrix when manual color is disabled
-      for (uint8_t ii=0; ii<3;ii++){
-        for (uint8_t jj=0; jj<3 ;jj++){
-          transform_matrix[ii][jj]=0;
-          if(ii==jj){
-            transform_matrix[ii][jj] = 1;
-          }
-        }
-      }
+      colorspace_operations::copy_mat(colorspace_operations::id,transform_matrix);
       fan.hue_param = 0.0;
-      //copy_mat(id,transform_matrix);
     }
   }
   
@@ -277,26 +244,13 @@ void loop() {
     drip.pulse_width_multiple = 4;
     dance.pulse_width_multiple =  map(float(panel.analog_in_state[3]),0.0,255.0,0.03125,16.0);
     
-
-
     //Interrupts on
     sei();
     //Serial.printf("X=%f,Y0=%f,Z0=%f \n",panel.joystick_x, panel.joystick_y, panel.joystick_z);
   }
 
-  
   if (update_display_flag){
     update_display();
-  }
-  
-  /*
-  // Hande communications
-  if ( read_line(&read_buff[0])){
-    parse_line(&read_buff[0]);
-    apply_mode_fan(color_mode, freq_mode);
-    apply_mode_drip(color_mode, freq_mode);
-    apply_mode_dance(color_mode, freq_mode);
-  }
-  */
+  } 
 
 }

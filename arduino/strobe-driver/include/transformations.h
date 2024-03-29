@@ -31,6 +31,8 @@ uint32_t reconstruct_pulse_code(uint8_t rgb[3]);
 void matmul(float out[3][3],float left[3][3], float right[3][3]);
 // 3x3 Matrix-vector multiplication
 void matmul(float out[3],float left[3][3], float right[3]);
+// 3x3 matrix copy
+void copy_mat(float reference[3][3], float duplicate[3][3]);
 
 // Construct primitive simplex rotation matrix
 // This is NOT an SO(3) matrix
@@ -104,6 +106,15 @@ void colorspace_operations::matmul(float out[3],float left[3][3], float right[3]
         out[ii] += left[ii][kk] * right[kk];
       }
     }
+}
+
+void colorspace_operations::copy_mat(float reference[3][3], float duplicate[3][3])
+{      
+  for (uint8_t ii=0; ii<3;ii++){
+        for (uint8_t jj=0; jj<3 ;jj++){
+          duplicate[ii][jj] = reference[ii][jj];        
+          }
+        }
 }
 
 void colorspace_operations::rotation_matrix(float angle, float mat[3][3])
