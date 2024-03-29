@@ -11,7 +11,7 @@ public:
     bool verbose;
     uint32_t total_duration;
 
-    PulseTrain(const std::vector<uint32_t>& data, bool verbose = false);
+    PulseTrain(const std::vector<int32_t>* data, bool verbose = false);
 
     void VPrint(const std::string& message);
 

@@ -2,8 +2,8 @@
 #include <cmath>
 #include <cstdio>
 
-PulseTrain::PulseTrain(const std::vector<uint32_t>& data, bool verbose) : verbose(verbose), total_duration(0) {
-    for (int datum : data) {
+PulseTrain::PulseTrain(const std::vector<int32_t>* data, bool verbose) : verbose(verbose), total_duration(0) {
+    for (int datum : *data) {
         if (datum != 0) {
             this->InsertAtEnd(datum);
             this->total_duration += abs(datum);

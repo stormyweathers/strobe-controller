@@ -9,7 +9,7 @@ using namespace TeensyTimerTool;
 #include <ControlPanel.h>
 #include "globals.h"
 #include "pulse_sequences.h"
-#include "comms.h"
+//#include "comms.h"
 #include "menu.h"
 #include "strobe_channel.h"
 #include "timers.h"
@@ -17,6 +17,11 @@ using namespace TeensyTimerTool;
 #include "PulseTrain.h"
 #include "flicker_match.h"
 
+
+
+
+const std::vector<int32_t> init_data = {-10,10,-10,10};
+PulseTrain train(&init_data, false);
 
 void setup() {
   //TeensyTimerTool error handler
