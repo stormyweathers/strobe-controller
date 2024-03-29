@@ -1,5 +1,6 @@
 #include "PulseTrain.h"
 #include <cmath>
+#include <cstdio>
 
 PulseTrain::PulseTrain(const std::vector<uint32_t>& data, bool verbose) : verbose(verbose), total_duration(0) {
     for (int datum : data) {
@@ -45,6 +46,11 @@ void PulseTrain::AddPulse(uint32_t t_start, uint32_t t_width) {
         if (delay >= 0) {
             //this->VPrint("Skipping pulse, new pulse doesn't start till after");
             t_start += -duration;
+            if (nullptr == current_node->next)
+            {
+                this->InsertAtEnd(t_width);
+                t_width=0;
+            }
             idx++;
             current_node = current_node->next;
         } else if (delay < 0) {
@@ -79,6 +85,7 @@ void PulseTrain::AddPulse(uint32_t t_start, uint32_t t_width) {
                     this->InsertAtIndex(duration - t_start, idx + 1);
                     t_width += -(duration - t_start);
                     idx += 2;
+                    t_start = 0;
                     current_node = current_node->next;
                     current_node = current_node->next;
                 } else {
