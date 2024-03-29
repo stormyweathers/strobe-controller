@@ -27,6 +27,7 @@ void all_on()
   drip.strobe_timer.start();
   send_I2C_frequency(dance.fundamental_freq_hz);
   strobe_enabled = 1;
+  
 }
 
 void all_off()
