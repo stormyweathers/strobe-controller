@@ -48,7 +48,7 @@ void setup() {
 
   Serial.println("started panel init");
   panel.resolution = 8;
-  panel.init();
+  panel.init(oled_orientation);
   panel.joystick_x0 = 123;
   panel.joystick_y0 = 126;
   panel.joystick_z0 = 123;
@@ -133,6 +133,14 @@ void loop() {
   if ( panel.button.pressed() && ( panel.button.previousDuration() < 250) )
   {
     flicker_handler.run_match(&fan, &panel);
+  }
+
+  // Double click main button to enter flicker match calibration mode
+  if ( panel.joystick_button.pressed() && ( panel.joystick_button.previousDuration() < 250) )
+  {
+    oled_orientation = (oled_orientation+2)%4;
+    panel.display.setRotation(oled_orientation);
+    update_display();
   }
 
   if (coin_turn_on){
