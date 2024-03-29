@@ -1,1 +1,3 @@
 strobe-controller-backups
+*/*/.pio/
+*/*/.vscode/

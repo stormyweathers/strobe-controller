@@ -12,7 +12,7 @@
 
 //#include "globals.h"
 #include "strobe_channel.h"
-#include <control-panel.h>
+#include <ControlPanel.h>
 #include "pulse_sequences.h"
 
 class flicker_match{

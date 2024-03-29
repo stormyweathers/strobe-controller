@@ -30,7 +30,7 @@ bool fraction_component = NUMERATOR;
 // Incremented by pressing main button
 uint8_t channel_select = 0;
 
-strobe_channel* channel_list[3];
+//strobe_channel* channel_list[3];
 
 
 //bool coefficient = 0;

@@ -2,7 +2,7 @@
 #define PARAMS_H
 
 #include "strobe_channel.h"
-#include <control-panel.h>
+#include <ControlPanel.h>
 #include "flicker_match.h"
 controlPanel panel;
 bool strobe_enabled = 0;
@@ -42,7 +42,7 @@ uint16_t dance_denominator_prev = 1;
 uint16_t dance_fundamental_prev = 1;
 strobe_channel  drip(3, drip_pins, TeensyTimerTool::TMR3,TeensyTimerTool::TMR3);
 
-strobe_channel channel_list[3] = {fan,dance,drip};
+strobe_channel* channel_list[3] = {&fan,&dance,&drip};
 
 //Fields that are communicated from the raspi
 int16_t speed =  0;
