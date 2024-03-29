@@ -1,3 +1,4 @@
 strobe-controller-backups
 */*/.pio/
 */*/.vscode/
+.ipynb_checkpoints/
