@@ -1,5 +1,5 @@
 #include "LinkedList.h"
-
+#include <Arduino.h>
 Node::Node(int value) : data(value), next(nullptr) {}
 
 LinkedList::LinkedList() : head(nullptr) {}
@@ -42,4 +42,15 @@ void LinkedList::UpdateNode(int value, int index) {
     if (current) {
         current->data = value;
     }
+}
+
+void LinkedList::PrintList(){
+    Node* current_node = this->head;
+    while( nullptr != current_node )
+    {
+        Serial.print( current_node->data);
+        Serial.print(" -> ");
+        current_node = current_node->next;
+    }
+    Serial.print( "(nullptr)");
 }

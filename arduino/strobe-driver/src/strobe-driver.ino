@@ -21,7 +21,7 @@ using namespace TeensyTimerTool;
 
 
 const std::vector<int32_t> init_data = {-10,10,-10,10};
-PulseTrain train(&init_data, false);
+PulseTrain train(&init_data, true);
 
 void setup() {
   //TeensyTimerTool error handler
@@ -39,7 +39,6 @@ void setup() {
   panel.enc.attachButtonCallback(onButtonChanged);
   panel.enc.attachCallback(onRotorChanged);
   init_timers();
-
   Serial.println("initialized");
 }
 
@@ -68,6 +67,8 @@ void loop() {
   
   if (panel.joystick_button.fell()){
     //Joystick Cycles through modes, but skip color_mode ==1
+    train.AddPulse(10,30);
+    train.PrintList();
   }
   
   if (panel.button.fell() ){

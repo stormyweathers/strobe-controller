@@ -20,6 +20,8 @@ public:
     void InsertAtIndex(int value, int index);
 
     void UpdateNode(int value, int index);
+
+    void PrintList();
 };
 
 #endif // LINKED_LIST_H
