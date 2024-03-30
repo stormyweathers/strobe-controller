@@ -52,5 +52,5 @@ void LinkedList::PrintList(){
         Serial.print(" -> ");
         current_node = current_node->next;
     }
-    Serial.print( "(nullptr)");
+    Serial.println( "(nullptr)");
 }
