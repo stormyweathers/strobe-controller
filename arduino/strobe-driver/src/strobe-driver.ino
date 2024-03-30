@@ -78,7 +78,9 @@ void loop() {
     }
 
     */
-    train.PerformTests();
+    if(train.PerformTests()){
+      Serial.println("The pulse train test passed!");
+    }
     
   }
   

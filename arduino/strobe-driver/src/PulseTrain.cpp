@@ -63,6 +63,11 @@ void PulseTrain::AddPulse(int32_t t_start, int32_t t_width) {
                 t_width += delay;
                 t_start += -duration;
                 t_start = max(0, t_start);
+                if (nullptr == current_node->next){
+                    this->InsertAtEnd(t_width);
+                    t_width=0;
+                    this->VPrint("Extending positive tail with new pulse");
+                }
                 current_node = current_node->next;
                 idx++;
             } 
@@ -111,37 +116,44 @@ void PulseTrain::AddPulse(int32_t t_start, int32_t t_width) {
     
 }
 
-void PulseTrain::PerformTests(){
+bool PulseTrain::PerformTests(bool verbose=false){
     using namespace PulseTrainTest;
-
     int cases_passed = 0;
     for (int i =0; i< num_test_cases; i++)
     {
-        Serial.printf("Starting case %i\n", i);
+        if(verbose){
+            Serial.printf("Starting case %i\n", i);
+        }
         //Convert array to vec type
         //std::vector<int32_t> vec_data(init_pulse_train_data, *(&init_pulse_train_data+1) );
         std::vector<int32_t> vec_data(&init_pulse_train_data[0], &init_pulse_train_data[0]+len_init_pulse_train);
         //Initialize the starting pulse train
-        PulseTrain test_train(&vec_data, false);
+        PulseTrain test_train(&vec_data, verbose);
         //test_train.PrintList();
-
+        
         // Add the test pulse
         test_train.AddPulse(t_start_arr[i], t_width_arr[i]);
-        Serial.printf("\t   constructed seq:", i);
-        test_train.PrintList();
+        
+        
 
         //Construct the desired final pulse train
         std::vector<int32_t> vec_data_result(new_train_ptrs[i], new_train_ptrs[i] + new_train_length_arr[i]);
-        PulseTrain result_train(&vec_data_result ,false);
-        Serial.printf("\t known correct seq:", i);
-        result_train.PrintList();
+        PulseTrain result_train(&vec_data_result ,verbose);
+
         if  ( test_train.IsEquivalent(&result_train) ){
-            cases_passed++;
+           cases_passed++;
         }
         else{
             Serial.printf("Failed on case %i", i);
+            Serial.printf("\t   constructed seq:\n", i);
+            test_train.PrintList();
+            Serial.printf("\t known correct seq:\n", i);
+            result_train.PrintList();
         }
     }
-    Serial.printf("Passed %i out of %i test cases!\n",cases_passed,num_test_cases);
+    if(verbose){
+        Serial.printf("Passed %i out of %i test cases!\n",cases_passed,num_test_cases);
+    }
+    return (cases_passed == num_test_cases);
 
 }
