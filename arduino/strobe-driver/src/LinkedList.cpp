@@ -54,3 +54,19 @@ void LinkedList::PrintList(){
     }
     Serial.println( "(nullptr)");
 }
+
+bool LinkedList::IsEquivalent(LinkedList* testList){
+    Node* current = this->head;
+    Node* test_current = testList->head;
+    while (nullptr != current)
+    {
+        if ( current->data != test_current->data)
+        {
+            return false;
+        }
+        current = current->next;
+        test_current = test_current->next;
+    }
+    return true;
+
+}

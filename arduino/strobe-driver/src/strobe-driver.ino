@@ -17,11 +17,10 @@ using namespace TeensyTimerTool;
 #include "PulseTrain.h"
 #include "flicker_match.h"
 
-
-
-
 const std::vector<int32_t> init_data = {-10,10,-10,30,10,-10,10 };
+
 PulseTrain train(&init_data, true);
+PulseTrain train_dup(&init_data, true);
 
 void setup() {
   //TeensyTimerTool error handler
@@ -66,10 +65,21 @@ void loop() {
 
   
   if (panel.joystick_button.fell()){
-    //Joystick Cycles through modes, but skip color_mode ==1
+    /*
     train.PrintList();
+    if (train.IsEquivalent(&train_dup)){
+      Serial.println("Equivalence checked!");
+    }
+
     train.AddPulse(10,30);
     train.PrintList();
+    if (train.IsEquivalent(&train_dup)){
+      Serial.println("Second Equivalence checked!");
+    }
+
+    */
+    train.PerformTests();
+    
   }
   
   if (panel.button.fell() ){

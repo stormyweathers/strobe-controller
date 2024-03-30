@@ -17,6 +17,8 @@ public:
 
     void AddPulse(int32_t t_start, int32_t t_width);
 
+    void PerformTests();
+
     // Add any additional methods specific to PulseTrain here
 };
 

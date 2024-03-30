@@ -22,6 +22,8 @@ public:
     void UpdateNode(int value, int index);
 
     void PrintList();
+
+    bool IsEquivalent(LinkedList* testList);
 };
 
 #endif // LINKED_LIST_H

@@ -1,6 +1,7 @@
 #include "PulseTrain.h"
 #include <cmath>
 #include <cstdio>
+#include "PulseTrainTest.h"
 
 PulseTrain::PulseTrain(const std::vector<int32_t>* data, bool verbose) : verbose(verbose), total_duration(0) {
     for (int datum : *data) {
@@ -106,4 +107,41 @@ void PulseTrain::AddPulse(int32_t t_start, int32_t t_width) {
             // (Note: You need to implement this part)
         }
     }
+
+    
+}
+
+void PulseTrain::PerformTests(){
+    using namespace PulseTrainTest;
+
+    int cases_passed = 0;
+    for (int i =0; i< num_test_cases; i++)
+    {
+        Serial.printf("Starting case %i\n", i);
+        //Convert array to vec type
+        //std::vector<int32_t> vec_data(init_pulse_train_data, *(&init_pulse_train_data+1) );
+        std::vector<int32_t> vec_data(&init_pulse_train_data[0], &init_pulse_train_data[0]+len_init_pulse_train);
+        //Initialize the starting pulse train
+        PulseTrain test_train(&vec_data, false);
+        //test_train.PrintList();
+
+        // Add the test pulse
+        test_train.AddPulse(t_start_arr[i], t_width_arr[i]);
+        Serial.printf("\t   constructed seq:", i);
+        test_train.PrintList();
+
+        //Construct the desired final pulse train
+        std::vector<int32_t> vec_data_result(new_train_ptrs[i], new_train_ptrs[i] + new_train_length_arr[i]);
+        PulseTrain result_train(&vec_data_result ,false);
+        Serial.printf("\t known correct seq:", i);
+        result_train.PrintList();
+        if  ( test_train.IsEquivalent(&result_train) ){
+            cases_passed++;
+        }
+        else{
+            Serial.printf("Failed on case %i", i);
+        }
+    }
+    Serial.printf("Passed %i out of %i test cases!\n",cases_passed,num_test_cases);
+
 }
