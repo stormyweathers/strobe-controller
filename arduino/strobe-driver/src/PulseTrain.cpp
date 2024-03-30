@@ -17,8 +17,11 @@ void PulseTrain::VPrint(const std::string& message) {
     }
 }
 
-void PulseTrain::AddPulse(uint32_t t_start, uint32_t t_width) {
-
+void PulseTrain::AddPulse(int32_t t_start, int32_t t_width) {
+    if ( 0 > t_width ){
+        Serial.printf("AddPulse: t_width = %i < 0, skipping",t_width);
+        return;
+    }
 
     if (this->total_duration < t_start) {
         this->VPrint("Adding new pulse to end of train");
@@ -40,8 +43,8 @@ void PulseTrain::AddPulse(uint32_t t_start, uint32_t t_width) {
         this->VPrint("idx=" + std::to_string(idx) + ", data=" + std::to_string(current_node->data) +
                       ", t_start=" + std::to_string(t_start) + ", t_width=" + std::to_string(t_width));
 
-        uint32_t duration = abs(current_node->data);
-        uint32_t delay = t_start - duration;
+        int32_t duration = abs(current_node->data);
+        int32_t delay = t_start - duration;
 
         if (delay >= 0) {
             this->VPrint("Skipping pulse, new pulse doesn't start till after");
@@ -90,6 +93,7 @@ void PulseTrain::AddPulse(uint32_t t_start, uint32_t t_width) {
                     current_node = current_node->next;
                 } else {
                     Serial.print("Unhandled pulse type. What happened?");
+                    return;
                 }
             } else {
                 Serial.print("Unhandled main case. What happened?");

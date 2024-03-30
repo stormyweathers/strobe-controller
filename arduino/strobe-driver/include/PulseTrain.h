@@ -15,7 +15,7 @@ public:
 
     void VPrint(const std::string& message);
 
-    void AddPulse(uint32_t t_start, uint32_t t_width);
+    void AddPulse(int32_t t_start, int32_t t_width);
 
     // Add any additional methods specific to PulseTrain here
 };
