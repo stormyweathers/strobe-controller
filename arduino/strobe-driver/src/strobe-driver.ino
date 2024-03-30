@@ -20,7 +20,7 @@ using namespace TeensyTimerTool;
 
 
 
-const std::vector<int32_t> init_data = {-10,10,-10,10};
+const std::vector<int32_t> init_data = {-10,10,-10,30,10,-10,10 };
 PulseTrain train(&init_data, true);
 
 void setup() {
@@ -67,6 +67,7 @@ void loop() {
   
   if (panel.joystick_button.fell()){
     //Joystick Cycles through modes, but skip color_mode ==1
+    train.PrintList();
     train.AddPulse(10,30);
     train.PrintList();
   }

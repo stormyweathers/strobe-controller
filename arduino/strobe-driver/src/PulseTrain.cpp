@@ -61,10 +61,11 @@ void PulseTrain::AddPulse(int32_t t_start, int32_t t_width) {
                 this->VPrint("Positive pulse overlap of " + std::to_string(delay));
                 t_width += delay;
                 t_start += -duration;
-                t_start = max(static_cast<uint32_t>(0), t_start);
+                t_start = max(0, t_start);
                 current_node = current_node->next;
                 idx++;
-            } else if (current_node->data < 0) {
+            } 
+            else if (current_node->data < 0) {
                 if ( ( 0== t_start ) && (t_width < duration) ) {
                     this->VPrint("Adding ++- pulse");
                     this->UpdateNode(t_width, idx);
