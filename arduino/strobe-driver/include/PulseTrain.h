@@ -18,13 +18,17 @@ public:
 
     void VPrint(const std::string& message);
 
+    //Append new pulse at end of train
+    void AddPulseAtEnd(int32_t t_delay, int32_t t_width);
+
+    //Add new pulse anywhere within the current train
     void AddPulse(int32_t t_start, int32_t t_width);
 
     bool PerformTests(bool verbose=false);
 
     //Action for incrementing a single time step
     //Will be used as a timer callback function
-    bool ClockTick();
+    void ClockTick();
 
 
     // Add any additional methods specific to PulseTrain here

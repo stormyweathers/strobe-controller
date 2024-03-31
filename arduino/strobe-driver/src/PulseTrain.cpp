@@ -18,6 +18,20 @@ void PulseTrain::VPrint(const std::string& message) {
     }
 }
 
+void PulseTrain::AddPulseAtEnd(int32_t t_delay, int32_t t_width){
+    this->VPrint("Adding new pulse to end of train");
+
+    //Possibly some residual delay before new pulse starts
+    if (t_delay>0){
+        this->InsertAtEnd(-1*t_delay);
+    }
+    if (t_delay<0){
+        Serial.printf("AddPulseAtEnd: t_delay=%i<0, something went wrong\n",t_delay);
+    }
+    this->InsertAtEnd(t_width);
+    return;
+}
+
 void PulseTrain::AddPulse(int32_t t_start, int32_t t_width) {
 
     //Only nonnegative t_width makes sense
@@ -26,98 +40,90 @@ void PulseTrain::AddPulse(int32_t t_start, int32_t t_width) {
         return;
     }
 
-    
-        if (this->total_duration < t_start) {
-        this->VPrint("Adding new pulse to end of train");
-        this->InsertAtEnd(this->total_duration - t_start);
-        this->InsertAtEnd(t_width);
-        this->total_duration = t_width + t_start;
-        return;
-    } else if (this->total_duration == t_start) {
-        this->VPrint("Adding new pulse snug up to end of train");
-        this->InsertAtEnd(t_width);
-        this->total_duration = t_width + t_start;
+    //Only nonnegative t_start makes sense
+    if ( 0 > t_start ){
+        Serial.printf("AddPulse: t_start = %i < 0, skipping",t_start);
         return;
     }
-    
 
     int idx = 0;
     Node* current_node = this->head;
 
+    //Walk along the linked list until the proper place to add the pulse
+    //End once all the time in t_width has been added to the pulse train
     while (t_width > 0) {
+
+        //Reached the end of the pulse train,
+        if (nullptr == current_node)
+        {
+            AddPulseAtEnd(t_start, t_width);
+            return;
+        }
+
         this->VPrint("idx=" + std::to_string(idx) + ", data=" + std::to_string(current_node->data) +
                       ", t_start=" + std::to_string(t_start) + ", t_width=" + std::to_string(t_width));
 
-        int32_t duration = abs(current_node->data);
-        int32_t delay = t_start - duration;
+        int32_t current_node_duration = abs(current_node->data);
+        // Time between the end of the current node and the start of the new pulse
+        // delay>=0 means the new pulse begins AFTER the curent node
+        // delat<0 means the new pulse begins DURING the current node
+        int32_t delay = t_start - current_node_duration;
 
-        if (delay >= 0) {
+        if ( (delay >= 0) or (0 == current_node->data) ) {
             this->VPrint("Skipping pulse, new pulse doesn't start till after");
-            t_start += -duration;
-            if (nullptr == current_node->next)
-            {
-                this->InsertAtEnd(t_width);
-                t_width=0;
-            }
+            t_start += -current_node_duration;
             idx++;
             current_node = current_node->next;
-        } else if (delay < 0) {
-            if (current_node->data > 0) {
-                this->VPrint("Positive pulse overlap of " + std::to_string(delay));
-                t_width += delay;
-                t_start += -duration;
-                t_start = max(0, t_start);
-                if (nullptr == current_node->next){
-                    this->InsertAtEnd(t_width);
-                    t_width=0;
-                    this->VPrint("Extending positive tail with new pulse");
-                }
-                current_node = current_node->next;
-                idx++;
-            } 
-            else if (current_node->data < 0) {
-                if ( ( 0== t_start ) && (t_width < duration) ) {
-                    this->VPrint("Adding ++- pulse");
-                    this->UpdateNode(t_width, idx);
-                    this->InsertAtIndex(t_width - duration, idx + 1);
-                    return;
-                } else if ( (t_start > 0) && (t_width < -delay) ) {
-                    this->VPrint("Adding -+- pulse");
-                    this->UpdateNode(-t_start, idx);
-                    this->InsertAtIndex(t_width, idx + 1);
-                    this->InsertAtIndex(delay + t_width, idx + 2);
-                    return;
-                } else if ( ( 0 == t_start) && (t_width >= duration)) {
-                    this->VPrint("Adding +++ pulse");
-                    this->UpdateNode(duration, idx);
-                    t_width += -duration;
-                    idx++;
-                    current_node = current_node->next;
-                } else if ( (t_start > 0) && (t_width >= -delay) ) {
-                    this->VPrint("Adding -++ pulse");
-                    this->UpdateNode(-t_start, idx);
-                    this->InsertAtIndex(duration - t_start, idx + 1);
-                    t_width += -(duration - t_start);
-                    idx += 2;
-                    t_start = 0;
-                    current_node = current_node->next;
-                    current_node = current_node->next;
-                } else {
-                    Serial.print("Unhandled pulse type. What happened?");
-                    return;
-                }
-            } else {
-                Serial.print("Unhandled main case. What happened?");
-            }
+            continue;
+        } 
+        
+        //From here on out, delay < 0
+        if (current_node->data > 0) {
+            this->VPrint("Positive pulse overlap of " + std::to_string(delay));
+            t_width += delay;
+            t_start += -current_node_duration;
+            t_start = max(0, t_start);
+            current_node = current_node->next;
+            idx++;
+            continue;
         }
 
-        if (t_width > 0) {
-            // Handle residual pulse time remaining at the end of the train
-            // (Note: You need to implement this part)
-        }
+        //only get here if current_node->data < 0
+        if ( ( 0 == t_start ) && (t_width < current_node_duration) ) {
+            //Pulse begins exactly at the same time as current_node, and terminates within
+            this->VPrint("Adding ++- pulse");
+            this->UpdateNode(t_width, idx);
+            this->InsertAtIndex(t_width - current_node_duration, idx + 1);
+            return;
+        } else if ( ( 0 == t_start) && (t_width >= current_node_duration)) {
+            //Pulse begins exactly at the same time as current_node, but extends at least as long
+            this->VPrint("Adding +++ pulse");
+            this->UpdateNode(current_node_duration, idx);
+            t_width += -current_node_duration;
+            idx++;
+            current_node = current_node->next;
+        } else if ( (t_start > 0) && (t_width < -delay) ) {
+            //pulse begins within current_node, and terminates within
+            this->VPrint("Adding -+- pulse");
+            this->UpdateNode(-t_start, idx);
+            this->InsertAtIndex(t_width, idx + 1);
+            this->InsertAtIndex(delay + t_width, idx + 2);
+            return;
+        } else if ( (t_start > 0) && (t_width >= -delay) ) {
+            //pulse begins within current_node, but extends at least as long
+            this->VPrint("Adding -++ pulse");
+            this->UpdateNode(-t_start, idx);
+            this->InsertAtIndex(current_node_duration - t_start, idx + 1);
+            t_width += -(current_node_duration - t_start);
+            idx += 2;
+            t_start = 0;
+            current_node = current_node->next;
+            current_node = current_node->next;
+        } else {
+            Serial.print("Unhandled pulse type. What happened?");
+            return;
+        }   
     }
-
-    
 }
 
 bool PulseTrain::PerformTests(bool verbose=false){
@@ -161,7 +167,7 @@ bool PulseTrain::PerformTests(bool verbose=false){
     return (cases_passed == num_test_cases);
 }
 
-bool PulseTrain::ClockTick(){
+void PulseTrain::ClockTick(){
     //@ 1us tick interval, this overflows every 01:11:34.8
     this->tick_counter++;
     //Decrement the abs-value of the head-node's data
