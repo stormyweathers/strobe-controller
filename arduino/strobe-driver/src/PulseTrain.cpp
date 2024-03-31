@@ -19,12 +19,15 @@ void PulseTrain::VPrint(const std::string& message) {
 }
 
 void PulseTrain::AddPulse(int32_t t_start, int32_t t_width) {
+
+    //Only nonnegative t_width makes sense
     if ( 0 > t_width ){
         Serial.printf("AddPulse: t_width = %i < 0, skipping",t_width);
         return;
     }
 
-    if (this->total_duration < t_start) {
+    
+        if (this->total_duration < t_start) {
         this->VPrint("Adding new pulse to end of train");
         this->InsertAtEnd(this->total_duration - t_start);
         this->InsertAtEnd(t_width);
@@ -36,6 +39,7 @@ void PulseTrain::AddPulse(int32_t t_start, int32_t t_width) {
         this->total_duration = t_width + t_start;
         return;
     }
+    
 
     int idx = 0;
     Node* current_node = this->head;
@@ -155,5 +159,18 @@ bool PulseTrain::PerformTests(bool verbose=false){
         Serial.printf("Passed %i out of %i test cases!\n",cases_passed,num_test_cases);
     }
     return (cases_passed == num_test_cases);
+}
 
+bool PulseTrain::ClockTick(){
+    //@ 1us tick interval, this overflows every 01:11:34.8
+    this->tick_counter++;
+    //Decrement the abs-value of the head-node's data
+    
+    this->head->data = this->sign(this->head->data) * (abs(this->head->data)-1);
+
+    // When the data ticks down to zero, shift to the next node
+    if (0 == this->head->data){
+        this->head = this->head->next;
+        digitalWriteFast(this->PinNum, (this->head->data >0) );
+    }
 }

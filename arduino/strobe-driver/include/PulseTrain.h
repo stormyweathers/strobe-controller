@@ -5,11 +5,14 @@
 #include <string>
 #include "LinkedList.h"
 #include <Arduino.h>
+#include <TeensyTimerTool.h>
 
 class PulseTrain : public LinkedList {
 public:
     bool verbose;
     uint32_t total_duration;
+    uint32_t tick_counter = 0;
+    uint8_t PinNum=0;
 
     PulseTrain(const std::vector<int32_t>* data, bool verbose = false);
 
@@ -19,7 +22,23 @@ public:
 
     bool PerformTests(bool verbose=false);
 
+    //Action for incrementing a single time step
+    //Will be used as a timer callback function
+    bool ClockTick();
+
+
     // Add any additional methods specific to PulseTrain here
+
+private:
+
+    /*
+    * Simple func to get the sign of an integer
+    */
+    int32_t sign(int32_t val){
+        if (val > 0) return 1;
+        if (val < 0) return -1;
+        return 0;
+    }
 };
 
 #endif // PULSE_TRAIN_H

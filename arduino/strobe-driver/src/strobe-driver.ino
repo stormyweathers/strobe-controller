@@ -65,19 +65,7 @@ void loop() {
 
   
   if (panel.joystick_button.fell()){
-    /*
-    train.PrintList();
-    if (train.IsEquivalent(&train_dup)){
-      Serial.println("Equivalence checked!");
-    }
-
-    train.AddPulse(10,30);
-    train.PrintList();
-    if (train.IsEquivalent(&train_dup)){
-      Serial.println("Second Equivalence checked!");
-    }
-
-    */
+    
     if(train.PerformTests()){
       Serial.println("The pulse train test passed!");
     }
