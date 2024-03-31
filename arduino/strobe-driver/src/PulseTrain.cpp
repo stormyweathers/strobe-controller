@@ -170,8 +170,10 @@ bool PulseTrain::PerformTests(bool verbose=false){
 void PulseTrain::ClockTick(){
     //@ 1us tick interval, this overflows every 01:11:34.8
     this->tick_counter++;
+
+    if (nullptr == this->head){ return;}
+
     //Decrement the abs-value of the head-node's data
-    
     this->head->data = this->sign(this->head->data) * (abs(this->head->data)-1);
 
     // When the data ticks down to zero, shift to the next node

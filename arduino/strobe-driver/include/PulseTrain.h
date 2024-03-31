@@ -12,7 +12,7 @@ public:
     bool verbose;
     uint32_t total_duration;
     uint32_t tick_counter = 0;
-    uint8_t PinNum=0;
+    uint8_t PinNum=4;
 
     PulseTrain(const std::vector<int32_t>* data, bool verbose = false);
 

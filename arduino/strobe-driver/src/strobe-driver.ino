@@ -18,9 +18,14 @@ using namespace TeensyTimerTool;
 #include "flicker_match.h"
 
 const std::vector<int32_t> init_data = {-10,10,-10,30,10,-10,10 };
-
+const std::vector<int32_t> osc_data = {-1000,1000,-1000,1000,-1000,1000,-1000,1000,-1000,1000,-1000,1000,-1000,1000,-1000,1000,-1000,1000,-1000,1000 };
 PulseTrain train(&init_data, true);
-PulseTrain train_dup(&init_data, true);
+
+TeensyTimerTool::PeriodicTimer TickTimer(TeensyTimerTool::TMR4);
+
+void TickTimerCallback(){
+  train.ClockTick();
+}
 
 void setup() {
   //TeensyTimerTool error handler
@@ -38,6 +43,8 @@ void setup() {
   panel.enc.attachButtonCallback(onButtonChanged);
   panel.enc.attachCallback(onRotorChanged);
   init_timers();
+
+
   Serial.println("initialized");
 }
 
@@ -69,7 +76,9 @@ void loop() {
     if(train.PerformTests()){
       Serial.println("The pulse train test passed!");
     }
-    
+    train = PulseTrain(&osc_data,false);
+
+    TickTimer.begin(TickTimerCallback,1000);
   }
   
   if (panel.button.fell() ){
