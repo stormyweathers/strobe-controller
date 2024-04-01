@@ -2,12 +2,12 @@
 #define TIMERS_H
 
 //Encoder interface
-PeriodicTimer read_timer(TCK);
+TeensyTimerTool::PeriodicTimer read_timer(TeensyTimerTool::TCK);
 void read_timer_callback(){
   panel.enc.tick();
 }
 
-PeriodicTimer display_timer(TCK);
+TeensyTimerTool::PeriodicTimer display_timer(TeensyTimerTool::TCK);
 
 void display_timer_callback(){
   update_display_flag = true;

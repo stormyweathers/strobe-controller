@@ -1,6 +1,6 @@
 #include <digitalWriteFast.h>
 #include <TeensyTimerTool.h>
-using namespace TeensyTimerTool;
+//using namespace TeensyTimerTool;
 #include <math.h>
 #include <Bounce2.h>
 #include <elapsedMillis.h>
@@ -30,16 +30,24 @@ PulseTrain train_g(&osc_data,5, false);
 PulseTrain train_b(&osc_data,3, false);
 
 TeensyTimerTool::PeriodicTimer TickTimer(TeensyTimerTool::TMR4);
+TeensyTimerTool::PeriodicTimer PulsePeriodTimer(TeensyTimerTool::TMR4);
+uint32_t tick_period_us = 100;
+uint32_t strobe_period_us = tick_period_us * 1000 ;
 
 void TickTimerCallback(){
   train_r.ClockTick();
   train_g.ClockTick();
   train_b.ClockTick();
 }
+void SchedulePulseCallback(){
+  train_r.AddPulse(250,300);
+  train_g.AddPulse(500,300);
+  train_b.AddPulse(750,300);
+}
 
 void setup() {
   //TeensyTimerTool error handler
-  attachErrFunc(ErrorHandler(Serial));
+  TeensyTimerTool::attachErrFunc(TeensyTimerTool::ErrorHandler(Serial));
 
   Wire1.begin();
 
@@ -86,25 +94,17 @@ void loop() {
     if(train_r.PerformTests()){
       Serial.println("The pulse train test passed!");
     }
-    TickTimer.begin(TickTimerCallback,100);
+    TickTimer.begin(TickTimerCallback,tick_period_us);
+    PulsePeriodTimer.begin(SchedulePulseCallback,strobe_period_us);
   }
   
   if (panel.button.fell() ){
-         //Interrupts off
-    cli();
 
     train_r.AddPulse(250,1000);
     train_g.AddPulse(500,1000);
     train_b.AddPulse(750,1000);
 
     train_r.PrintList();
-    //train_g = PulseTrain(&osc_data,false,5);
-    //train_b = PulseTrain(&osc_data,false,3);
-    
-
-    
-    //Interrupts on
-    sei();
 
   }
   
