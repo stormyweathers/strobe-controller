@@ -18,13 +18,23 @@ using namespace TeensyTimerTool;
 #include "flicker_match.h"
 
 const std::vector<int32_t> init_data = {-10,10,-10,30,10,-10,10 };
-const std::vector<int32_t> osc_data = {-1000,1000,-1000,1000,-1000,1000,-1000,1000,-1000,1000,-1000,1000,-1000,1000,-1000,1000,-1000,1000,-1000,1000 };
-PulseTrain train(&init_data, true);
+const std::vector<int32_t> osc_data = {-1000,1000,-1000,1000,-1000,
+                                             1000,-1000,1000,-1000,
+                                             1000,-1000,1000,-1000,
+                                             1000,-1000,1000,-1000,
+                                             1000,-1000,1000,-1000,
+                                             INT32_MIN,INT32_MIN };
+
+PulseTrain train_r(&osc_data,4, false);
+PulseTrain train_g(&osc_data,5, false);
+PulseTrain train_b(&osc_data,3, false);
 
 TeensyTimerTool::PeriodicTimer TickTimer(TeensyTimerTool::TMR4);
 
 void TickTimerCallback(){
-  train.ClockTick();
+  train_r.ClockTick();
+  train_g.ClockTick();
+  train_b.ClockTick();
 }
 
 void setup() {
@@ -73,15 +83,28 @@ void loop() {
   
   if (panel.joystick_button.fell()){
     
-    if(train.PerformTests()){
+    if(train_r.PerformTests()){
       Serial.println("The pulse train test passed!");
     }
-    train = PulseTrain(&osc_data,false);
-
-    TickTimer.begin(TickTimerCallback,1000);
+    TickTimer.begin(TickTimerCallback,100);
   }
   
   if (panel.button.fell() ){
+         //Interrupts off
+    cli();
+
+    train_r.AddPulse(250,1000);
+    train_g.AddPulse(500,1000);
+    train_b.AddPulse(750,1000);
+
+    train_r.PrintList();
+    //train_g = PulseTrain(&osc_data,false,5);
+    //train_b = PulseTrain(&osc_data,false,3);
+    
+
+    
+    //Interrupts on
+    sei();
 
   }
   

@@ -10,11 +10,10 @@
 class PulseTrain : public LinkedList {
 public:
     bool verbose;
-    uint32_t total_duration;
     uint32_t tick_counter = 0;
-    uint8_t PinNum=4;
+    uint8_t PinNum;
 
-    PulseTrain(const std::vector<int32_t>* data, bool verbose = false);
+    PulseTrain(const std::vector<int32_t>* data, uint8_t _PinNum, bool _verbose = false);
 
     void VPrint(const std::string& message);
 

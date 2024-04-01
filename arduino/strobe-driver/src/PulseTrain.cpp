@@ -3,11 +3,11 @@
 #include <cstdio>
 #include "PulseTrainTest.h"
 
-PulseTrain::PulseTrain(const std::vector<int32_t>* data, bool verbose) : verbose(verbose), total_duration(0) {
+PulseTrain::PulseTrain(const std::vector<int32_t>* data, uint8_t _PinNum, bool _verbose)
+: verbose(_verbose), PinNum(_PinNum) {
     for (int datum : *data) {
         if (datum != 0) {
             this->InsertAtEnd(datum);
-            this->total_duration += abs(datum);
         }
     }
 };
