@@ -30,7 +30,7 @@ PulseTrain train_g(&osc_data,5, false);
 PulseTrain train_b(&osc_data,3, false);
 
 TeensyTimerTool::PeriodicTimer TickTimer(TeensyTimerTool::TMR4);
-TeensyTimerTool::PeriodicTimer PulsePeriodTimer(TeensyTimerTool::TMR4);
+TeensyTimerTool::PeriodicTimer PulsePeriodTimer(TeensyTimerTool::TMR3);
 uint32_t tick_period_us = 100;
 uint32_t strobe_period_us = tick_period_us * 1000 ;
 
@@ -44,6 +44,16 @@ void SchedulePulseCallback(){
   train_g.AddPulse(500,300);
   train_b.AddPulse(750,300);
 }
+
+void all_on(){
+  PulsePeriodTimer.start();
+  strobe_enabled = true;
+}
+void all_off(){
+  PulsePeriodTimer.stop();
+  strobe_enabled = false;
+}
+
 
 void setup() {
   //TeensyTimerTool error handler
@@ -63,6 +73,10 @@ void setup() {
   init_timers();
 
 
+  strobe_enabled = 1;
+  TickTimer.begin(TickTimerCallback,tick_period_us);
+  PulsePeriodTimer.begin(SchedulePulseCallback,strobe_period_us,false);
+
   Serial.println("initialized");
 }
 
@@ -80,6 +94,21 @@ void loop() {
     
   }
 
+  // Toggle is up (=0)
+  if ( (!strobe_enabled) & !panel.toggle.read()) {
+    Serial.println("Turning on");
+    //all_on();
+    PulsePeriodTimer.start();
+    //TickTimer.start();
+    strobe_enabled = 1;
+  }
+  if ( (strobe_enabled) & panel.toggle.read()) {
+    Serial.println("Turning off");
+    PulsePeriodTimer.stop();
+    //TickTimer.stop();
+    strobe_enabled = 0;
+    //all_off();
+  }
   // Double click main button to rotate oled
   if ( panel.joystick_button.pressed() && ( panel.joystick_button.previousDuration() < 250) )
   {
@@ -94,8 +123,7 @@ void loop() {
     if(train_r.PerformTests()){
       Serial.println("The pulse train test passed!");
     }
-    TickTimer.begin(TickTimerCallback,tick_period_us);
-    PulsePeriodTimer.begin(SchedulePulseCallback,strobe_period_us);
+
   }
   
   if (panel.button.fell() ){
@@ -120,5 +148,7 @@ void loop() {
   if (update_display_flag){
     update_display();
   } 
+
+
 
 }
