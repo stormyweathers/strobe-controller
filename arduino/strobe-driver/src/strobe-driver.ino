@@ -30,9 +30,9 @@ PulseTrain train_g(&osc_data,5, false);
 PulseTrain train_b(&osc_data,3, false);
 
 TeensyTimerTool::PeriodicTimer TickTimer(TeensyTimerTool::TMR4);
-TeensyTimerTool::PeriodicTimer PulsePeriodTimer(TeensyTimerTool::TMR3);
-uint32_t tick_period_us = 100;
-uint32_t strobe_period_us = tick_period_us * 1000 ;
+TeensyTimerTool::PeriodicTimer PulsePeriodTimer(TeensyTimerTool::GPT1);
+uint32_t tick_period_us = 10;
+uint32_t strobe_period_us = 10e6;
 
 void TickTimerCallback(){
   train_r.ClockTick();
@@ -40,9 +40,10 @@ void TickTimerCallback(){
   train_b.ClockTick();
 }
 void SchedulePulseCallback(){
-  train_r.AddPulse(250,300);
-  train_g.AddPulse(500,300);
-  train_b.AddPulse(750,300);
+  train_r.AddPulse(20,5);
+  train_g.AddPulse(15,1);
+  train_b.AddPulse(17,5);
+  //digitalWrite(6,!digitalRead(6));
 }
 
 void all_on(){
@@ -75,7 +76,7 @@ void setup() {
 
   strobe_enabled = 1;
   TickTimer.begin(TickTimerCallback,tick_period_us);
-  PulsePeriodTimer.begin(SchedulePulseCallback,strobe_period_us,false);
+  PulsePeriodTimer.begin(SchedulePulseCallback,strobe_period_us,true);
 
   Serial.println("initialized");
 }
