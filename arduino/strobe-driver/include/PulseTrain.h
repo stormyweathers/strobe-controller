@@ -42,6 +42,8 @@ private:
         if (val < 0) return -1;
         return 0;
     }
+
+    Node * temp_node_ptr;
 };
 
 #endif // PULSE_TRAIN_H

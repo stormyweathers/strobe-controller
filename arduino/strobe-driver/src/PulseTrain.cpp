@@ -178,7 +178,9 @@ void PulseTrain::ClockTick(){
 
     // When the data ticks down to zero, shift to the next node
     if (0 == this->head->data){
-        this->head = this->head->next;
+        this->temp_node_ptr = this->head->next;
+        free(this->head);
+        this->head = this->temp_node_ptr;
         digitalWriteFast(this->PinNum, (this->head->data >0) );
     }
 }
