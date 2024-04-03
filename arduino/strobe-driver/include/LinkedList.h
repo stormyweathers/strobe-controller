@@ -1,12 +1,13 @@
 #ifndef LINKED_LIST_H
 #define LINKED_LIST_H
+#include <Arduino.h>
 
 class Node {
 public:
-    int data;
+    volatile int32_t data;
     Node* next;
 
-    Node(int value);
+    Node(int32_t value);
 };
 
 class LinkedList {
@@ -15,11 +16,11 @@ public:
 
     LinkedList();
 
-    void InsertAtEnd(int value);
+    void InsertAtEnd(int32_t value);
 
-    void InsertAtIndex(int value, int index);
+    void InsertAtIndex(int32_t value, int16_t index);
 
-    void UpdateNode(int value, int index);
+    void UpdateNode(int32_t value, int16_t index);
 
     void PrintList();
 

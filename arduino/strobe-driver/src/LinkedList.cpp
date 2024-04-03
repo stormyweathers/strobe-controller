@@ -1,10 +1,10 @@
 #include "LinkedList.h"
 #include <Arduino.h>
-Node::Node(int value) : data(value), next(nullptr) {}
+Node::Node(int32_t value) : data(value), next(nullptr) {}
 
 LinkedList::LinkedList() : head(nullptr) {}
 
-void LinkedList::InsertAtEnd(int value) {
+void LinkedList::InsertAtEnd(int32_t value) {
     Node* newNode = new Node(value);
     if (!this->head) {
         this->head = newNode;
@@ -17,7 +17,7 @@ void LinkedList::InsertAtEnd(int value) {
     }
 }
 
-void LinkedList::InsertAtIndex(int value, int index) {
+void LinkedList::InsertAtIndex(int32_t value, int16_t index) {
     Node* newNode = new Node(value);
     if (index == 0) {
         newNode->next = this->head;
@@ -34,7 +34,7 @@ void LinkedList::InsertAtIndex(int value, int index) {
     }
 }
 
-void LinkedList::UpdateNode(int value, int index) {
+void LinkedList::UpdateNode(int32_t value, int16_t index) {
     Node* current = this->head;
     for (int i = 0; i < index && current; ++i) {
         current = current->next;
