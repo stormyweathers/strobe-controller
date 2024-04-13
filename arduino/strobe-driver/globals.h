@@ -2,7 +2,7 @@
 #define PARAMS_H
 
 #include "strobe_channel.h"
-#include <control-panel.h>
+#include <ControlPanel.h>
 #include "flicker_match.h"
 controlPanel panel;
 bool strobe_enabled = 0;
