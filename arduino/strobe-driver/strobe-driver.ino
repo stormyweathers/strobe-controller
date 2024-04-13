@@ -22,20 +22,20 @@ bool manual_color = false;
 void all_on()
 {
   Serial.println("Turning strobe timer on!");
-  fan.strobe_timer.start();
-  dance.strobe_timer.start();
-  drip.strobe_timer.start();
-  send_I2C_frequency(dance.fundamental_freq_hz);
+  for (int i = 0; i < num_channels; i++){
+    channel_list[i]->strobe_timer.start();
+  }
+  //send_I2C_frequency(dance.fundamental_freq_hz);
   strobe_enabled = 1;
 }
 
 void all_off()
 {
   Serial.println("Turning strobe timer off!");
-  fan.strobe_timer.stop();
-  dance.strobe_timer.stop();
-  drip.strobe_timer.stop();
-  send_I2C_frequency(-1);
+  for (int i = 0; i < num_channels; i++){
+    channel_list[i]->strobe_timer.stop();
+  }
+  //send_I2C_frequency(-1);
   strobe_enabled = 0;
 }
 
@@ -96,33 +96,21 @@ void setup() {
 
   Serial.printf("fan period: %i\n",fan.strobe_period_us);
 
-  dance.pulse_sequence_ptr = &cycle[0];
-  dance.pulse_sequence_size = 4;
-  dance.fundamental_freq_hz = 30.0;
-  dance.speed_control_range_hz = 10;
-  dance.compute_strobe_period(128,0);
-  Serial.printf("dance period: %i\n",dance.strobe_period_us);
-
-  drip.pulse_sequence_ptr = &fractal_path_6[0];
-  drip.pulse_sequence_size = 2187;
-  drip.fundamental_freq_hz = 60.0;
-  drip.speed_control_range_hz = 10;
-  drip.compute_strobe_period(128,0);
-  //drip.rhythm_slope = 1/phi;
-  Serial.printf("drip period: %i\n",drip.strobe_period_us);
+  spot.pulse_sequence_ptr = &fractal_path_6[0];
+  spot.pulse_sequence_size = 2187;
+  spot.fundamental_freq_hz = 60.0;
+  spot.speed_control_range_hz = 10;
+  spot.compute_strobe_period(128,0);
+  Serial.printf("spot period: %i\n",spot.strobe_period_us);
 
   err = fan.initialize_timers();
-  err = drip.initialize_timers();
-  err = dance.initialize_timers();
+  err = spot.initialize_timers();
+
   init_timers();
 
   //defined in menu.h
   panel.enc.attachButtonCallback(onButtonChanged);
   panel.enc.attachCallback(onRotorChanged);
-
-  channel_list[0]=&fan;
-  channel_list[1]=&dance;
-  channel_list[2]=&drip;
 
   Serial.println("initialized");
 
@@ -163,8 +151,8 @@ void loop() {
     fan.transform_enabled = 1;    
     fan.set_transform_matrix(colorspace_operations::mat_rot);
 
-    drip.transform_enabled = 1;
-    drip.set_transform_matrix(colorspace_operations::mat_rot);
+    spot.transform_enabled = 1;
+    spot.set_transform_matrix(colorspace_operations::mat_rot);
   
     //print_mat(mat_rot);
     
@@ -238,10 +226,10 @@ void loop() {
 
     fan.compute_strobe_period(panel.analog_in_state[5],speed);
     
-    drip.compute_strobe_period(127,speed);
+    spot.compute_strobe_period(127,speed);
     
-    dance.compute_strobe_period(127,speed);
     
+    /*
     dance_changed = (dance.numerator != dance_numerator_prev) | (dance.denominator != dance_denominator_prev) | (dance.fundamental_freq_hz != dance_fundamental_prev);
     if (dance_changed)
     {
@@ -251,28 +239,27 @@ void loop() {
       dance_denominator_prev = dance.denominator;
       dance_fundamental_prev = dance.fundamental_freq_hz;
     }
-    
+    */
+
     //Interrupts off
     cli();
     
     fan.update_strobe_period();
-    drip.update_strobe_period();
-    dance.update_strobe_period();
+    spot.update_strobe_period();
+    //dance.update_strobe_period();
 
     if (manual_color)
     {
       fan.set_transform_matrix(transform_matrix);
-      drip.set_transform_matrix(transform_matrix);
+      spot.set_transform_matrix(transform_matrix);
     }
 
     
     modulation_period_ms = map(float(panel.analog_in_state[5]),0.0, 255.0, 1000.0, 30000.0  );
     
     fan.pulse_width_multiple =  map(float(panel.analog_in_state[3]),0.0,255.0,0.03125,32.0);
-    drip.pulse_width_multiple = 4;
-    dance.pulse_width_multiple =  map(float(panel.analog_in_state[3]),0.0,255.0,0.03125,16.0);
-    
-
+    spot.pulse_width_multiple = map(float(panel.analog_in_state[3]),0.0,255.0,0.03125,32.0);
+    //dance.pulse_width_multiple =  map(float(panel.analog_in_state[3]),0.0,255.0,0.03125,16.0);
 
     //Interrupts on
     sei();
@@ -285,7 +272,7 @@ void loop() {
   }
   
   /*
-  // Hande communications
+  // Handle communications from UART
   if ( read_line(&read_buff[0])){
     parse_line(&read_buff[0]);
     apply_mode_fan(color_mode, freq_mode);

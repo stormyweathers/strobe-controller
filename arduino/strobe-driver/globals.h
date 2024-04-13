@@ -14,36 +14,31 @@ TeensyTimerTool::errorCode err;
 #define LED_FAN_R  4
 #define LED_FAN_G  5
 #define LED_FAN_B  3
-
-// 4-channels to control the slow-dance
-#define LED_DANCE_1  8
-#define LED_DANCE_2  10
-#define LED_DANCE_3  9
-#define LED_DANCE_4  7
-
-//3-channels to control the water drip
-//repurposing the 
-#define LED_DRIP_R 6
-#define LED_DRIP_G 22
-#define LED_DRIP_B 23
-
 int fan_pins[] = { LED_FAN_R, LED_FAN_G, LED_FAN_B };
-int dance_pins[] = { LED_DANCE_1, LED_DANCE_2, LED_DANCE_3, LED_DANCE_4};
-int drip_pins[] = { LED_DRIP_R, LED_DRIP_G, LED_DRIP_B};
-
-// Construct the 3 strobe channels
-//    strobe_channel(uint8_t num_subchannels, int pin_numbers[], TeensyTimerTool::TimerGenerator* pulse_timer_id );
 strobe_channel   fan(3,   fan_pins, TeensyTimerTool::TMR1,TeensyTimerTool::TMR1);
 bool fanColorModulationEnabled = false;
+
+//3-channels to control the spotlight
+#define LED_SPOT_R 6
+#define LED_SPOT_G 22
+#define LED_SPOT_B 23
+int spot_pins[] = { LED_SPOT_R, LED_SPOT_G, LED_SPOT_B};
+strobe_channel  spot(3, spot_pins, TeensyTimerTool::TMR3,TeensyTimerTool::TMR3);
+
+/*
+int dance_pins[] = { LED_DANCE_1, LED_DANCE_2, LED_DANCE_3, LED_DANCE_4};
 strobe_channel dance(4, dance_pins, TeensyTimerTool::TMR4,TeensyTimerTool::TMR2);
 float drive_frequency = 30.0;
 bool dance_changed = false;
 uint16_t dance_numerator_prev = 1 ;
 uint16_t dance_denominator_prev = 1;
 uint16_t dance_fundamental_prev = 1;
-strobe_channel  drip(3, drip_pins, TeensyTimerTool::TMR3,TeensyTimerTool::TMR3);
+*/
 
-uint8_t number_of_channels = 2;
+uint8_t num_channels = 2;
+strobe_channel* channel_list[2] = {&fan, &spot};
+
+
 float frequency_minimum_hz = 18.0; //Determined by type of timer used 
 
 

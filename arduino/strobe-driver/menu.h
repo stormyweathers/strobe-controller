@@ -31,7 +31,7 @@ bool fraction_component = NUMERATOR;
 // Incremented by pressing main button
 uint8_t channel_select = 0;
 
-strobe_channel* channel_list[3];
+
 
 
 //bool coefficient = 0;
@@ -42,7 +42,7 @@ void onButtonChanged(int state){
   if (state == 0){
     //Double press detection
     if ( (millis() - last_enc_release)  < long_press_thresh_ms ){
-      channel_select = (channel_select+ 1) % number_of_channels;
+      channel_select = (channel_select+ 1) % num_channels;
       last_enc_press = millis();
       return;
     }
@@ -125,6 +125,58 @@ void update_display()
   panel.display.setCursor(0,0);
   
   // 21 chars per line
+  panel.display.println("   Fan     Spot   ");
+  panel.display.println("---------------------");
+  panel.display.println("f0 (Hz)");
+  panel.display.printf(" %6.2f %6.2f \n",channel_list[0]->fundamental_freq_hz, channel_list[1]->fundamental_freq_hz);
+  //panel.display.println("|xxx.xx|xxx.xx|xxx.xx");
+  
+  if (enc_select_mode == FUNDAMENTAL)
+  {
+    //line format "|xxx.xx|xxx.xx|xxx.xx"
+    //Add an extra space for the decimal point
+    print_spaces(1+7*channel_select+2-decimal_place + (decimal_place < 0) );
+    panel.display.println("^");
+  }
+  else{  panel.display.println();  }
+  
+  panel.display.println("---------------------");
+  panel.display.println("ratio");
+  //panel.display.println("..a/b.....a/b.....a/b");
+  //panel.display.println("aaa/bbb.aaa/bbb.aaa/b");
+  panel.display.printf("%3i/%3i %2i/%2i \n",channel_list[0]->numerator,channel_list[0]->denominator,channel_list[1]->numerator,channel_list[1]->denominator);
+  
+
+  if (enc_select_mode == RATIO)
+  {
+    highlight_ratio(fraction_component,channel_select);
+  }
+  else{  panel.display.println();  }
+  
+  panel.display.println("---------------------");
+  panel.display.println("f (Hz)");
+  panel.display.printf(" %6.1f %6.1f %6.1f\n",channel_list[0]->freq_hz, channel_list[1]->freq_hz);
+  panel.display.println("---------------------");
+  panel.display.printf("strb:%i,tgl:%i,coil:%i%i \n",strobe_enabled,panel.toggle.read(),coin_turn_on,coin_turn_off);
+  panel.display.println("Speed Color Freq coin");
+  panel.display.printf("%04d   %1d     %1d   %1d,%1d",speed,color_mode,freq_mode,strobe_coin_enabled,last_coin_edge);
+  
+  panel.display.display();
+  
+  update_display_flag = false;
+}
+
+/*
+void update_display()
+{
+  // Takes too long, requires yield()
+
+  
+  panel.display.clearDisplay();
+  
+  panel.display.setCursor(0,0);
+  
+  // 21 chars per line
   panel.display.println("   Fan     Dan     Dr");
   panel.display.println("---------------------");
   panel.display.println("f0 (Hz)");
@@ -165,6 +217,7 @@ void update_display()
   
   update_display_flag = false;
 }
+*/
 
 /*
 void update_display(){
