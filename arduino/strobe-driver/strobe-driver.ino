@@ -91,16 +91,17 @@ void setup() {
   fan.slider_control_range_hz = 3;
   fan.compute_strobe_period(128,0);
 
-  fan.relative_width_factors[1] = 1.1;
-  fan.relative_width_factors[2] = 1.8;
+
 
   Serial.printf("fan period: %i\n",fan.strobe_period_us);
 
-  spot.pulse_sequence_ptr = &fractal_path_6[0];
-  spot.pulse_sequence_size = 2187;
-  spot.fundamental_freq_hz = 60.0;
-  spot.speed_control_range_hz = 10;
+  spot.pulse_sequence_ptr = &two_tone[0];
+  spot.pulse_sequence_size = 2;
+  spot.fundamental_freq_hz = 100.0;
+  spot.speed_control_range_hz = 0.1;
   spot.compute_strobe_period(128,0);
+  spot.relative_width_factors[1] = 1.1;
+  spot.relative_width_factors[2] = 1.8;
   Serial.printf("spot period: %i\n",spot.strobe_period_us);
 
   err = fan.initialize_timers();
@@ -120,8 +121,9 @@ void setup() {
  // fan.numerator = 6;
   color_mode = 2;
   freq_mode = 1;
-  //apply_mode_drip(color_mode, freq_mode);
-  apply_mode_fan(color_mode, freq_mode);
+  //apply_mode_drip(&drip, color_mode, freq_mode);
+  apply_mode_fan(&fan, color_mode, freq_mode);
+  apply_mode_spot(&spot, color_mode, freq_mode);
   //dance.compute_strobe_period(127,0);
   //send_I2C_frequency(dance.fundamental_freq_hz);
 
@@ -180,7 +182,8 @@ void loop() {
       freq_mode = 1;
     }
 
-    apply_mode_fan(color_mode, freq_mode);
+    apply_mode_fan(&fan, color_mode, freq_mode);
+    apply_mode_spot(&spot, color_mode, freq_mode);
   }
 /*
   if (panel.joystick_button.isPressed())
@@ -199,7 +202,8 @@ void loop() {
   if (panel.button.fell() ){
     Serial.println("Main button pressed!");
     manual_color = !manual_color;
-    apply_mode_fan(color_mode, freq_mode);
+    apply_mode_fan(&fan, color_mode, freq_mode);
+    apply_mode_spot(&spot, color_mode, freq_mode);
     if (!manual_color)
     {
       //reset the transform to identity matrix when manual color is disabled
@@ -275,9 +279,9 @@ void loop() {
   // Handle communications from UART
   if ( read_line(&read_buff[0])){
     parse_line(&read_buff[0]);
-    apply_mode_fan(color_mode, freq_mode);
-    apply_mode_drip(color_mode, freq_mode);
-    apply_mode_dance(color_mode, freq_mode);
+    apply_mode_fan(&fan, color_mode, freq_mode);
+    apply_mode_drip(&drip, color_mode, freq_mode);
+    apply_mode_dance(&dance, color_mode, freq_mode);
   }
   */
 
