@@ -39,6 +39,38 @@ void all_off()
   strobe_enabled = 0;
 }
 
+// Process state and inputs to determine whether to turn on/off
+void on_off()
+{
+  if (!strobe_enabled)
+  {
+    //When strobes are off, turn them on if:
+    // Toggle is up (=0)
+    if (!panel.toggle.read()){
+      all_on();
+    }
+    /*
+    // toggle is down, AND coin slot has the right edge
+    else if ( strobe_coin_enabled  )
+    {
+      all_on();
+    }
+    */
+  }
+
+  if (strobe_enabled)
+  {    
+    //When strobes are off, turn them on if:
+    // Toggle is DOWN (=1), and coin slot has the right edge
+    //if (panel.toggle.read() & !strobe_coin_enabled)
+    if (panel.toggle.read())
+    {
+      all_off();
+    } 
+  }
+
+}
+
 void setup() {
   //TeensyTimerTool error handler
   attachErrFunc(ErrorHandler(Serial));
@@ -115,6 +147,9 @@ void loop() {
   // Read human inputs
   panel.readState();
 
+  //Turn strobes on/off when appropriate
+  on_off();
+
   if (fanColorModulationEnabled && !manual_color)
   {
     if (since_cycle > modulation_period_ms)
@@ -140,43 +175,7 @@ void loop() {
   {
     flicker_handler.run_match(&fan, &panel);
   }
-
-
-  if (coin_turn_on){
-    Serial.println("Coin on!");
-    last_coin_edge = 1;
-  }
-  if (coin_turn_off){
-    Serial.println("Coin off!");
-    last_coin_edge = 2;
-  }
   
-
-  if (!strobe_enabled)
-  {
-    //When strobes are off, turn them on if:
-    // Toggle is up (=0)
-    if (!panel.toggle.read()){
-      all_on();
-    }
-    // toggle is down, AND coin slot has the right edge
-    else if ( strobe_coin_enabled  )
-    {
-      all_on();
-    }
-  }
-
-  if (strobe_enabled)
-  {    
-    //When strobes are off, turn them on if:
-    // Toggle is DOWN (=1), and coin slot has the right edge
-    if (panel.toggle.read() & !strobe_coin_enabled)
-    {
-      all_off();
-    } 
-  }
-  
-
   if (panel.joystick_button.fell()){
     //Joystick Cycles through modes, but skip color_mode ==1
 
