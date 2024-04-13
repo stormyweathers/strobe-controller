@@ -82,7 +82,50 @@ void parse_line(char buff[]){
 }
 
 
-void apply_mode_fan(uint8_t color_mode, uint8_t freq_mode)
+void apply_mode_spot(strobe_channel* channel, uint8_t color_mode, uint8_t freq_mode)
+{
+
+  const volatile uint32_t* pulse_seqs;
+  const uint32_t* pulse_sizes;
+  
+// could not find a way to cast pointer array in place like the other params
+  volatile uint32_t* pulse_seqs_2[] =           {&R_Rc[0],&G_Gc[0],&B_Bc[0], &R_G_B[0], &Rc_Gc_Bc[0], &three_tone[0], &four_tone[0], &five_tone[0]};
+  const volatile uint32_t pulse_seq_sizes_2[] = {2,           2,     2,            3,     3,             3,              4,              5};
+  const float    transform_angles[] =           {0,           0,      0,         0,           0,            0,             7*PI/4,         PI/2};
+
+
+  volatile uint32_t* pulse_seqs_3[] =           {&two_tone[0],&three_tone[0], &four_tone[0],&five_tone[0], &six_step[0],&five_tone[0],&fractal_path_1[0],&fractal_path_1[0]};
+  const volatile uint32_t pulse_seq_sizes_3[] = {2,           3,              4,            5,             6,             5,            9,                  9};
+  const float    arc_angles[] =                 {TWO_PI,      PI/2,         TWO_PI,         0,         PI/2,             TWO_PI,       PI/2,                0};
+
+  color_mode = constrain(color_mode,2,3);
+  freq_mode = constrain(freq_mode,1,8);
+  switch (color_mode)
+  {
+    
+    case 2:
+    // R-> G -> B Mode
+      channel->pulse_sequence_ptr = pulse_seqs_2[freq_mode-1];
+      channel->pulse_sequence_size = pulse_seq_sizes_2[freq_mode-1];
+      colorspace_operations::rotation_matrix_full(transform_angles[freq_mode-1],channel->transform_matrix);
+      channel->transform_enabled = true;
+      fanColorModulationEnabled = false;
+      break;
+
+    case 3:
+      channel->pulse_sequence_ptr = pulse_seqs_3[freq_mode-1];
+      channel->pulse_sequence_size = pulse_seq_sizes_3[freq_mode-1];
+      arc_angle = arc_angles[freq_mode-1];
+      fanColorModulationEnabled = true;
+      break;
+
+    default: 
+      fanColorModulationEnabled = false;
+      break;
+  }
+}
+
+void apply_mode_fan(strobe_channel* channel, uint8_t color_mode, uint8_t freq_mode)
 {
   const uint16_t* numerators;
   const uint16_t* denominators;
@@ -107,8 +150,8 @@ void apply_mode_fan(uint8_t color_mode, uint8_t freq_mode)
   {
     case 1:
     // Slow color change, too slow for strobe effects
-      fan.pulse_sequence_ptr = &fractal_path_6[0];
-      fan.pulse_sequence_size = 2187;
+      channel->pulse_sequence_ptr = &fractal_path_6[0];
+      channel->pulse_sequence_size = 2187;
       /*
       3:1 (5p)
       6:1 (10p)
@@ -127,11 +170,11 @@ void apply_mode_fan(uint8_t color_mode, uint8_t freq_mode)
     
     case 2:
     // R-> G -> B Mode
-      fan.pulse_sequence_ptr = pulse_seqs_2[freq_mode-1];
-      fan.pulse_sequence_size = pulse_seq_sizes_2[freq_mode-1];
+      channel->pulse_sequence_ptr = pulse_seqs_2[freq_mode-1];
+      channel->pulse_sequence_size = pulse_seq_sizes_2[freq_mode-1];
 
-      rotation_matrix_full(transform_angles[freq_mode-1],fan.transform_matrix);
-      fan.transform_enabled = true;
+      colorspace_operations::rotation_matrix_full(transform_angles[freq_mode-1],channel->transform_matrix);
+      channel->transform_enabled = true;
       /*
         6:1 ratio, two-tone 0deg (10 petal)
         6:1 ratio, two-tone 30deg (10 petal)
@@ -169,8 +212,8 @@ void apply_mode_fan(uint8_t color_mode, uint8_t freq_mode)
   27:1 ratio, 9-step (45 petal), 0-45deg  arc
   54:1 ratio, 9-step (90 petal), 0-45deg  arc
   */
-      fan.pulse_sequence_ptr = pulse_seqs_3[freq_mode-1];
-      fan.pulse_sequence_size = pulse_seq_sizes_3[freq_mode-1];
+      channel->pulse_sequence_ptr = pulse_seqs_3[freq_mode-1];
+      channel->pulse_sequence_size = pulse_seq_sizes_3[freq_mode-1];
       numerators = (const uint16_t [] )      {6, 12, 12,24,15, 30,27,54};
       denominators =(const uint16_t [] )     {1,  1,  1, 1, 1,  1, 1,1};
       speed_tuning_ranges = (const float []) {3,2.4,2.4, 3, 3,2.4, 3,3 };
@@ -186,13 +229,13 @@ void apply_mode_fan(uint8_t color_mode, uint8_t freq_mode)
       break;
   }
 
-    fan.numerator = numerators[freq_mode-1];
-    fan.denominator = denominators[freq_mode-1];
-    fan.speed_control_range_hz = speed_tuning_ranges[freq_mode-1];
+    channel->numerator = numerators[freq_mode-1];
+    channel->denominator = denominators[freq_mode-1];
+    channel->speed_control_range_hz = speed_tuning_ranges[freq_mode-1];
     
 }
 
-void apply_mode_drip(uint8_t color_mode, uint8_t freq_mode)
+void apply_mode_drip(strobe_channel* channel, uint8_t color_mode, uint8_t freq_mode)
 {
   const uint16_t* numerators;
   const uint16_t* denominators;
@@ -208,8 +251,8 @@ void apply_mode_drip(uint8_t color_mode, uint8_t freq_mode)
   {
     case 1:
     // Slow color change, too slow for strobe effects
-      drip.pulse_sequence_ptr = &fractal_path_6[0];
-      drip.pulse_sequence_size = 2187;
+      channel->pulse_sequence_ptr = &fractal_path_6[0];
+      channel->pulse_sequence_size = 2187;
       numerators = (const uint16_t [] ){1,2,3,4,5,6,7,8};
       denominators = (const uint16_t [] ) {1,1,1,1,1,1,1,1};
       speed_tuning_ranges = (const float [] ) {10.0, 7.0, 6.0, 5.0, 4.8, 4.6, 3.3, 4.3 };
@@ -218,8 +261,8 @@ void apply_mode_drip(uint8_t color_mode, uint8_t freq_mode)
     case 2:
     // R-> G -> B Mode
     // TUNED!
-      drip.pulse_sequence_ptr = &fractal_path_0[0];
-      drip.pulse_sequence_size = 3;
+      channel->pulse_sequence_ptr = &fractal_path_0[0];
+      channel->pulse_sequence_size = 3;
       numerators = (const uint16_t [] ){1,4,2,8,3,4,5,6};
       denominators = (const uint16_t [] ) {1,3,1,3,1,1,1,1};
       speed_tuning_ranges = (const float [] ) {10.0, 2.5, 6.25, 2.0, 6.0,4.0,2.5,4.5};
@@ -236,8 +279,8 @@ void apply_mode_drip(uint8_t color_mode, uint8_t freq_mode)
       denominators = (const uint16_t [] ) {1,2,1,1,1,1,3,1};
       speed_tuning_ranges = (const float [] ) {10.0, 5.0, 6.0, 8.0, 8.0, 4.4, 2.0 , 7};
       */
-      drip.pulse_sequence_ptr = pulse_seqs_3[freq_mode-1];
-      drip.pulse_sequence_size = pulse_seq_sizes_3[freq_mode-1];
+      channel->pulse_sequence_ptr = pulse_seqs_3[freq_mode-1];
+      channel->pulse_sequence_size = pulse_seq_sizes_3[freq_mode-1];
       numerators = (const uint16_t [] )      { 2, 4, 4, 8, 5, 5, 6,6};
       denominators =(const uint16_t [] )     { 1, 1, 1, 1, 2, 1, 2,1};
       speed_tuning_ranges = (const float []) {10, 7, 5, 7, 7, 7, 7,7 };
@@ -252,12 +295,12 @@ void apply_mode_drip(uint8_t color_mode, uint8_t freq_mode)
       break;
   }
 
-    drip.numerator = numerators[freq_mode-1];
-    drip.denominator = denominators[freq_mode-1];
-    drip.speed_control_range_hz = speed_tuning_ranges[freq_mode-1];
+    channel->numerator = numerators[freq_mode-1];
+    channel->denominator = denominators[freq_mode-1];
+    channel->speed_control_range_hz = speed_tuning_ranges[freq_mode-1];
 }
 
-void apply_mode_dance(uint8_t color_mode, uint8_t freq_mode)
+void apply_mode_dance(strobe_channel* channel, uint8_t color_mode, uint8_t freq_mode)
 {
   const uint16_t* numerators;
   const float* frequencies;
@@ -277,8 +320,8 @@ void apply_mode_dance(uint8_t color_mode, uint8_t freq_mode)
         20 Hz 4:1 
         25 Hz 4:1
       */
-      dance.pulse_sequence_ptr = &all_strobe[0];
-      dance.pulse_sequence_size = 2;
+      channel->pulse_sequence_ptr = &all_strobe[0];
+      channel->pulse_sequence_size = 2;
       numerators =   (const uint16_t [])     {1,  2,  1, 2, 2, 3, 4,  4};
       frequencies = (const float [])         {60,60, 40,40,20,20,20, 25};
       speed_tuning_ranges = (const float []) {15, 9,7.5,10, 4, 2, 3,1.8};
@@ -296,13 +339,13 @@ void apply_mode_dance(uint8_t color_mode, uint8_t freq_mode)
       */
       if (freq_mode%2 == 1)
       {
-        dance.pulse_sequence_ptr = &diagonal[0];
+        channel->pulse_sequence_ptr = &diagonal[0];
       }
       else
       {
-        dance.pulse_sequence_ptr = &orthogonal[0];
+        channel->pulse_sequence_ptr = &orthogonal[0];
       }
-      dance.pulse_sequence_size = 2;
+      channel->pulse_sequence_size = 2;
       numerators =   (const uint16_t [])     { 2, 2, 2, 2, 2, 2, 2, 2};
       frequencies = (const float [])         {60,60,50,50,40,40,30,30};
       speed_tuning_ranges = (const float []) {10,10,10,10, 9, 9, 9, 9};
@@ -319,8 +362,8 @@ void apply_mode_dance(uint8_t color_mode, uint8_t freq_mode)
     30 Hz 4:1, cycle
     25 Hz 4:1 cycle
     */
-      dance.pulse_sequence_ptr = &cycle[0];
-      dance.pulse_sequence_size = 4;
+      channel->pulse_sequence_ptr = &cycle[0];
+      channel->pulse_sequence_size = 4;
       numerators =   (const uint16_t [])     { 4, 4, 4, 4, 4, 4, 4, 4};
       frequencies = (const float [])         {60,55,50,45,40,35,30,25};
       speed_tuning_ranges = (const float []) {10,10,10,10,10,10,10, 8};
@@ -330,9 +373,10 @@ void apply_mode_dance(uint8_t color_mode, uint8_t freq_mode)
       break;
 
   }
-  dance.numerator = numerators[freq_mode-1];
-  dance.denominator = 1;
-  dance.speed_control_range_hz = speed_tuning_ranges[freq_mode-1];
-  dance.fundamental_freq_hz = frequencies[freq_mode-1];
+  channel->numerator = numerators[freq_mode-1];
+  channel->denominator = 1;
+  channel->speed_control_range_hz = speed_tuning_ranges[freq_mode-1];
+  channel->fundamental_freq_hz = frequencies[freq_mode-1];
 }
+
 #endif
