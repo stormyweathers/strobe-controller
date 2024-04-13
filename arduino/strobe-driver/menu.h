@@ -125,10 +125,10 @@ void update_display()
   panel.display.setCursor(0,0);
   
   // 21 chars per line
-  panel.display.println("   Fan     Spot   ");
+  panel.display.println("  Fan    Spot     XXX");
   panel.display.println("---------------------");
   panel.display.println("f0 (Hz)");
-  panel.display.printf(" %6.2f %6.2f \n",channel_list[0]->fundamental_freq_hz, channel_list[1]->fundamental_freq_hz);
+  panel.display.printf(" %6.2f %6.2f %6.2f\n",channel_list[0]->fundamental_freq_hz, channel_list[1]->fundamental_freq_hz,0.0);
   //panel.display.println("|xxx.xx|xxx.xx|xxx.xx");
   
   if (enc_select_mode == FUNDAMENTAL)
@@ -144,7 +144,7 @@ void update_display()
   panel.display.println("ratio");
   //panel.display.println("..a/b.....a/b.....a/b");
   //panel.display.println("aaa/bbb.aaa/bbb.aaa/b");
-  panel.display.printf("%3i/%3i %2i/%2i \n",channel_list[0]->numerator,channel_list[0]->denominator,channel_list[1]->numerator,channel_list[1]->denominator);
+  panel.display.printf("%3i/%3i %2i/%2i %2i/%2i\n",channel_list[0]->numerator,channel_list[0]->denominator,channel_list[1]->numerator,channel_list[1]->denominator,0,0);
   
 
   if (enc_select_mode == RATIO)
@@ -155,9 +155,9 @@ void update_display()
   
   panel.display.println("---------------------");
   panel.display.println("f (Hz)");
-  panel.display.printf(" %6.1f %6.1f %6.1f\n",channel_list[0]->freq_hz, channel_list[1]->freq_hz);
+  panel.display.printf(" %6.1f %6.1f %6.1f\n",channel_list[0]->freq_hz, channel_list[1]->freq_hz,0.0);
   panel.display.println("---------------------");
-  panel.display.printf("strb:%i,tgl:%i,coil:%i%i \n",strobe_enabled,panel.toggle.read(),coin_turn_on,coin_turn_off);
+  panel.display.printf("Strobe Enabled:%i\n",strobe_enabled);
   panel.display.println("Speed Color Freq coin");
   panel.display.printf("%04d   %1d     %1d   %1d,%1d",speed,color_mode,freq_mode,strobe_coin_enabled,last_coin_edge);
   
