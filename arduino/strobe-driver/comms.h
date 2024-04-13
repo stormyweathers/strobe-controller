@@ -93,7 +93,6 @@ void apply_mode_spot(strobe_channel* channel, uint8_t color_mode, uint8_t freq_m
   const volatile uint32_t pulse_seq_sizes_2[] = {2,           2,     2,            3,     3,             3,              4,              5};
   const float    transform_angles[] =           {0,           0,      0,         0,           0,            0,             7*PI/4,         PI/2};
 
-
   volatile uint32_t* pulse_seqs_3[] =           {&two_tone[0],&three_tone[0], &four_tone[0],&five_tone[0], &six_step[0],&five_tone[0],&fractal_path_1[0],&fractal_path_1[0]};
   const volatile uint32_t pulse_seq_sizes_3[] = {2,           3,              4,            5,             6,             5,            9,                  9};
   const float    arc_angles[] =                 {TWO_PI,      PI/2,         TWO_PI,         0,         PI/2,             TWO_PI,       PI/2,                0};
@@ -123,6 +122,9 @@ void apply_mode_spot(strobe_channel* channel, uint8_t color_mode, uint8_t freq_m
       fanColorModulationEnabled = false;
       break;
   }
+  // Normalization of frequency for different pulse sequence sizes
+  channel->numerator = channel->pulse_sequence_size;
+  channel->denominator = 2;
 }
 
 void apply_mode_fan(strobe_channel* channel, uint8_t color_mode, uint8_t freq_mode)

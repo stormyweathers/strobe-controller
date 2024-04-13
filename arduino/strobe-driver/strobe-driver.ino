@@ -256,7 +256,7 @@ void loop() {
   }
 
   //Serial.println(map(float(panel.analog_in_state[4]),0, 255, 1'000'000  , 10'000'000  ));
-  mode_period_us = map(float(panel.analog_in_state[4]),0, 255, 1'000'000  , 999'000'000  );    
+  mode_period_us = map(float(panel.analog_in_state[4]),0, 255, 500'000  , 999'000'000  );    
   
   if (update_display_flag){
     update_display();
