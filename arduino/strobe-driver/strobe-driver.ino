@@ -72,6 +72,7 @@ void on_off()
 }
 
 void setup() {
+  randomSeed(0);
   //TeensyTimerTool error handler
   attachErrFunc(ErrorHandler(Serial));
 
@@ -79,7 +80,7 @@ void setup() {
 
   Serial.println("started panel init");
   panel.resolution = 8;
-  panel.init();
+  panel.init(screen_rotation);
   panel.joystick_x0 = 123;
   panel.joystick_y0 = 126;
   panel.joystick_z0 = 123;
@@ -181,7 +182,7 @@ void loop() {
 
     if ( 9 == freq_mode  )
     {
-      color_mode = color_mode%3+1;
+      color_mode = (color_mode)%3+1;
       freq_mode = 1;
     }
 

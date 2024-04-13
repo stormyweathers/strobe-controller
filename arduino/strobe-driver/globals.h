@@ -6,7 +6,7 @@
 #include "flicker_match.h"
 
 controlPanel panel;
-uint8_t screen_rotation = 0;
+uint8_t screen_rotation = 2;
 
 bool strobe_enabled = 0;
 TeensyTimerTool::errorCode err;

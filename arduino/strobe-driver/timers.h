@@ -14,6 +14,8 @@ void display_timer_callback(){
 
 PeriodicTimer mode_timer(TCK64);
 void mode_timer_callback(){
+
+  /*
   //Increment the mode parameter
     freq_mode++;
 
@@ -22,9 +24,9 @@ void mode_timer_callback(){
       color_mode = color_mode%3+2;
       freq_mode = 1;
     }
-
-    apply_mode_fan(&fan, color_mode, freq_mode);
-    apply_mode_spot(&spot, color_mode, freq_mode);
+  */
+    apply_mode_fan(&fan, random(1,4), random(1,9));
+    apply_mode_spot(&spot, random(1,4), random(1,9));
 }
 
 void init_timers(){
