@@ -9,6 +9,7 @@ bool strobe_enabled = 0;
 TeensyTimerTool::errorCode err;
 //Pin numbers on control panel board
 
+
 // 3- channels to control the fan
 #define LED_FAN_R  4
 #define LED_FAN_G  5
@@ -41,6 +42,9 @@ uint16_t dance_numerator_prev = 1 ;
 uint16_t dance_denominator_prev = 1;
 uint16_t dance_fundamental_prev = 1;
 strobe_channel  drip(3, drip_pins, TeensyTimerTool::TMR3,TeensyTimerTool::TMR3);
+
+uint8_t number_of_channels = 2;
+
 
 //Fields that are communicated from the raspi
 int16_t speed =  0;

@@ -13,7 +13,8 @@
 #define RATIO 1
 #define NUMBER_OF_MODES 2
 
-uint32_t last_enc_press = 0;
+uint32_t last_enc_press = millis();
+uint32_t last_enc_release = millis();
 uint32_t long_press_thresh_ms = 250;
 uint8_t enc_select_mode = RATIO;
 bool manual_control = true;
@@ -39,7 +40,14 @@ strobe_channel* channel_list[3];
 
 void onButtonChanged(int state){
   if (state == 0){
-    // Start press
+    //Double press detection
+    if ( (millis() - last_enc_release)  < long_press_thresh_ms ){
+      channel_select = (channel_select+ 1) % number_of_channels;
+      last_enc_press = millis();
+      return;
+    }
+
+    // single press
     switch(enc_select_mode)
     {
       case FUNDAMENTAL:
@@ -54,15 +62,19 @@ void onButtonChanged(int state){
       default:
         break;
     }
-    
     last_enc_press = millis();
+    return;
   }
+
   else{
     //Release
+
+    //Long press detection
     if ( (millis() - last_enc_press)  > long_press_thresh_ms ){
       enc_select_mode= (enc_select_mode+1)%NUMBER_OF_MODES;
       //Serial.println(enc_select_mode);
     }
+    last_enc_release = millis();
   }
 }
 void onRotorChanged(int state, int delta){

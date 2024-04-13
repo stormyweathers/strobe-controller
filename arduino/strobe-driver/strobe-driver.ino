@@ -208,11 +208,8 @@ void loop() {
   }
   */
 
-  
   if (panel.button.fell() ){
     Serial.println("Main button pressed!");
-    // cycle which channel is controlled by the encoder
-    //channel_select = (channel_select+ 1) % 3;
     manual_color = !manual_color;
     apply_mode_fan(color_mode, freq_mode);
     if (!manual_color)
