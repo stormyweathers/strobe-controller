@@ -4,7 +4,10 @@
 #include "strobe_channel.h"
 #include <ControlPanel.h>
 #include "flicker_match.h"
+
 controlPanel panel;
+uint8_t screen_rotation = 0;
+
 bool strobe_enabled = 0;
 TeensyTimerTool::errorCode err;
 //Pin numbers on control panel board

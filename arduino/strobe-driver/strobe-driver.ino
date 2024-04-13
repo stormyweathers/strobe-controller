@@ -166,6 +166,13 @@ void loop() {
   {
     flicker_handler.run_match(&fan, &panel);
   }
+
+  // Double click joystick button to rotate screen
+  if ( panel.joystick_button.pressed() && ( panel.joystick_button.previousDuration() < 250) )
+  {
+    screen_rotation = (screen_rotation+1)%4;
+    panel.display.setRotation(screen_rotation);
+  }
   
   if (panel.joystick_button.fell()){
     //Joystick Cycles through modes, but skip color_mode ==1
