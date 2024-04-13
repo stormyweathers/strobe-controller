@@ -158,8 +158,8 @@ void update_display()
   panel.display.printf(" %6.1f %6.1f %6.1f\n",channel_list[0]->freq_hz, channel_list[1]->freq_hz,0.0);
   panel.display.println("---------------------");
   panel.display.printf("Strobe Enabled:%i\n",strobe_enabled);
-  panel.display.println("Speed Color Freq coin");
-  panel.display.printf("%04d   %1d     %1d   %1d,%1d",speed,color_mode,freq_mode,strobe_coin_enabled,last_coin_edge);
+  panel.display.println("Speed Color Freq Per.");
+  panel.display.printf("%04d   %1d    %1d    %4d",speed,color_mode,freq_mode,mode_period_us/1'000'000);
   
   panel.display.display();
   

@@ -57,6 +57,9 @@ bool update_display_flag = false;
 
 flicker_match flicker_handler(&update_display_flag);
 
+uint32_t mode_period_us;
+
+
 float map_bounce(float val, float old_min, float old_max, float new_min, float new_max)
 //Modification of the map function to reflect off boundaries
 {

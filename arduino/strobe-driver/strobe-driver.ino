@@ -86,10 +86,11 @@ void setup() {
   
   fan.pulse_sequence_ptr = &two_tone[0];
   fan.pulse_sequence_size = 2;
-  fan.fundamental_freq_hz = 100;
+  fan.fundamental_freq_hz = 26.9;
   fan.speed_control_range_hz = 3;
   fan.slider_control_range_hz = 3;
   fan.compute_strobe_period(128,0);
+  fan.pulse_width_multiple = 1.5;
 
 
 
@@ -171,33 +172,16 @@ void loop() {
 
     freq_mode++;
 
-    if ( (9 == freq_mode) && (2 == color_mode) )
+    if ( 9 == freq_mode  )
     {
-      color_mode =3 ;
-      freq_mode = 1;
-    }
-    if ( (6 == freq_mode) && (3 == color_mode) )
-    {
-      color_mode = 2;
+      color_mode = color_mode%3+1;
       freq_mode = 1;
     }
 
     apply_mode_fan(&fan, color_mode, freq_mode);
     apply_mode_spot(&spot, color_mode, freq_mode);
   }
-/*
-  if (panel.joystick_button.isPressed())
-  {
-    Serial.printf("duration: %i \n",panel.joystick_button.currentDuration());
-  }
-  if (panel.joystick_button.isPressed() & (panel.joystick_button.currentDuration() > 250)  )
-  {
-    //Long joystick button press toggles color transformation enable
-    Serial.println("joystick long press!");
-    fan.transform_enabled = !fan.transform_enabled;
-    drip.transform_enabled = !drip.transform_enabled;
-  }
-  */
+
 
   if (panel.button.fell() ){
     Serial.println("Main button pressed!");
@@ -226,11 +210,12 @@ void loop() {
     {
       colorspace_operations::matrix_from_xy(panel.joystick_x,panel.joystick_y,transform_matrix);
       fan.hue_param = panel.joystick_z;
+      spot.hue_param = panel.joystick_z;
     }
 
     fan.compute_strobe_period(panel.analog_in_state[5],speed);
-    
-    spot.compute_strobe_period(127,speed);
+    //No speed control on spotlight
+    spot.compute_strobe_period(127,0);
     
     
     /*
@@ -259,10 +244,10 @@ void loop() {
     }
 
     
-    modulation_period_ms = map(float(panel.analog_in_state[5]),0.0, 255.0, 1000.0, 30000.0  );
-    
-    fan.pulse_width_multiple =  map(float(panel.analog_in_state[3]),0.0,255.0,0.03125,32.0);
+    modulation_period_ms = 5000.0;// map(float(panel.analog_in_state[4]),0.0, 255.0, 1000.0, 30000.0  );
+    mode_timer.setPeriod( mode_period_us );
     spot.pulse_width_multiple = map(float(panel.analog_in_state[3]),0.0,255.0,0.03125,32.0);
+    //Serial.println(map(float(panel.analog_in_state[3]),0.0,255.0,0.03125,32.0));
     //dance.pulse_width_multiple =  map(float(panel.analog_in_state[3]),0.0,255.0,0.03125,16.0);
 
     //Interrupts on
@@ -270,6 +255,8 @@ void loop() {
     //Serial.printf("X=%f,Y0=%f,Z0=%f \n",panel.joystick_x, panel.joystick_y, panel.joystick_z);
   }
 
+  //Serial.println(map(float(panel.analog_in_state[4]),0, 255, 1'000'000  , 10'000'000  ));
+  mode_period_us = map(float(panel.analog_in_state[4]),0, 255, 1'000'000  , 999'000'000  );    
   
   if (update_display_flag){
     update_display();
