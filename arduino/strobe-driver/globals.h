@@ -44,6 +44,7 @@ uint16_t dance_fundamental_prev = 1;
 strobe_channel  drip(3, drip_pins, TeensyTimerTool::TMR3,TeensyTimerTool::TMR3);
 
 uint8_t number_of_channels = 2;
+float frequency_minimum_hz = 18.0; //Determined by type of timer used 
 
 
 //Fields that are communicated from the raspi
