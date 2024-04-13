@@ -125,6 +125,7 @@ void apply_mode_spot(strobe_channel* channel, uint8_t color_mode, uint8_t freq_m
   // Normalization of frequency for different pulse sequence sizes
   channel->numerator = channel->pulse_sequence_size;
   channel->denominator = 2;
+  pulse_width_normalization =  2.0/channel->pulse_sequence_size;
 }
 
 void apply_mode_fan(strobe_channel* channel, uint8_t color_mode, uint8_t freq_mode)

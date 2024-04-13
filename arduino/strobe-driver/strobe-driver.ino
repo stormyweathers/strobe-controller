@@ -246,7 +246,7 @@ void loop() {
     
     modulation_period_ms = 5000.0;// map(float(panel.analog_in_state[4]),0.0, 255.0, 1000.0, 30000.0  );
     mode_timer.setPeriod( mode_period_us );
-    spot.pulse_width_multiple = map(float(panel.analog_in_state[3]),0.0,255.0,0.03125,32.0);
+    spot.pulse_width_multiple = pulse_width_normalization*map(float(panel.analog_in_state[3]),0.0,255.0,0.03125,32.0);
     //Serial.println(map(float(panel.analog_in_state[3]),0.0,255.0,0.03125,32.0));
     //dance.pulse_width_multiple =  map(float(panel.analog_in_state[3]),0.0,255.0,0.03125,16.0);
 

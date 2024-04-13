@@ -17,6 +17,7 @@ TeensyTimerTool::errorCode err;
 int fan_pins[] = { LED_FAN_R, LED_FAN_G, LED_FAN_B };
 strobe_channel   fan(3,   fan_pins, TeensyTimerTool::TMR1,TeensyTimerTool::TMR1);
 bool fanColorModulationEnabled = false;
+float pulse_width_normalization = 1.0;
 
 //3-channels to control the spotlight
 #define LED_SPOT_R 6
