@@ -7,6 +7,9 @@
 
 //my custom libs
 #include <ControlPanel.h>
+#include <easing.h>
+
+//Local includes
 #include "globals.h"
 #include "pulse_sequences.h"
 //#include "comms.h"
@@ -16,6 +19,7 @@
 #include "transformations.h"
 #include "PulseTrain.h"
 #include "flicker_match.h"
+
 
 const std::vector<int32_t> init_data = {-10,10,-10,30,10,-10,10 };
 const std::vector<int32_t> osc_data = {-1000,1000,-1000,1000,-1000,
