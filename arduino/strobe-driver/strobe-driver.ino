@@ -6,7 +6,7 @@ using namespace TeensyTimerTool;
 #include <elapsedMillis.h>
 
 //my custom libs
-#include <control-panel.h>
+#include <ControlPanel.h>
 #include "globals.h"
 #include "pulse_sequences.h"
 #include "comms.h"
