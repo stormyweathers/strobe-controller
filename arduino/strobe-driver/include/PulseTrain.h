@@ -22,6 +22,9 @@ public:
 
     //Add new pulse anywhere within the current train
     void AddPulse(int32_t t_start, int32_t t_width);
+    void AddPulse(double t_start, int32_t t_width);
+    void AddPulse(double t_start, double t_width);
+    void AddPulse(int32_t t_start, double t_width);
 
     bool PerformTests(bool verbose=false);
 
@@ -44,6 +47,9 @@ private:
     }
 
     Node * temp_node_ptr;
+
+    //Scratch space for converting floats to ints in callback funcs
+    int32_t * int_ptr, int_ptr2;
 };
 
 #endif // PULSE_TRAIN_H

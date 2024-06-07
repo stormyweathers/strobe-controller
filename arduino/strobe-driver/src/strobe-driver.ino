@@ -35,8 +35,14 @@ PulseTrain train_b(&osc_data,3, false);
 
 TeensyTimerTool::PeriodicTimer TickTimer(TeensyTimerTool::TMR4);
 TeensyTimerTool::PeriodicTimer PulsePeriodTimer(TeensyTimerTool::GPT1);
-uint32_t tick_period_us = 10;
-uint32_t strobe_period_us = 10e6;
+uint32_t tick_period_us = 50;
+uint32_t strobe_period_us = 100'000;
+uint32_t strobe_timer_count = 0;
+int32_t  offset_us =0;
+double offset = 0;
+double modulation_time = 0;
+double modulation_frequency_hz = 0.5;
+double modulation_period_us = 1e6/modulation_frequency_hz;
 
 void TickTimerCallback(){
   train_r.ClockTick();
@@ -44,10 +50,14 @@ void TickTimerCallback(){
   train_b.ClockTick();
 }
 void SchedulePulseCallback(){
-  train_r.AddPulse(20,5);
-  train_g.AddPulse(15,1);
-  train_b.AddPulse(17,5);
-  //digitalWrite(6,!digitalRead(6));
+  modulation_time +=  strobe_period_us;
+  offset =(strobe_period_us-tick_period_us*255*4)/2.0;
+
+  train_r.AddPulse( (offset                      )/tick_period_us,255.0*4/tick_period_us);
+  train_g.AddPulse( (offset+strobe_period_us*0.125*sin(TWO_PI*modulation_time/modulation_period_us))
+                          /tick_period_us,255.0*4/tick_period_us);
+  train_b.AddPulse( (offset+strobe_period_us*0.125*cos(TWO_PI*modulation_time/modulation_period_us))
+                          /tick_period_us,255.0*4/tick_period_us);
 }
 
 void all_on(){
@@ -81,8 +91,10 @@ void setup() {
   strobe_enabled = 1;
   TickTimer.begin(TickTimerCallback,tick_period_us);
   PulsePeriodTimer.begin(SchedulePulseCallback,strobe_period_us,true);
+  PulsePeriodTimer.start();
 
   Serial.println("initialized");
+
 }
 
 uint32_t modulation_period_ms = 5000;
@@ -102,17 +114,17 @@ void loop() {
   // Toggle is up (=0)
   if ( (!strobe_enabled) & !panel.toggle.read()) {
     Serial.println("Turning on");
-    //all_on();
-    PulsePeriodTimer.start();
+    all_on();
+    //PulsePeriodTimer.start();
     //TickTimer.start();
-    strobe_enabled = 1;
+    //strobe_enabled = 1;
   }
   if ( (strobe_enabled) & panel.toggle.read()) {
     Serial.println("Turning off");
-    PulsePeriodTimer.stop();
+    all_off();
+    //PulsePeriodTimer.stop();
     //TickTimer.stop();
-    strobe_enabled = 0;
-    //all_off();
+    //strobe_enabled = 0;
   }
   // Double click main button to rotate oled
   if ( panel.joystick_button.pressed() && ( panel.joystick_button.previousDuration() < 250) )
@@ -133,11 +145,11 @@ void loop() {
   
   if (panel.button.fell() ){
 
-    train_r.AddPulse(250,1000);
-    train_g.AddPulse(500,1000);
-    train_b.AddPulse(750,1000);
+    train_r.AddPulse(250.0,1000.0);
+    train_g.AddPulse(750.0,1000.0);
+    train_b.AddPulse(1250.0,1000.0);
 
-    train_r.PrintList();
+    //train_r.PrintList();
 
   }
   

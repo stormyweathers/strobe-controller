@@ -126,6 +126,23 @@ void PulseTrain::AddPulse(int32_t t_start, int32_t t_width) {
     }
 }
 
+void PulseTrain::AddPulse(double t_start, int32_t t_width){
+    AddPulse((int32_t) t_start,t_width);
+}
+
+void PulseTrain::AddPulse(double t_start, double t_width){
+    //modff(t_start,this->int_ptr);
+    //modff(t_width,this->int_ptr2);
+    //AddPulse(*this->int_ptr,*this->int_ptr2);
+    AddPulse( (int32_t) t_start, (int32_t) t_width);
+}
+
+
+void PulseTrain::AddPulse(int32_t t_start, double t_width){
+    AddPulse(t_start,(int32_t) t_width);
+}
+
+
 bool PulseTrain::PerformTests(bool verbose=false){
     using namespace PulseTrainTest;
     int cases_passed = 0;
