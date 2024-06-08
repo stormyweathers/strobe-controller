@@ -72,6 +72,7 @@ void onRotorChanged(int state, int delta){
 
       channel_list[channel_select]->fundamental_freq_hz += delta*pow(10,decimal_place);
       channel_list[channel_select]->fundamental_freq_hz = constrain(channel_list[channel_select]->fundamental_freq_hz, 1,1500);
+      update_freq = true;
       break;
     case RATIO: 
       if (fraction_component == NUMERATOR){

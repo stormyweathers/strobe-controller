@@ -59,6 +59,7 @@ float transform_matrix[3][3] = {{1,0,0},{0,1,0},{0,0,1}};
 float arc_angle = TWO_PI;
 
 bool update_display_flag = false;
+bool update_freq = false;
 
 flicker_match flicker_handler(&update_display_flag);
 
