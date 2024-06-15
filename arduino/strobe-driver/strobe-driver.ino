@@ -165,7 +165,9 @@ void loop() {
   // Double click main button to enter flicker match calibration mode
   if ( panel.button.pressed() && ( panel.button.previousDuration() < 250) )
   {
-    flicker_handler.run_match(&fan, &panel);
+    enc_select_mode = FUNDAMENTAL;
+    channel_select = 1; 
+    flicker_handler.run_match(&spot, &panel);
   }
 
   // Double click joystick button to rotate screen

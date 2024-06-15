@@ -133,7 +133,6 @@ class flicker_match{
         this->panel_ptr->display.printf("B: %4.2f\n",this->relative_width_factors[2]);
         this->panel_ptr->display.println("----global width-----");
         this->panel_ptr->display.printf("   %4.2f",this->overall_scale_factor);
-
         this->panel_ptr->display.display();
     }
 

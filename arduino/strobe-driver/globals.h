@@ -27,7 +27,7 @@ float pulse_width_normalization = 1.0;
 #define LED_SPOT_G 22
 #define LED_SPOT_B 23
 int spot_pins[] = { LED_SPOT_R, LED_SPOT_G, LED_SPOT_B};
-strobe_channel  spot(3, spot_pins, TeensyTimerTool::TMR3,TeensyTimerTool::TMR3);
+strobe_channel  spot(3, spot_pins, TeensyTimerTool::TCK,TeensyTimerTool::TMR3);
 
 /*
 int dance_pins[] = { LED_DANCE_1, LED_DANCE_2, LED_DANCE_3, LED_DANCE_4};
@@ -42,8 +42,10 @@ uint16_t dance_fundamental_prev = 1;
 uint8_t num_channels = 2;
 strobe_channel* channel_list[2] = {&fan, &spot};
 
-
-float frequency_minimum_hz = 18.0; //Determined by type of timer used 
+//Determined by type of timers used for "strobe_timer"
+// TCK: 0.2 Hz
+// TMR: 18 Hz
+float frequency_minimum_hz = 0.2; 
 
 
 //Fields that are communicated from the raspi
